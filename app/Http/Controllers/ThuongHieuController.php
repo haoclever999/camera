@@ -42,7 +42,7 @@ class ThuongHieuController extends Controller
             ],
             [
                 'ten_thuong_hieu.required' => 'Hãy nhập thương hiệu',
-                'ten_thuong_hieu.max' => 'Thương hiệu tối đa 191 ký tự',
+                'ten_thuong_hieu.max' => 'Tên thương hiệu quá dài',
                 'ten_thuong_hieu.unique' => 'Thương hiệu đã tồn tại',
             ]
         );
@@ -78,11 +78,12 @@ class ThuongHieuController extends Controller
     {
         $request->validate(
             [
-                'ten_thuong_hieu' => 'required|max:191',
+                'ten_thuong_hieu' => 'required|max:191|unique:thuong_hieus',
             ],
             [
                 'ten_thuong_hieu.required' => 'Hãy nhập thương hiệu',
-                'ten_thuong_hieu.max' => 'Thương hiệu tối đa 191 ký tự',
+                'ten_thuong_hieu.max' => 'Tên thương hiệu quá dài',
+                'ten_thuong_hieu.unique' => 'Thương hiệu đã tồn tại',
             ]
         );
         try {

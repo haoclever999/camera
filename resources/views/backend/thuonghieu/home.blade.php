@@ -75,8 +75,7 @@
                                         class="btn btn-warning"
                                         href="{{ route('thuonghieu.edit', ['id' => $t->id]) }}"
                                     >
-                                        <i class="bi bi-pencil-square"></i>
-                                        Sửa
+                                        Cập nhật
                                     </a>
                                     <a
                                         style="
@@ -88,7 +87,7 @@
                                         href=""
                                         data-url="{{ route('thuonghieu.destroy', ['id' => $t->id]) }}"
                                     >
-                                        <i class="bi bi-trash"></i> Xóa
+                                        Xóa
                                     </a>
                                 </td>
                             </tr>

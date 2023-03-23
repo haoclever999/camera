@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class NguoiDungController extends Controller
 {
@@ -40,7 +41,82 @@ class NguoiDungController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'ho_ten' => 'required|max:191|unique:users',
+            'email' => 'required|max:191|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
+            'password' => 'required',
+            'opt_quyen' => 'required'
+        ], [
+            'ho_ten.required' => 'Hãy nhập tên người dùng',
+            'ho_ten.max' => 'Tên người dùng quá dài',
+            'ho_ten.unique' => 'Tên người dùng đã được sử dụng',
+            'email.required' => 'Hãy nhập email',
+            'email.regex' => 'Email không đúng dạng. VD: abc@gmail.com',
+            'email.max' => 'Email quá dài',
+            'email.unique' => 'Email đã tồn tại',
+            'password.required' => 'Hãy nhập password',
+            'opt_quyen.required' => 'Hãy chọn quyền',
+        ]);
+        try {
+            DB::beginTransaction();
+            $this->user->firstOrCreate([
+                'ho_ten' => trim($request->ho_ten),
+                'email' => trim($request->email),
+                'password' => bcrypt(trim($request->password)),
+                'quyen' => trim($request->opt_quyen),
+            ]);
+            DB::commit();
+            Session::flash('mgs', 'Thêm người dùng thành công');
+            return redirect()->route('nguoidung.index');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            return redirect()->route('nguoidung.create');
+        }
+    }
+
+    public function gethoso($id)
+    {
+        $user = $this->user->find($id);
+        return view('backend.nguoidung.sua', compact('user'));
+    }
+
+    public function posthoso(Request $request, $id)
+    {
+        $request->validate([
+            'ho_ten' => 'required|max:191|unique:users',
+            'email' => 'required|max:191|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
+            'sdt' => 'required|unique:users',
+            'dia_chi' => 'required|max:191',
+        ], [
+            'ho_ten.required' => 'Hãy nhập tên người dùng',
+            'ho_ten.max' => 'Tên người dùng quá dài',
+            'ho_ten.unique' => 'Tên người dùng đã được sử dụng',
+            'email.required' => 'Hãy nhập email',
+            'email.regex' => 'Email không đúng dạng. VD: abc@gmail.com',
+            'email.max' => 'Email quá dài',
+            'email.unique' => 'Email đã tồn tại',
+            'sdt.required' => 'Hãy nhập số điện thoại',
+            'sdt.unique' => 'Số điện thoại đã được sử dụng',
+            'dia_chi.required' => 'Hãy nhập địa chỉ',
+
+        ]);
+        try {
+            DB::beginTransaction();
+            $user = $this->user->find($id);
+            $user->id = $request->id;
+            $user->ho_ten = $request->ho_ten;
+            $user->sdt = $request->sdt;
+            $user->dia_chi = $request->dia_chi;
+            $user->save();
+            DB::commit();
+            Session::flash('mgs-update', 'Cập nhật hồ sơ thành công');
+            return redirect()->route('nguoidung.index');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            return redirect()->route('nguoidung.edit', ['id' => $id]);
+        }
     }
 
     public function getcapnhatquyen($id)

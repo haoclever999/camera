@@ -4,7 +4,7 @@
 <title>Quản lý khuyến mãi</title>
 @endsection @section('title-action')
 <div class="title-action">
-    <h2 class="m-0"><b>Sửa khuyến mãi </b></h2>
+    <h2 class="m-0"><b>Cập nhật khuyến mãi </b></h2>
 </div>
 @endsection @section('title-content')
 <ol
@@ -14,7 +14,7 @@
     <li class="breadcrumb-item">
         <a href="{{ route('khuyenmai.index') }}">Khuyến mãi</a>
     </li>
-    <li class="breadcrumb-item active">Sửa</li>
+    <li class="breadcrumb-item active">Cập nhật</li>
 </ol>
 @endsection @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -53,6 +53,8 @@
                                 id="khuyenmai"
                                 name="khuyenmai"
                                 min="0"
+                                max="100"
+                                step="1"
                                 value="{{ $km->khuyenmai}}"
                                 required
                             />
@@ -64,7 +66,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">
-                            Sửa khuyến mãi
+                            Cập nhật khuyến mãi
                         </button>
                     </form>
                 </div>

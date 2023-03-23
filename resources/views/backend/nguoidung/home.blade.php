@@ -142,7 +142,7 @@
                                                 class="btn btn-warning"
                                                 href="{{ route('nguoidung.getcapnhatquyen', ['id' => $u->id]) }}"
                                             >
-                                                <i class="bi bi-pencil-square"></i>
+                                                
                                                 Cập nhật 
                                             </a>                       
                                         </td>
@@ -156,7 +156,7 @@
                                     href="" 
                                     data-url="{{ route('nguoidung.destroy', ['id' => $u->id]) }}" 
                                     >
-                                        <i class="bi bi-trash"></i> Xóa
+                                        Xóa
                                     </a>
                                     </td>
                                 </tr>

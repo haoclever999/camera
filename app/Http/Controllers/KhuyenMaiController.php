@@ -33,11 +33,10 @@ class KhuyenMaiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'khuyenmai' => 'required|max:3|unique:khuyen_mais',
+            'khuyenmai' => 'required|unique:khuyen_mais',
 
         ], [
             'khuyenmai.required' => 'Hãy nhập khuyến mãi',
-            'khuyenmai.max' => 'Khuyến mãi tối đa 3 ký tự',
             'khuyenmai.unique' => 'Khuyến mãi đã tồn tại',
         ]);
         try {
@@ -70,11 +69,11 @@ class KhuyenMaiController extends Controller
     {
         $request->validate(
             [
-                'khuyenmai' => 'required|max:3',
+                'khuyenmai' => 'required|unique:khuyen_mais',
             ],
             [
                 'khuyenmai.required' => 'Hãy nhập khuyến mãi',
-                'khuyenmai.max' => 'Khuyến mãi tối đa 3 ký tự',
+                'khuyenmai.unique' => 'Khuyến mãi đã tồn tại',
             ]
         );
         try {

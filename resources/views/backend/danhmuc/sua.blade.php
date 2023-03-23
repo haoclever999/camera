@@ -4,7 +4,7 @@
 <title>Quản lý danh mục</title>
 @endsection @section('title-action')
 <div class="title-action">
-    <h2 class="m-0"><b>Sửa danh mục </b></h2>
+    <h2 class="m-0"><b>Cập nhật danh mục </b></h2>
 </div>
 @endsection @section('title-content')
 <ol
@@ -14,7 +14,7 @@
     <li class="breadcrumb-item">
         <a href="{{ route('danhmuc.index') }}">Danh mục</a>
     </li>
-    <li class="breadcrumb-item active">Sửa</li>
+    <li class="breadcrumb-item active">Cập nhật</li>
 </ol>
 @endsection @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -64,7 +64,7 @@
                         </div>
 
                         <button type="submit" class="btn btn-primary">
-                            Sửa danh mục
+                            Cập nhật danh mục
                         </button>
                     </form>
                 </div>

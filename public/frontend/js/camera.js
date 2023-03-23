@@ -1,32 +1,11 @@
-//modal edit
-(function ($) {
-    "use strict";
-
-    $('[data-toggle="tooltip"]').tooltip();
-
-    // $('#exampleModalCenter').modal('show')
-
-    var fullHeight = function () {
-        $(".js-fullheight").css("height", $(window).height());
-        $(window).resize(function () {
-            $(".js-fullheight").css("height", $(window).height());
-        });
-    };
-    fullHeight();
-})(jQuery);
-
 //thêm sp
 $(function () {
+    $(document).on("click", ".action_del", Delete);
     $(".tag_select").select2({
         tags: true,
+        placeholder: "-Nhập tag sản phẩm-",
         tokenSeparators: [","],
     });
-
-    $(".tag_select2").select2({
-        tags: true,
-        tokenSeparators: [","],
-    });
-
     var editor_config = {
         path_absolute: "/",
         selector: "textarea.mota_editor",
@@ -107,22 +86,3 @@ function Delete(even) {
         }
     });
 }
-
-$(function () {
-    $(document).on("click", ".action_del", Delete);
-});
-
-// const inputFile = document.querySelector(".fdaidien"); //check laij
-// const validImageTypes = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
-// inputFile.addEventListener("change", function (e) {
-//     const files = e.target.files.value;
-//     if (validImageTypes.exec(files))
-//         alert(
-//             "Vui lòng upload các file có định dạng: .jpeg/.jpg/.png/.gif only."
-//         );
-// });
-// inputFile.addEventListener("change", function (e) {
-//     const files = e.target.files;
-//     // const file = files[0];
-//     // const fileType = file["type"];
-// });

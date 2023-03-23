@@ -77,8 +77,7 @@
                                         class="btn btn-warning"
                                         href="{{ route('khuyenmai.edit', ['id' => $k->id]) }}"
                                     >
-                                        <i class="bi bi-pencil-square"></i>
-                                        Sửa
+                                        Cập nhật
                                     </a>
                                     <a
                                         style="
@@ -90,7 +89,6 @@
                                         href=""
                                         data-url="{{ route('khuyenmai.destroy', ['id' => $k->id]) }}"
                                     >
-                                        <i class="bi bi-trash"></i>
                                         Xóa
                                     </a>
                                 </td>
@@ -117,6 +115,8 @@
                                     id="khuyenmai"
                                     name="khuyenmai"
                                     min="0"
+                                    max="100"
+                                    step="1"
                                     value="{{ old('khuyenmai') }}"
                                     placeholder="Nhập khuyến mãi"
                                     required

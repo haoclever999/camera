@@ -46,19 +46,22 @@
                 <img
                     class="img-profile rounded-circle"
                     src="{{ asset('frontend/img/undraw_profile.svg') }}"
-                    alt=""
                 />
             </a>
             <!-- Dropdown - User Information -->
             <div
                 class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                 aria-labelledby="userDropdown"
+                style="margin-top: 0"
             >
-                <a class="dropdown-item" href="#">
+                <a
+                    class="dropdown-item"
+                    href="{{ route('nguoidung.gethoso',['id'=>Auth::user()->id]) }}"
+                >
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray"></i>
                     Hồ sơ cá nhân
                 </a>
-                <a class="dropdown-item" href="#">
+                <a class="dropdown-item" href="{{ route('nguoidung.store') }}">
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray"></i>
                     Đổi mật khẩu
                 </a>

@@ -7,7 +7,7 @@
 
 @endsection @section('title-action')
 <div class="title-action">
-    <h2 class="m-0"><b>Sửa sản phẩm </b></h2>
+    <h2 class="m-0"><b>Cập nhật sản phẩm </b></h2>
 </div>
 @endsection @section('title-content')
 <ol
@@ -17,7 +17,7 @@
     <li class="breadcrumb-item">
         <a href="{{ route('sanpham.index') }}">Sản phẩm</a>
     </li>
-    <li class="breadcrumb-item active">Sửa</li>
+    <li class="breadcrumb-item active">Cập nhật</li>
 </ol>
 @endsection @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -286,7 +286,7 @@
                                 type="submit"
                                 class="btn btn-primary"
                             >
-                                Sửa
+                                Cập nhật sản phẩm
                             </button>
                         </div>
                         <br />

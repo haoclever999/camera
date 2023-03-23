@@ -34,7 +34,7 @@ class DanhMucController extends Controller
 
         ], [
             'ten_dm.required' => 'Hãy nhập danh mục',
-            'ten_dm.max' => 'Danh mục tối đa 191 ký tự',
+            'ten_dm.max' => 'Danh mục quá dài',
             'ten_dm.unique' => 'Danh mục đã tồn tại',
         ]);
         try {
@@ -66,7 +66,7 @@ class DanhMucController extends Controller
 
         ], [
             'ten_dm.required' => 'Hãy nhập danh mục',
-            'ten_dm.max' => 'Danh mục tối đa 191 ký tự',
+            'ten_dm.max' => 'Danh mục quá dài',
             'ten_dm.unique' => 'Danh mục đã tồn tại',
 
         ]);

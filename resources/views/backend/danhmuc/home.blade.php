@@ -76,8 +76,7 @@
                                         class="btn btn-warning"
                                         href="{{ route('danhmuc.edit', ['id' => $d->id]) }}"
                                     >
-                                        <i class="bi bi-pencil-square"></i>
-                                        Sửa
+                                        Cập nhật
                                     </a>
                                     <a
                                         style="
@@ -89,7 +88,7 @@
                                         href=""
                                         data-url="{{ route('danhmuc.destroy', ['id' => $d->id]) }}"
                                     >
-                                        <i class="bi bi-trash"></i> Xóa</a
+                                        Xóa</a
                                     >
                                 </td>
                             </tr>

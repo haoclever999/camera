@@ -40,8 +40,8 @@
                         href="{{ route('sanpham.create') }}"
                         class="btn btn-success float-right m-2"
                     >
-                        Thêm sản phẩm 
-					</a>
+                        Thêm sản phẩm
+                    </a>
                 </div>
                 <!-- /.col -->
             </div>
@@ -62,7 +62,6 @@
                     >
                         <i class="fa fa-check"></i>
                         {{Session::get('mgs')}}
-                        
                     </div>
 
                     @endif @if(Session::has('mgs-update'))
@@ -72,7 +71,6 @@
                     >
                         <i class="fa fa-check"></i>
                         {{Session::get('mgs-update')}}
-                        
                     </div>
                     @endif
                     <div class="col-md-12">
@@ -118,7 +116,7 @@
                                         class="btn btn-primary"
                                         href="{{ route('sanpham.edit', ['id' => $s->id]) }}"
                                     >
-                                        <i class="bi bi-eye"></i> Xem chi tiết </a
+                                        Xem chi tiết </a
                                     ><br />
                                     <a
                                         style="
@@ -129,8 +127,7 @@
                                         class="btn btn-warning"
                                         href="{{ route('sanpham.edit', ['id' => $s->id]) }}"
                                     >
-                                        <i class="bi bi-pencil-square"></i>
-                                        Sửa
+                                        Cập nhật
                                     </a>
                                     <br />
                                     <a
@@ -143,7 +140,7 @@
                                         href=""
                                         data-url="{{ route('sanpham.destroy', ['id' => $s->id]) }}"
                                     >
-                                        <i class="bi bi-trash"></i> Xóa
+                                        Xóa
                                     </a>
                                 </td>
                             </tr>

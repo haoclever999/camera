@@ -26,7 +26,7 @@ class ThuongHieuController extends Controller
      */
     public function index()
     {
-        $page = 5;
+        $page = 10;
         $th = $this->thuonghieu::orderBy('id', 'desc')->paginate($page);
         return view('backend.thuonghieu.home', compact("th"))->with('i', (request()->input('page', 1) - 1) * $page);
     }

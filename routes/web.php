@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('admin/getdanghhap', [AuthController::class, 'getDangNhap'])->name('getDangNhap');
+Route::get('admin/getdangnhap', [AuthController::class, 'getDangNhap'])->name('getDangNhap');
 Route::post('admin/dangnhap', [AuthController::class, 'postDangNhap'])->name('postDangNhap');
 
 Route::prefix('admin')->group(function () { //check logout
@@ -82,7 +82,7 @@ Route::prefix('admin')->group(function () { //check logout
         Route::get('/create', [NguoiDungController::class, 'create'])->name('nguoidung.create');
         Route::post('/store', [NguoiDungController::class, 'store'])->name('nguoidung.store');
         Route::get('/edit/{id}', [NguoiDungController::class, 'getcapnhatquyen'])->name('nguoidung.getcapnhatquyen');
-        Route::post('/update/{id}', [NguoiDungController::class, 'capnhatquyen'])->name('nguoidung.postquyen');
+        Route::post('/update-quyen/{id}', [NguoiDungController::class, 'capnhatquyen'])->name('nguoidung.updatequyen');
         Route::post('/update/{id}', [NguoiDungController::class, 'trangthai'])->name('nguoidung.trangthai');
         Route::get('/destroy/{id}', [NguoiDungController::class, 'destroy'])->name('nguoidung.destroy');
     });

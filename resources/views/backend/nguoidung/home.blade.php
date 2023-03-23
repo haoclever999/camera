@@ -102,7 +102,7 @@
 
                                     @if($id_sua==$u->id && $capnhatquyen=='capnhatquyen')
                                         <td>
-                                            <form action="{{ route('nguoidung.postquyen', ['id' => $id_sua]) }}" method="post">
+                                            <form action="{{ route('nguoidung.updatequyen', ['id' => $id_sua]) }}" method="post">
                                                 @csrf
                                                 <select
                                                     id="opt_quyen"
@@ -174,5 +174,4 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
 @endsection

@@ -22,7 +22,7 @@ class NguoiDungController extends Controller
     {
         $id_sua = '0';
         $capnhatquyen = '';
-        $page = 5;
+        $page = 10;
         $users = $this->user::orderBy('id', 'desc')->paginate($page);
         return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
@@ -47,14 +47,13 @@ class NguoiDungController extends Controller
     {
         $id_sua = $id;
         $capnhatquyen = 'capnhatquyen';
-        $page = 5;
+        $page = 10;
         $users = $this->user::orderBy('id', 'desc')->paginate($page);
         return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function capnhatquyen(Request $request,  $id)
     {
-        dd([$request, $id]);
         try {
             DB::beginTransaction();
             $u = $this->user->find($id);

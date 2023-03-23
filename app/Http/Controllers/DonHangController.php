@@ -16,7 +16,7 @@ class DonHangController extends Controller
     }
     public function index()
     {
-        $page = 5;
+        $page = 10;
         $dhang = $this->donhang::orderBy('id', 'desc')->paginate($page);
         return view('backend.donhang.home', compact("dhang"))->with('i', (request()->input('page', 1) - 1) * $page);
     }

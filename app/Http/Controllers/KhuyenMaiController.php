@@ -23,7 +23,7 @@ class KhuyenMaiController extends Controller
      */
     public function index()
     {
-        $page = 5;
+        $page = 10;
         $km = $this->kmai::orderBy('id', 'desc')->paginate($page);
         return view('backend.khuyenmai.home', compact("km"))->with('i', (request()->input('page', 1) - 1) * $page);
     }

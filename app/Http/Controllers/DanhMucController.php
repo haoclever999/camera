@@ -23,7 +23,7 @@ class DanhMucController extends Controller
 
     public function index()
     {
-        $page = 5;
+        $page = 10;
         $dm = $this->dmuc::orderBy('id', 'desc')->paginate($page);
         return view('backend.danhmuc.home', compact("dm"))->with('i', (request()->input('page', 1) - 1) * $page);
     }

@@ -81,8 +81,8 @@ Route::prefix('admin')->group(function () { //check logout
         Route::get('/', [NguoiDungController::class, 'index'])->name('nguoidung.index');
         Route::get('/create', [NguoiDungController::class, 'create'])->name('nguoidung.create');
         Route::post('/store', [NguoiDungController::class, 'store'])->name('nguoidung.store');
-        Route::get('/update/{id}', [NguoiDungController::class, 'getcapnhatquyen'])->name('nguoidung.capnhatquyen');
-        Route::post('/update/{id}', [NguoiDungController::class, 'capnhatquyen'])->name('nguoidung.capnhatquyen');
+        Route::get('/edit/{id}', [NguoiDungController::class, 'getcapnhatquyen'])->name('nguoidung.getcapnhatquyen');
+        Route::post('/update/{id}', [NguoiDungController::class, 'capnhatquyen'])->name('nguoidung.postquyen');
         Route::post('/update/{id}', [NguoiDungController::class, 'trangthai'])->name('nguoidung.trangthai');
         Route::get('/destroy/{id}', [NguoiDungController::class, 'destroy'])->name('nguoidung.destroy');
     });

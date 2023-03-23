@@ -99,22 +99,55 @@
                                     @else
                                     <td></td>
                                     @endif
-                                    
-                                    <td>
-                                        <a                                         
-                                            style="
-                                                min-width: max-content;
-                                                padding: 3px 12px;
-                                                margin: 3px;
-                                            "
-                                            class="btn btn-warning"
-                                            href="{{ route('nguoidung.capnhatquyen', ['id' => $u->id]) }}"
-                                        >
-                                            <i class="bi bi-pencil-square"></i>
-                                            Cập nhật 
-                                        </a>
-                                    </td>   
-                                    <td ><a class="btn btn-danger action_del" 
+
+                                    @if($id_sua==$u->id && $capnhatquyen=='capnhatquyen')
+                                        <td>
+                                            <form action="{{ route('nguoidung.postquyen', ['id' => $id_sua]) }}" method="post">
+                                                @csrf
+                                                <select
+                                                    id="opt_quyen"
+                                                    name="opt_quyen"
+                                                >
+                                                @if($u->quyen=="Quản trị") 
+                                                    <option selected value="Quản trị">Quản trị</option>
+                                                    <option value="Nhân viên">Nhân viên</option>
+                                                    <option value="Khách hàng">Khách hàng</option>
+                                                @elseif($u->quyen=="Nhân viên")
+                                                    <option value="Quản trị">Quản trị</option>
+                                                    <option selected value="Nhân viên">Nhân viên</option>
+                                                    <option  value="Khách hàng">Khách hàng</option>
+                                                @else
+                                                    <option value="Quản trị">Quản trị</option>
+                                                    <option value="Nhân viên">Nhân viên</option>
+                                                    <option selected value="Khách hàng">Khách hàng</option>
+                                                @endif
+                                                </select>
+                                                
+                                                <button style="
+                                                    min-width: max-content;
+                                                    padding: 3px 12px;
+                                                    margin: 3px;" 
+                                                    type="submit" class="btn btn-warning">Cập nhật
+                                                </button>
+                                            </form>                              
+                                        </td>
+                                    @else
+                                        <td>
+                                            <a                                         
+                                                style="
+                                                    min-width: max-content;
+                                                    padding: 3px 12px;
+                                                    margin: 3px;
+                                                "
+                                                class="btn btn-warning"
+                                                href="{{ route('nguoidung.getcapnhatquyen', ['id' => $u->id]) }}"
+                                            >
+                                                <i class="bi bi-pencil-square"></i>
+                                                Cập nhật 
+                                            </a>                       
+                                        </td>
+                                    @endif
+                                    <td><a class="btn btn-danger action_del" 
                                     style="
                                             min-width: max-content;
                                             padding: 3px 12px;
@@ -126,7 +159,6 @@
                                         <i class="bi bi-trash"></i> Xóa
                                     </a>
                                     </td>
-                                    
                                 </tr>
                             @endforeach
                         <table>
@@ -143,54 +175,4 @@
 </div>
 <!-- /.content-wrapper -->
 
-<!-- coi lai 
-<div class="modal fade" id="capnhatquyenModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close d-flex align-items-center justify-content-center" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" class="ion-ios-close"></span>
-          </button>
-        </div>
-        <div class="modal-body p-4 p-md-5">
-            <div class="icon d-flex align-items-center justify-content-center">
-                <span class="ion-ios-person"></span>
-            </div>
-            <h3 class="text-center mb-4">Cập nhật quyền</h3>
-            <form action="" class="login-form">
-                <input type="hidden" name="id" >
-                <div class="form-group">
-                   <select name="opt_quyen" id="opt_quyen">
-                    <option selected value="">-Chọn quyền-</option>
-                        <option  value="Quản trị">Quản trị</option>
-                        <option value="Nhân viên">Nhân viên</option>
-                        <option value="Khách hàng">Khách hàng</option>
-                   </select>
-                </div>
-          <div class="form-group">
-              <button type="submit" class="form-control btn btn-primary rounded submit px-3">Cập nhật</button>
-          </div>
-        </form>
-        </div>
-        <div class="modal-footer justify-content-center">
-            <p>Not a member? <a href="#">Create an account</a></p>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
 @endsection
-<!-- @section('js')
-<script type="text/javascript">
-function capnhatquyen(el) {
-  var link = $(el) 
-  var modal = $("#capnhatquyenModal") 
-  alert(link);
-  var quyen = link.data('quyen')
-  var id = link.data('id')
-  modal.find('#quyen').val(quyen);
-  modal.find('#id').val(id);
-}
-
-</script>
-@endsection -->

@@ -81,8 +81,7 @@ Route::prefix('admin')->group(function () { //check logout
         Route::get('/', [NguoiDungController::class, 'index'])->name('nguoidung.index');
         Route::get('/create', [NguoiDungController::class, 'create'])->name('nguoidung.create');
         Route::post('/store', [NguoiDungController::class, 'store'])->name('nguoidung.store');
-        Route::get('/edit/{id}', [NguoiDungController::class, 'edit'])->name('nguoidung.edit');
-        Route::post('/update/{id}', [NguoiDungController::class, 'update'])->name('nguoidung.update');
+        Route::get('/update/{id}', [NguoiDungController::class, 'getcapnhatquyen'])->name('nguoidung.capnhatquyen');
         Route::post('/update/{id}', [NguoiDungController::class, 'capnhatquyen'])->name('nguoidung.capnhatquyen');
         Route::post('/update/{id}', [NguoiDungController::class, 'trangthai'])->name('nguoidung.trangthai');
         Route::get('/destroy/{id}', [NguoiDungController::class, 'destroy'])->name('nguoidung.destroy');
@@ -90,4 +89,6 @@ Route::prefix('admin')->group(function () { //check logout
 });
 Route::prefix('home')->group(function () {
     Route::get('/', [HomeController::class, 'home'])->name('home.index');
+    Route::get('/edit/{id}', [NguoiDungController::class, 'edit'])->name('nguoidung.edit');
+    Route::post('/update/{id}', [NguoiDungController::class, 'update'])->name('nguoidung.update');
 });

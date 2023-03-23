@@ -100,20 +100,15 @@
                                     <td></td>
                                     @endif
                                     
-                                    <td >
-                                        <a style="
-                                            min-width: max-content;
-                                            padding: 3px 12px;
-                                            margin: 3px;
-                                        " 
-                                        href="#" 
-                                        onclick="capnhatquyen(this)"
-                                        class="btn btn-warning"
-                                        data-target="#capnhatquyenModal"
-                                        data-toggle="modal"
-                                        data-id="{{$u->id}}"
-                                        data-quyen="{{ $u->quyen }}" 
-                                        
+                                    <td>
+                                        <a                                         
+                                            style="
+                                                min-width: max-content;
+                                                padding: 3px 12px;
+                                                margin: 3px;
+                                            "
+                                            class="btn btn-warning"
+                                            href="{{ route('nguoidung.capnhatquyen', ['id' => $u->id]) }}"
                                         >
                                             <i class="bi bi-pencil-square"></i>
                                             Cập nhật 
@@ -148,7 +143,7 @@
 </div>
 <!-- /.content-wrapper -->
 
-<!-- coi lai  -->
+<!-- coi lai 
 <div class="modal fade" id="capnhatquyenModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -182,10 +177,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 
 @endsection
-@section('js')
+<!-- @section('js')
 <script type="text/javascript">
 function capnhatquyen(el) {
   var link = $(el) 
@@ -198,4 +193,4 @@ function capnhatquyen(el) {
 }
 
 </script>
-@endsection
+@endsection -->

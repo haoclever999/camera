@@ -1,0 +1,31 @@
+.list_sp_img_150 {
+    max-width: 150px;
+    max-height: 100px;
+    object-fit: contain;
+}
+.sp_img_chitiet,
+.sp_img_daidien {
+    width: 70%;
+    height: 100%;
+    object-fit: contain;
+}
+.tbl-fixed {
+    overflow-x: scroll;
+}
+.table {
+    min-width: max-content;
+    text-align: center;
+}
+
+.fdaidien_container,
+.fchitiet_container {
+    margin-bottom: 20px;
+}
+.title-action {
+    color: darkcyan;
+}
+.container-fluid,
+.col-md-12 > .table,
+.col-md-6 > .table {
+    color: rgba(0, 0, 0, 0.8);
+}

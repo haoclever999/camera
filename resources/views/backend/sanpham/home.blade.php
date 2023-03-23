@@ -1,0 +1,163 @@
+<!-- resources/views/child.blade.php -->
+
+@extends('layouts.admin') @section('title')
+<title>Quản lý sản phẩm</title>
+@endsection @section('css')
+<link rel="stylesheet" href="{{ asset('frontend/css/camera.css') }}" />
+@endsection @section('title-action')
+<div class="title-action">
+    <h2 class="m-0"><b>Danh sách sản phẩm </b></h2>
+</div>
+<form
+    class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+>
+    <div class="input-group">
+        <input
+            type="text"
+            class="form-control bg-light border-0 small"
+            placeholder="Search for..."
+            aria-label="Search"
+            aria-describedby="basic-addon2"
+        />
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+            </button>
+        </div>
+    </div>
+</form>
+@endsection @section('content')
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-12" style="float: right">
+                    <!-- Topbar Search -->
+                    <a
+                        href="{{ route('sanpham.create') }}"
+                        class="btn btn-success float-right m-2"
+                    >
+                        Thêm sản phẩm 
+					</a>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
+    <div class="content">
+        <div class="container-fluid" style="padding-left: -24px">
+            <div class="row">
+                <div class="tbl-fixed">
+                    @if(Session::has('mgs'))
+                    <div
+                        class="alert alert-success alert-dismissible fade show"
+                    >
+                        <i class="fa fa-check"></i>
+                        {{Session::get('mgs')}}
+                        
+                    </div>
+
+                    @endif @if(Session::has('mgs-update'))
+                    <div
+                        class="alert alert-warning alert-dismissible fade show"
+                        style="color: #d1a400"
+                    >
+                        <i class="fa fa-check"></i>
+                        {{Session::get('mgs-update')}}
+                        
+                    </div>
+                    @endif
+                    <div class="col-md-12">
+                        <table class="table" style="max-width: max-content">
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Hình ảnh</th>
+                                <th>Giá (đ)</th>
+                                <th>Tồn kho</th>
+                                <th>Danh mục</th>
+
+                                <th>Ngày cập nhật</th>
+                                <th>Hành động</th>
+                            </tr>
+                            @foreach($sp as $s)
+                            <tr>
+                                <td>{{ ++$i }}</td>
+                                <td>{{$s->ten_sp}}</td>
+                                <td>
+                                    <img
+                                        class="list_sp_img_150"
+                                        src="{{$s->hinh_anh_chinh}}"
+                                        alt="HaoNganTelecom"
+                                    />
+                                </td>
+                                <td>{{number_format($s->gia,0,",",".")}}</td>
+                                <td>{{$s->ton}}</td>
+
+                                <td>{{optional($s->DanhMuc)->ten_dm}}</td>
+
+                                <td>
+                                    {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $s->updated_at)->format('H:i:s d/m/Y')}}
+                                </td>
+                                <td>
+                                    <!-- sua lai -->
+                                    <a
+                                        style="
+                                            min-width: 130px;
+                                            padding: 3px 12px;
+                                            margin: 3px;
+                                        "
+                                        class="btn btn-primary"
+                                        href="{{ route('sanpham.edit', ['id' => $s->id]) }}"
+                                    >
+                                        <i class="bi bi-eye"></i> Xem chi tiết </a
+                                    ><br />
+                                    <a
+                                        style="
+                                            min-width: 130px;
+                                            padding: 3px 12px;
+                                            margin: 3px;
+                                        "
+                                        class="btn btn-warning"
+                                        href="{{ route('sanpham.edit', ['id' => $s->id]) }}"
+                                    >
+                                        <i class="bi bi-pencil-square"></i>
+                                        Sửa
+                                    </a>
+                                    <br />
+                                    <a
+                                        style="
+                                            min-width: 130px;
+                                            padding: 3px 12px;
+                                            margin: 3px;
+                                        "
+                                        class="btn btn-danger action_del"
+                                        href=""
+                                        data-url="{{ route('sanpham.destroy', ['id' => $s->id]) }}"
+                                    >
+                                        <i class="bi bi-trash"></i> Xóa
+                                    </a>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </table>
+                    </div>
+                </div>
+                <div class="col-md-12">{!! $sp->links()!!}</div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+@endsection

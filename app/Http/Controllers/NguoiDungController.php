@@ -78,7 +78,7 @@ class NguoiDungController extends Controller
     public function gethoso($id)
     {
         $user = $this->user->find($id);
-        return view('backend.nguoidung.sua', compact('user'));
+        return view('backend.nguoidung.capnhathoso', compact('user'));
     }
 
     public function posthoso(Request $request, $id)
@@ -101,6 +101,7 @@ class NguoiDungController extends Controller
             'dia_chi.required' => 'Hãy nhập địa chỉ',
 
         ]);
+
         try {
             DB::beginTransaction();
             $user = $this->user->find($id);
@@ -110,12 +111,11 @@ class NguoiDungController extends Controller
             $user->dia_chi = $request->dia_chi;
             $user->save();
             DB::commit();
-            Session::flash('mgs-update', 'Cập nhật hồ sơ thành công');
-            return redirect()->route('nguoidung.index');
+            return redirect()->route('admin.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            return redirect()->route('nguoidung.edit', ['id' => $id]);
+            return redirect()->route('nguoidung.gethoso', ['id' => $id]);
         }
     }
 

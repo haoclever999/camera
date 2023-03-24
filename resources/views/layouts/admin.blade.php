@@ -55,6 +55,7 @@
     </head>
 
     <body id="page-top">
+        @include('sweetalert::alert')
         <div id="wrapper">
             <!-- Sidebar -->
             @include('view-page.admin.sidebar')
@@ -107,6 +108,7 @@
             }} "></script>
         <!-- hiển thị alert thông báo  -->
         <script src="{{ asset('frontend/js/sweetalert2@11.js') }}"></script>
+        <script src="{{ asset('frontend/js/sweetalert2.all.js') }}"></script>
         <script src="{{ asset('frontend/js/camera.js') }}"></script>
         <script type="text/javascript">
             $(document).ready(function () {

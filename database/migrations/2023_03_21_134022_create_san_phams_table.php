@@ -21,7 +21,8 @@ return new class extends Migration
             $table->integer('so_luong');
             $table->integer('da_ban')->default(0);
             $table->integer('ton');
-            $table->decimal('gia', 9, 0);
+            $table->decimal('gia_nhap', 9, 0);
+            $table->decimal('gia_ban', 9, 0);
 
             $table->integer('bao_hanh');
             $table->integer('goc_camera');
@@ -33,6 +34,7 @@ return new class extends Migration
             $table->string('nguon_dien', 191);
 
             $table->integer('luot_xem')->default(0);
+            $table->integer('luot_mua')->default(0);
 
             $table->integer('km_id')->unsigned()->default(0);
             $table->foreign('km_id')->references('id')->on('khuyen_mais')->onUpdate('cascade');

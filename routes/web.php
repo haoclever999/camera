@@ -21,10 +21,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('admin/dang-nhap', [AuthController::class, 'getDangNhap'])->name('getDangNhap');
+Route::get('admin/dang-nhap', [AuthController::class, 'getDangNhap'])->name('getDangNhap')->middleware('CheckLogin');
 Route::post('admin/dang-nhap', [AuthController::class, 'postDangNhap'])->name('postDangNhap');
+Route::get('admin/dang-xuat', [AuthController::class, 'DangXuat'])->name('DangXuat');
 
-Route::prefix('admin')->group(function () { //check logout
+Route::prefix('admin')->middleware('CheckLogout')->group(function () {
     // Route::prefix('laravel-filemanager')->group(function () {
     //     \UniSharp\LaravelFilemanager\Lfm::routes();
     // });
@@ -48,7 +49,6 @@ Route::prefix('admin')->group(function () { //check logout
     });
     // Quản lý sản phẩm
     Route::prefix('san-pham')->group(function () {
-        // \UniSharp\LaravelFilemanager\Lfm::routes();
         Route::get('/', [SanPhamController::class, 'index'])->name('sanpham.index');
         Route::get('/them-san-pham', [SanPhamController::class, 'create'])->name('sanpham.create');
         Route::post('/them-san-pham', [SanPhamController::class, 'store'])->name('sanpham.store');

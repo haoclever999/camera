@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\KhuyenMai;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Components\Traits\DeleteModelTrait;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KhuyenMaiController extends Controller
 {
@@ -45,11 +45,12 @@ class KhuyenMaiController extends Controller
                 'khuyenmai' => trim($request->khuyenmai),
             ]);
             DB::commit();
-            Session::flash('mgs', 'Thêm khuyến mãi thành công');
+            Alert::success('Thành công', 'Thêm khuyến mãi thành công');
             return redirect()->route('khuyenmai.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Thêm khuyến mãi thất bại');
             return redirect()->route('khuyenmai.create');
         }
     }
@@ -83,11 +84,12 @@ class KhuyenMaiController extends Controller
             $km->khuyenmai = $request->khuyenmai;
             $km->save();
             DB::commit();
-            Session::flash('mgs-update', 'Cập nhật khuyến mãi thành công');
+            Alert::success('Thành công', 'Cập nhật khuyến mãi thành công');
             return redirect()->route('khuyenmai.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Cập nhật khuyến mãi thất bại');
             return redirect()->route('khuyenmai.edit', ['id' => $id]);
         }
     }

@@ -33,24 +33,6 @@
             <br />
             <div class="row">
                 <div>
-                    @if(Session::has('mgs'))
-                    <div
-                        class="alert alert-success alert-dismissible fade show"
-                    >
-                        <i class="fa fa-check"></i>
-                        {{Session::get('mgs')}}
-                    </div>
-
-                    @endif @if(Session::has('mgs-update'))
-                    <div
-                        class="alert alert-warning alert-dismissible fade show"
-                        style="color: #d1a400"
-                    >
-                        <i class="fa fa-check"></i>
-                        {{Session::get('mgs-update')}}
-                    </div>
-                    @endif
-
                     <div class="col-md-6" style="float: left">
                         <table class="table">
                             <tr>
@@ -88,8 +70,8 @@
                                         href=""
                                         data-url="{{ route('danhmuc.destroy', ['id' => $d->id]) }}"
                                     >
-                                        Xóa</a
-                                    >
+                                        Xóa
+                                    </a>
                                 </td>
                             </tr>
                             @endforeach

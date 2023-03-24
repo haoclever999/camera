@@ -69,7 +69,7 @@
                     Đổi mật khẩu
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="">
+                <a class="dropdown-item" href="{{ route('DangXuat') }}">
                     <i
                         class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray"
                     ></i>

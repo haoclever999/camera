@@ -21,15 +21,6 @@
 <div class="content-wrapper">
     <!-- Main content -->
     <div class="content">
-        @if(Session::has('mgs-error'))
-        <div class="alert alert-danger alert-dismissible fade show">
-            <i
-                class="fas fa-exclamation-circle"
-                style="font-size: 25px; color: red"
-            ></i>
-            {{Session::get('mgs-update')}}
-        </div>
-        @endif
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">

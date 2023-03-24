@@ -5,9 +5,20 @@
 }
 .sp_img_chitiet,
 .sp_img_daidien {
-    width: 70%;
+    min-width: 150px;
+    width: 100%;
     height: 100%;
     object-fit: contain;
+    margin: 10px 0;
+}
+div.row > div#pre_Multiple {
+    height: 150px;
+    max-width: 20%;
+    position: relative;
+    display: flex;
+    justify-content: space-evenly;
+    object-fit: contain;
+    flex-wrap: wrap;
 }
 .tbl-fixed {
     overflow-x: scroll;
@@ -19,7 +30,8 @@
 
 .fdaidien_container,
 .fchitiet_container {
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 .title-action {
     color: darkcyan;

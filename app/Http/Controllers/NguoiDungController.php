@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Session;
+use App\Components\Traits\DeleteModelTrait;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class NguoiDungController extends Controller
 {
+    use DeleteModelTrait;
     private $user;
     public function __construct(User $user)
     {
@@ -68,12 +69,12 @@ class NguoiDungController extends Controller
                 'quyen' => trim($request->opt_quyen),
             ]);
             DB::commit();
-            Session::flash('mgs', 'Thêm người dùng thành công');
-
+            Alert::success('Thành công', 'Thêm người dùng thành công');
             return redirect()->route('nguoidung.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Thêm người dùng thất bại');
             return redirect()->route('nguoidung.create');
         }
     }
@@ -143,18 +144,17 @@ class NguoiDungController extends Controller
 
             $user = $this->user->find($id);
             $user->id = $request->id;
-            $user->ho_ten = $ten;
-            $user->sdt = $sdt;
-            $user->dia_chi = $request->dia_chi;
+            $user->ho_ten = trim($ten);
+            $user->sdt = trim($sdt);
+            $user->dia_chi = trim($request->dia_chi);
             $user->save();
             DB::commit();
-
-            // Alert()->success('Post Created', 'Successfully');
-
+            Alert::success('Thành công', 'Cập nhật hồ sơ thành công');
             return redirect()->route('admin.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Cập nhật hồ sơ thất bại');
             return redirect()->route('nguoidung.gethoso', ['id' => $id]);
         }
     }
@@ -170,31 +170,33 @@ class NguoiDungController extends Controller
         $request->validate([
             'password' => 'required',
             'password_new' => 'required|different:password',
-            'password_confirm' => 'required',
+            'password_confirm' => 'required|same:password_new',
         ], [
             'password.required' => 'Hãy nhập mật khẩu cũ',
             'password_new.required' => 'Hãy nhập mật khẩu mới',
-            'password_confirm.required' => 'Hãy nhập lại mật khẩu mới',
             'password_new.different' => 'Mật khẩu mới phải khác mật khẩu cũ',
+            'password_confirm.required' => 'Hãy nhập lại mật khẩu mới',
+            'password_confirm.same' => 'Nhập lại mật khẩu và mật khẩu mới phải giống nhau',
         ]);
         try {
             DB::beginTransaction();
             $u = $this->user->find($id);
             if (Hash::check($request->password, $u->password)) {
-                $u->fill([
+                $u->update([
                     'password' => Hash::make($request->password_new)
-                ])->save();
+                ]);
                 DB::commit();
-                Session::flash('mgs-update', 'Mật khẩu đã được thay đổi');
+                Alert::success('Thành công', 'Mật khẩu đã được thay đổi');
                 return redirect()->route('nguoidung.index');
             } else {
-                Session::flash('mgs-error', 'Mật khẩu cũ không đúng');
-                return redirect()->route('nguoidung.getdoimatkhau');
+                Alert::error('Thất bại', 'Mật khẩu cũ không đúng');
+                return redirect()->route('nguoidung.getdoimatkhau', ['id' => $id]);
             }
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            return redirect()->route('nguoidung.index');
+            Alert::error('Thất bại', 'Đổi mật khẩu thất bại');
+            return redirect()->route('nguoidung.getdoimatkhau', ['id' => $id]);
         }
     }
 
@@ -216,10 +218,12 @@ class NguoiDungController extends Controller
             $u->quyen = $request->opt_quyen;
             $u->save();
             DB::commit();
+            Alert::success('Thành công', 'Cập nhật quyền thành công');
             return redirect()->route('nguoidung.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Cập nhật quyền thất bại');
             return redirect()->route('nguoidung.index');
         }
     }
@@ -233,10 +237,12 @@ class NguoiDungController extends Controller
             $u->trang_thai = $request->khoa;
             $u->save();
             DB::commit();
+            Alert::success('Thành công', 'Thay đổi trạng thái tài khoản thành công');
             return redirect()->route('nguoidung.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Thay đổi trạng thái tài khoản thành công');
             return redirect()->route('nguoidung.index');
         }
     }
@@ -245,6 +251,6 @@ class NguoiDungController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->deleteModelTrait($id, $this->user);
     }
 }

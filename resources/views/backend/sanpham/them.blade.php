@@ -24,15 +24,6 @@
 <div class="content-wrapper">
     <!-- Main content -->
     <div class="content">
-        @if($errors->any())
-        <div class="alert alert-danger alert-dismissible fade show">
-            <i
-                class="fas fa-exclamation-circle"
-                style="font-size: 25px; color: red"
-            ></i>
-            Thêm sản phẩm thất bại. Hãy kiểm tra lại!
-        </div>
-        @endif
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
@@ -72,9 +63,9 @@
                                     id="num_soluong"
                                     name="num_soluong"
                                     value="{{ old('num_soluong') }}"
-                                    onKeyPress="if(this.value.length==6) return false;"
                                     max="999999"
                                     min="1"
+                                    step="1"
                                     placeholder="Nhập số lượng"
                                     required
                                 />
@@ -86,24 +77,46 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="num_gia" class="form-label">
-                                    <b>Giá</b>
+                                <label for="num_gia_nhap" class="form-label">
+                                    <b>Giá nhập</b>
                                 </label>
                                 <input
                                     type="number"
-                                    class="form-control @error('num_gia') is-invalid @enderror"
-                                    id="num_gia"
-                                    name="num_gia"
-                                    value="{{ old('num_gia') }}"
-                                    onKeyPress="if(this.value.length==9 ) return false;"
+                                    class="form-control @error('num_gia_nhap') is-invalid @enderror"
+                                    id="num_gia_nhap"
+                                    name="num_gia_nhap"
+                                    value="{{ old('num_gia_nhap') }}"
                                     max="999999999"
                                     min="1000"
-                                    placeholder="Nhập giá"
+                                    step="1"
+                                    placeholder="Nhập giá nhập"
                                     required
                                 />
-                                @if ($errors->has('num_gia'))
+                                @if ($errors->has('num_gia_nhap'))
                                 <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('num_gia') }}</b>
+                                    <b>{{ $errors->first('num_gia_nhap') }}</b>
+                                </span>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="num_gia_ban" class="form-label">
+                                    <b>Giá bán</b>
+                                </label>
+                                <input
+                                    type="number"
+                                    class="form-control @error('num_gia_ban') is-invalid @enderror"
+                                    id="num_gia_ban"
+                                    name="num_gia_ban"
+                                    value="{{ old('num_gia_ban') }}"
+                                    max="999999999"
+                                    min="1000"
+                                    step="1"
+                                    placeholder="Nhập giá bán"
+                                    required
+                                />
+                                @if ($errors->has('num_gia_ban'))
+                                <span class="help-block" style="color: #ff3f3f">
+                                    <b>{{ $errors->first('num_gia_ban') }}</b>
                                 </span>
                                 @endif
                             </div>
@@ -124,26 +137,7 @@
                                 </span>
                                 @endif
                             </div>
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <b>Chọn khuyến mãi</b>
-                                </label>
-                                <select
-                                    class="form-control @error('opt_km') is-invalid @enderror"
-                                    name="opt_km"
-                                    value="{{ old('opt_km') }}"
-                                >
-                                    <option selected value="">
-                                        -Chọn khuyến mãi-
-                                    </option>
-                                    {!! $KmOpt !!}
-                                </select>
-                                @if ($errors->has('opt_km'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('opt_km') }}</b>
-                                </span>
-                                @endif
-                            </div>
+
                             <div class="form-group">
                                 <label class="form-label">
                                     <b>Chọn thương hiệu</b>
@@ -186,6 +180,26 @@
                                 </span>
                                 @endif
                             </div>
+                            <div class="form-group">
+                                <label class="form-label">
+                                    <b>Chọn khuyến mãi</b>
+                                </label>
+                                <select
+                                    class="form-control @error('opt_km') is-invalid @enderror"
+                                    name="opt_km"
+                                    value="{{ old('opt_km') }}"
+                                >
+                                    <option selected value="">
+                                        -Chọn khuyến mãi-
+                                    </option>
+                                    {!! $KmOpt !!}
+                                </select>
+                                @if ($errors->has('opt_km'))
+                                <span class="help-block" style="color: #ff3f3f">
+                                    <b>{{ $errors->first('opt_km') }}</b>
+                                </span>
+                                @endif
+                            </div>
                         </div>
                         <div class="col-md-6" style="float: right">
                             <div class="form-group">
@@ -199,9 +213,9 @@
                                     id="num_bao_hanh"
                                     value="{{ old('num_bao_hanh') }}"
                                     placeholder="Nhập bảo hành"
-                                    onKeyPress="if(this.value.length==2 ) return false;"
                                     max="99"
                                     min="0"
+                                    step="1"
                                     required
                                 />
                             </div>
@@ -216,16 +230,16 @@
                                     id="num_goc_camera"
                                     value="{{ old('num_goc_camera') }}"
                                     placeholder="Nhập góc camera"
-                                    onKeyPress="if(this.value.length==3 ) return false;"
                                     max="360"
                                     min="0"
+                                    step="0.01"
                                     required
                                 />
                                 @if ($errors->has('num_goc_camera'))
                                 <span class="help-block" style="color: #ff3f3f">
-                                    <b
-                                        >{{ $errors->first('num_goc_camera') }}</b
-                                    >
+                                    <b>
+                                        {{ $errors->first('num_goc_camera') }}
+                                    </b>
                                 </span>
                                 @endif
                             </div>
@@ -269,20 +283,43 @@
                             </div>
                             <div class="form-group">
                                 <label for="dam_thoai" class="form-label">
-                                    <b>Đàm thoại (chiều)</b>
+                                    <b>Đàm thoại</b>
                                 </label>
-                                <input
-                                    type="text"
-                                    class="form-control @error('dam_thoai') is-invalid @enderror"
-                                    name="dam_thoai"
-                                    id="dam_thoai"
-                                    value="{{ old('dam_thoai') }}"
-                                    placeholder="Nhập đàm thoại"
-                                    required
-                                />
+                                <select
+                                    class="form-control @error('opt_km') is-invalid @enderror"
+                                    value="{{ old('opt_km') }}"
+                                    id="opt_dam_thoai"
+                                    name="opt_dam_thoai"
+                                >
+                                    <option selected value="">
+                                        -Đàm thoại-
+                                    </option>
+                                    <option value="0 chiều">0 chiều</option>
+                                    <option value="1 chiều">1 chiều</option>
+                                    <option value="2 chiều">2 chiều</option>
+                                </select>
                                 @if ($errors->has('dam_thoai'))
                                 <span class="help-block" style="color: #ff3f3f">
                                     <b>{{ $errors->first('dam_thoai') }}</b>
+                                </span>
+                                @endif
+                            </div>
+                            <div class="form-group">
+                                <label for="tam_quan_sat" class="form-label">
+                                    <b>Tầm quan sát</b>
+                                </label>
+                                <input
+                                    type="text"
+                                    class="form-control @error('tam_quan_sat') is-invalid @enderror"
+                                    name="tam_quan_sat"
+                                    id="tam_quan_sat"
+                                    value="{{ old('tam_quan_sat') }}"
+                                    placeholder="Nhập tầm quan sát"
+                                    required
+                                />
+                                @if ($errors->has('tam_quan_sat'))
+                                <span class="help-block" style="color: #ff3f3f">
+                                    <b>{{ $errors->first('tam_quan_sat') }}</b>
                                 </span>
                                 @endif
                             </div>
@@ -317,9 +354,13 @@
                                     id="fdaidien"
                                     name="fdaidien"
                                     accept="image/jpg, image/png, image/jpeg"
+                                    onchange="preview(event)"
                                     required
                                 />
-                                <div class="preview"></div>
+                                <div
+                                    class="fdaidien_container col-md-3"
+                                    id="container_preview"
+                                ></div>
                             </div>
                             <div class="form-group">
                                 <label for="fchitiet" class="form-label">
@@ -331,10 +372,16 @@
                                     id="fchitiet"
                                     name="fchitiet[]"
                                     required
+                                    onchange="preview_Multiple()"
                                     multiple
-                                    accept="image/jpg, image/png, image/jpeg,video/mp4"
+                                    accept="image/jpg, image/png, image/jpeg, video/mp4"
                                 />
-                                <div class="preview"></div>
+                                <div class="col-md-12 fchitiet_container">
+                                    <div
+                                        class="row"
+                                        id="container_previewMultiple"
+                                    ></div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="txt_mota" class="form-label">
@@ -345,8 +392,9 @@
                                     id="txt_mota"
                                     value="{{ old('txt_mota') }}"
                                     name="txt_mota"
-                                ></textarea
-                                >@if ($errors->has('txt_mota'))
+                                    required
+                                ></textarea>
+                                @if ($errors->has('txt_mota'))
                                 <span class="help-block" style="color: #ff3f3f">
                                     <b>{{ $errors->first('txt_mota') }}</b>
                                 </span>
@@ -373,4 +421,43 @@
 @endsection @section('js')
 <script src="{{ asset('frontend/js/select2.min.js') }}"></script>
 <script src="{{ asset('frontend/js/tinymce.min.js') }}"></script>
+<script>
+    function preview(event) {
+        var image = document.createElement("img");
+        image.setAttribute("class", "sp_img_daidien");
+        image.setAttribute("id", "img_preview");
+
+        document.getElementById("container_preview").appendChild(image);
+
+        var img_preview = document.getElementById("img_preview");
+        img_preview.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    var images = [];
+    function preview_Multiple() {
+        var img_previewMultiple = document.getElementById("fchitiet").files;
+        for (i = 0; i < img_previewMultiple.length; i++) {
+            images.push({
+                url: URL.createObjectURL(img_previewMultiple[i]),
+            });
+        }
+        document.getElementById("container_previewMultiple").innerHTML =
+            show_previewMultiple();
+    }
+    function show_previewMultiple() {
+        var img = "";
+        images.forEach((i) => {
+            img +=
+                ` <div id="pre_Multiple">
+                    <img
+                        class="sp_img_chitiet"
+                        src="` +
+                i.url +
+                `"
+                    />
+                </div>`;
+        });
+        return img;
+    }
+</script>
 @endsection

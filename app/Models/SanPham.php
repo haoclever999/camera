@@ -11,7 +11,7 @@ class SanPham extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'san_phams';
     protected $fillable = [
-        'ten_sp', 'slug', 'hinh_anh_chinh', 'mo_ta', 'so_luong', 'da_ban', 'ton', 'gia', 'bao_hanh', 'goc_camera', 'chuan_nen', 'do_phan_giai', 'dam_thoai', 'tam_quan_sat', 'tinh_nang', 'nguon_dien', 'luot_xem', 'km_id', 'dm_id', 'thuong_hieu_id',  'user_id',
+        'ten_sp', 'slug', 'hinh_anh_chinh', 'mo_ta', 'so_luong', 'da_ban', 'ton', 'gia_nhap', 'gia_ban', 'bao_hanh', 'goc_camera', 'chuan_nen', 'do_phan_giai', 'dam_thoai', 'tam_quan_sat', 'tinh_nang', 'nguon_dien', 'luot_xem', 'luot_mua', 'km_id', 'dm_id', 'thuong_hieu_id',  'user_id',
     ];
 
     public function DanhMuc()

@@ -39,20 +39,6 @@
                     </a>
                 </div>
                 <div class="tbl-fixed">
-                    @if(Session::has('mgs'))
-                        <div class="alert alert-success alert-dismissible fade show">
-                            <i class="fa fa-check"></i>
-                            {{Session::get('mgs')}}
-                        </div>                    
-                    @endif
-                    @if(Session::has('mgs-update'))
-                    <div class="alert alert-warning alert-dismissible fade show">
-                        <i class="fa fa-check" style="color: #d1a400;"></i>
-                        {{Session::get('mgs-update')}}
-                        
-                    </div>
-                    @endif
-                    
                     <div class="col-md-12">
                         <table class="table">
                             <tr>
@@ -92,7 +78,7 @@
                                                 <form action="{{ route('nguoidung.trangthai', ['id' => $u->id]) }}" method="post">
                                                     @csrf
                                                     <input type="hidden" name = "khoa" value="1">
-                                                    <button type="submit" class="btn btn-primary action_edit">Kích hoạt</button>
+                                                    <button type="submit" class="btn btn-primary">Kích hoạt</button>
                                                 </form>
                                             </td>                                            
                                         @endif
@@ -127,7 +113,7 @@
                                                     min-width: max-content;
                                                     padding: 3px 12px;
                                                     margin: 3px;" 
-                                                    type="submit" class="btn btn-warning action_edit"> Cập nhật
+                                                    type="submit" class="btn btn-warning"> Cập nhật
                                                 </button>
                                             </form>                              
                                         </td>
@@ -147,17 +133,19 @@
                                             </a>                       
                                         </td>
                                     @endif
-                                    <td><a class="btn btn-danger action_del" 
-                                    style="
-                                            min-width: max-content;
-                                            padding: 3px 12px;
-                                            margin: 3px;
-                                        "
-                                    href="" 
-                                    data-url="{{ route('nguoidung.destroy', ['id' => $u->id]) }}" 
-                                    >
-                                        Xóa
-                                    </a>
+                                    <td>
+                                        <a 
+                                            class="btn btn-danger action_del" 
+                                            style="
+                                                    min-width: max-content;
+                                                    padding: 3px 12px;
+                                                    margin: 3px;
+                                                "
+                                            href="" 
+                                            data-url="{{ route('nguoidung.destroy', ['id' => $u->id]) }}" 
+                                            >
+                                                Xóa
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

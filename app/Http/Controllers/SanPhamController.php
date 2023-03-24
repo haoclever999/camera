@@ -91,7 +91,7 @@ class SanPhamController extends Controller
             [
                 'ten_sp' => 'required|max:191|unique:san_phams',
                 'num_soluong' => 'required|numeric',
-                'num_gia' => 'required|numeric',
+                'num_gia_nhap' => 'required|numeric',
                 'opt_tagsp' => 'required',
                 'opt_th' => 'required',
                 'opt_dm' => 'required',
@@ -102,13 +102,14 @@ class SanPhamController extends Controller
                 'ten_sp.unique' => 'Sản phẩm đã tồn tại',
                 'num_soluong.required' => 'Hãy nhập số lượng',
                 'num_soluong.numeric' => 'Số lượng phải là số',
-                'num_gia.required' => 'Hãy nhập giá',
-                'num_gia.numeric' => 'Giá phải là số',
+                'num_gia_nhap.required' => 'Hãy nhập giá',
+                'num_gia_nhap.numeric' => 'Giá phải là số',
                 'opt_tagsp.required' => 'Hãy nhập tag sản phẩm',
                 'opt_th.required' => 'Hãy chọn thương hiệu',
                 'opt_dm.required' => 'Hãy nhập danh mục',
             ]
         );
+        dd($request);
         try {
             DB::beginTransaction();
             if (!empty($request->opt_km)) $km = $request->opt_km;

@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\ThuongHieu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class ThuongHieuController extends Controller
 {
@@ -53,11 +53,12 @@ class ThuongHieuController extends Controller
                 'slug' => Str::slug($request->ten_thuong_hieu, "-"),
             ]);
             DB::commit();
-            Session::flash('mgs', 'Thêm thương hiệu thành công');
+            Alert::success('Thành công', 'Thêm thương hiệu thành công');
             return redirect()->route('thuonghieu.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Thêm thương hiệu thành công');
             return redirect()->route('thuonghieu.create');
         }
     }
@@ -94,11 +95,12 @@ class ThuongHieuController extends Controller
             $th->slug = Str::slug($request->ten_thuong_hieu, "-");
             $th->save();
             DB::commit();
-            Session::flash('mgs-update', 'Cập nhật thương hiệu thành công');
+            Alert::success('Thành công', 'Cập nhật thương hiệu thành công');
             return redirect()->route('thuonghieu.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Cập nhật thương hiệu thành công');
             return redirect()->route('thuonghieu.edit', ['id' => $id]);
         }
     }

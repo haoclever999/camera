@@ -33,5 +33,9 @@ class AuthController extends Controller
         }
     }
     //  register          'email' => 'required|max:191|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
-
+    public function DangXuat()
+    {
+        auth()->logout();
+        return view('auth.dangnhapAdmin');
+    }
 }

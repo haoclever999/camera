@@ -56,23 +56,6 @@
         <div class="container-fluid" style="padding-left: -24px">
             <div class="row">
                 <div class="tbl-fixed">
-                    @if(Session::has('mgs'))
-                    <div
-                        class="alert alert-success alert-dismissible fade show"
-                    >
-                        <i class="fa fa-check"></i>
-                        {{Session::get('mgs')}}
-                    </div>
-
-                    @endif @if(Session::has('mgs-update'))
-                    <div
-                        class="alert alert-warning alert-dismissible fade show"
-                        style="color: #d1a400"
-                    >
-                        <i class="fa fa-check"></i>
-                        {{Session::get('mgs-update')}}
-                    </div>
-                    @endif
                     <div class="col-md-12">
                         <table class="table" style="max-width: max-content">
                             <tr>
@@ -88,7 +71,7 @@
                             </tr>
                             @foreach($sp as $s)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ +(+$i) }}</td>
                                 <td>{{$s->ten_sp}}</td>
                                 <td>
                                     <img

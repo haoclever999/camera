@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\DanhMuc;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class DanhMucController extends Controller
 {
@@ -44,11 +44,12 @@ class DanhMucController extends Controller
                 'slug' => Str::slug($request->ten_dm, "-"),
             ]);
             DB::commit();
-            Session::flash('mgs', 'Thêm danh mục thành công');
+            Alert::success('Thành công', 'Thêm danh mục thành công');
             return redirect()->route('danhmuc.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Thêm danh mục thất bại');
             return redirect()->route('danhmuc.create');
         }
     }
@@ -68,21 +69,21 @@ class DanhMucController extends Controller
             'ten_dm.required' => 'Hãy nhập danh mục',
             'ten_dm.max' => 'Danh mục quá dài',
             'ten_dm.unique' => 'Danh mục đã tồn tại',
-
         ]);
         try {
             DB::beginTransaction();
             $dm = $this->dmuc->find($id);
             $dm->id = $request->id;
-            $dm->ten_dm = $request->ten_dm;
+            $dm->ten_dm = trim($request->ten_dm);
             $dm->slug = Str::slug($request->ten_dm, "-");
             $dm->save();
             DB::commit();
-            Session::flash('mgs-update', 'Cập nhật danh mục thành công');
+            Alert::success('Thành công', 'Cập nhật danh mục thành công');
             return redirect()->route('danhmuc.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Cập nhật danh mục thất bại');
             return redirect()->route('danhmuc.edit', ['id' => $id]);
         }
     }

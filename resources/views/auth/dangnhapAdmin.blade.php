@@ -89,6 +89,7 @@
                             {{Session::get('mgs')}}
                         </span>
                         <br />
+                        <br />
                         @endif
 
                         <div

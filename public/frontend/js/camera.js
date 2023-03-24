@@ -1,6 +1,7 @@
 //thêm sp
 $(function () {
     $(document).on("click", ".action_del", Delete);
+    $(document).on("click", ".action_edit", Success);
     $(".tag_select").select2({
         tags: true,
         placeholder: "-Nhập tag sản phẩm-",
@@ -84,5 +85,15 @@ function Delete(even) {
                 error: function () {},
             });
         }
+    });
+}
+
+function Success() {
+    Swal.fire({
+        position: "center",
+        icon: "success",
+        title: "Cập nhật thành công",
+        showConfirmButton: false,
+        timer: 1500,
     });
 }

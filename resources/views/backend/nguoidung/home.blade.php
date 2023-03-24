@@ -84,7 +84,7 @@
                                                 <form action="{{ route('nguoidung.trangthai', ['id' => $u->id]) }}" method="post">
                                                     @csrf
                                                     <input type="hidden" name = "khoa" value="0">
-                                                    <button type="submit" class="btn btn-danger">Khóa</button>
+                                                    <button type="submit" class="btn btn-danger action_edit">Khóa</button>
                                                 </form>
                                             </td>
                                         @else
@@ -92,7 +92,7 @@
                                                 <form action="{{ route('nguoidung.trangthai', ['id' => $u->id]) }}" method="post">
                                                     @csrf
                                                     <input type="hidden" name = "khoa" value="1">
-                                                    <button type="submit" class="btn btn-primary">Kích hoạt</button>
+                                                    <button type="submit" class="btn btn-primary action_edit">Kích hoạt</button>
                                                 </form>
                                             </td>                                            
                                         @endif
@@ -127,7 +127,7 @@
                                                     min-width: max-content;
                                                     padding: 3px 12px;
                                                     margin: 3px;" 
-                                                    type="submit" class="btn btn-warning">Cập nhật
+                                                    type="submit" class="btn btn-warning action_edit"> Cập nhật
                                                 </button>
                                             </form>                              
                                         </td>

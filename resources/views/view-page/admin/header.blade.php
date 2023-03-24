@@ -61,7 +61,10 @@
                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray"></i>
                     Hồ sơ cá nhân
                 </a>
-                <a class="dropdown-item" href="{{ route('nguoidung.store') }}">
+                <a
+                    class="dropdown-item"
+                    href="{{ route('nguoidung.getdoimatkhau',['id'=>Auth::user()->id]) }}"
+                >
                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray"></i>
                     Đổi mật khẩu
                 </a>

@@ -31,11 +31,6 @@
                 style="font-size: 25px; color: red"
             ></i>
             Thêm sản phẩm thất bại. Hãy kiểm tra lại!
-            <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-            ></button>
         </div>
         @endif
         <div class="container-fluid">

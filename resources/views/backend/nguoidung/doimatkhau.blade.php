@@ -21,18 +21,13 @@
 <div class="content-wrapper">
     <!-- Main content -->
     <div class="content">
-        @if($errors->any())
+        @if(Session::has('mgs-error'))
         <div class="alert alert-danger alert-dismissible fade show">
             <i
                 class="fas fa-exclamation-circle"
                 style="font-size: 25px; color: red"
             ></i>
-            Đổi mật khẩu thất bại!
-            <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-            ></button>
+            {{Session::get('mgs-update')}}
         </div>
         @endif
         <div class="container-fluid">
@@ -60,20 +55,20 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="password_old" class="form-label">
+                            <label for="password" class="form-label">
                                 <b>Mật khẩu cũ</b>
                             </label>
                             <input
                                 type="password"
-                                class="form-control @error('password_old') is-invalid @enderror"
-                                id="password_old"
-                                name="password_old"
+                                class="form-control @error('password') is-invalid @enderror"
+                                id="password"
+                                name="password"
                                 placeholder="Nhập mật khẩu"
                                 required
                             />
-                            @if ($errors->has('password_old'))
+                            @if ($errors->has('password'))
                             <span class="help-block" style="color: #ff3f3f">
-                                <b>{{ $errors->first('password_old') }}</b>
+                                <b>{{ $errors->first('password') }}</b>
                             </span>
                             @endif
                         </div>

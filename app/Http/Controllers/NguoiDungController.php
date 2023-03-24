@@ -6,6 +6,7 @@ use App\Models\User;
 use RealRashid\SweetAlert\Facades\Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
@@ -166,14 +167,30 @@ class NguoiDungController extends Controller
 
     public function postdoimatkhau(Request $request,  $id)
     {
+        $request->validate([
+            'password' => 'required',
+            'password_new' => 'required|different:password',
+            'password_confirm' => 'required',
+        ], [
+            'password.required' => 'Hãy nhập mật khẩu cũ',
+            'password_new.required' => 'Hãy nhập mật khẩu mới',
+            'password_confirm.required' => 'Hãy nhập lại mật khẩu mới',
+            'password_new.different' => 'Mật khẩu mới phải khác mật khẩu cũ',
+        ]);
         try {
             DB::beginTransaction();
             $u = $this->user->find($id);
-            $u->id = $request->id;
-            $u->quyen = $request->opt_quyen;
-            $u->save();
-            DB::commit();
-            return redirect()->route('nguoidung.index');
+            if (Hash::check($request->password, $u->password)) {
+                $u->fill([
+                    'password' => Hash::make($request->password_new)
+                ])->save();
+                DB::commit();
+                Session::flash('mgs-update', 'Mật khẩu đã được thay đổi');
+                return redirect()->route('nguoidung.index');
+            } else {
+                Session::flash('mgs-error', 'Mật khẩu cũ không đúng');
+                return redirect()->route('nguoidung.getdoimatkhau');
+            }
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());

@@ -28,11 +28,6 @@
                 style="font-size: 25px; color: red"
             ></i>
             Cập nhật danh mục thất bại!
-            <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="alert"
-            ></button>
         </div>
         @endif
         <div class="container-fluid">

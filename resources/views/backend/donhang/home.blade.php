@@ -45,11 +45,6 @@
                     >
                         <i class="fa fa-check"></i>
                         {{Session::get('mgs')}}
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert"
-                        ></button>
                     </div>
 
                     @endif @if(Session::has('mgs-update'))
@@ -58,11 +53,6 @@
                     >
                         <i class="fa fa-check"></i>
                         {{Session::get('mgs-update')}}
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="alert"
-                        ></button>
                     </div>
                     @endif
                     <div class="col-md-12">

@@ -19,25 +19,18 @@ return new class extends Migration
             $table->string('hinh_anh_chinh', 191);
             $table->text('mo_ta');
             $table->integer('so_luong');
-            $table->integer('da_ban')->default(0);
             $table->integer('ton');
             $table->decimal('gia_nhap', 9, 0);
             $table->decimal('gia_ban', 9, 0);
+            $table->integer('giam_gia')->default(0);
 
             $table->integer('bao_hanh');
-            $table->integer('goc_camera');
-            $table->string('chuan_nen', 191);
-            $table->string('do_phan_giai', 191);
-            $table->string('dam_thoai', 191);
-            $table->string('tam_quan_sat', 191);
             $table->text('tinh_nang');
-            $table->string('nguon_dien', 191);
+
 
             $table->integer('luot_xem')->default(0);
             $table->integer('luot_mua')->default(0);
 
-            $table->integer('km_id')->unsigned()->default(0);
-            $table->foreign('km_id')->references('id')->on('khuyen_mais')->onUpdate('cascade');
             $table->integer('dm_id')->unsigned();
             $table->foreign('dm_id')->references('id')->on('danh_mucs')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('thuong_hieu_id')->unsigned();

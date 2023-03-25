@@ -62,10 +62,10 @@
                                 <th>STT</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
-                                <th>Giá (đ)</th>
+                                <th>Giá bán (VNĐ)</th>
                                 <th>Tồn kho</th>
                                 <th>Danh mục</th>
-
+                                <th>Thương hiệu</th>
                                 <th>Ngày cập nhật</th>
                                 <th>Hành động</th>
                             </tr>
@@ -80,10 +80,15 @@
                                         alt="HaoNganTelecom"
                                     />
                                 </td>
-                                <td>{{number_format($s->gia,0,",",".")}}</td>
+                                <td>
+                                    {{number_format($s->gia_ban,0,",",".")}}
+                                </td>
                                 <td>{{$s->ton}}</td>
 
                                 <td>{{optional($s->DanhMuc)->ten_dm}}</td>
+                                <td>
+                                    {{optional($s->ThuongHieu)->ten_thuong_hieu}}
+                                </td>
 
                                 <td>
                                     {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $s->updated_at)->format('H:i:s d/m/Y')}}
@@ -92,18 +97,19 @@
                                     <!-- sua lai -->
                                     <a
                                         style="
-                                            min-width: 130px;
+                                            min-width: 110px;
                                             padding: 3px 12px;
                                             margin: 3px;
                                         "
                                         class="btn btn-primary"
-                                        href="{{ route('sanpham.edit', ['id' => $s->id]) }}"
+                                        href="{{ route('sanpham.show', ['id' => $s->id]) }}"
                                     >
-                                        Xem chi tiết </a
-                                    ><br />
+                                        Xem chi tiết
+                                    </a>
+                                    <br />
                                     <a
                                         style="
-                                            min-width: 130px;
+                                            min-width: 110px;
                                             padding: 3px 12px;
                                             margin: 3px;
                                         "
@@ -115,7 +121,7 @@
                                     <br />
                                     <a
                                         style="
-                                            min-width: 130px;
+                                            min-width: 110px;
                                             padding: 3px 12px;
                                             margin: 3px;
                                         "

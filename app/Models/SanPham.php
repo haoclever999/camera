@@ -11,7 +11,7 @@ class SanPham extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'san_phams';
     protected $fillable = [
-        'ten_sp', 'slug', 'hinh_anh_chinh', 'mo_ta', 'so_luong', 'da_ban', 'ton', 'gia_nhap', 'gia_ban', 'bao_hanh', 'goc_camera', 'chuan_nen', 'do_phan_giai', 'dam_thoai', 'tam_quan_sat', 'tinh_nang', 'nguon_dien', 'luot_xem', 'luot_mua', 'km_id', 'dm_id', 'thuong_hieu_id',  'user_id',
+        'ten_sp', 'slug', 'hinh_anh_chinh', 'mo_ta', 'so_luong', 'ton', 'gia_nhap', 'gia_ban', 'giam_gia', 'bao_hanh', 'tinh_nang', 'luot_xem', 'luot_mua', 'dm_id', 'thuong_hieu_id',  'user_id',
     ];
 
     public function DanhMuc()
@@ -24,10 +24,6 @@ class SanPham extends Model
         return $this->belongsTo(ThuongHieu::class, 'thuong_hieu_id', 'id');
     }
 
-    public function KhuyenMai()
-    {
-        return $this->belongsTo(KhuyenMai::class, 'km_id', 'id');
-    }
     public function User()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
@@ -42,6 +38,7 @@ class SanPham extends Model
     {
         return $this->hasMany(HinhAnh::class, 'sp_id', 'id');
     }
+
     public function SanPhamTag()
     {
         return $this->belongsToMany(Tag::class, 'san_pham_tags', 'sp_id', 'tag_id')->withTimestamps();

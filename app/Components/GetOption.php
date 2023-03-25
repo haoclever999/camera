@@ -30,14 +30,4 @@ class GetOption
         }
         return $this->htmlSelect;
     }
-    public function OptionKhuyenMai($id)
-    {
-        foreach ($this->data as $value) {
-            if ($value["id"] == $id)
-                $this->htmlSelect .=  "<option selected value='" . $value['id'] . "'> " . $value["khuyenmai"] . "</option>";
-            else
-                $this->htmlSelect .=  "<option value='" . $value['id'] . "'> "  . $value["khuyenmai"] . "</option>";
-        }
-        return $this->htmlSelect;
-    }
 }

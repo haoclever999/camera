@@ -12,11 +12,7 @@ trait StorageImageTrait
             $file = $request->$fieldName;
             $fileName = $file->getClientOriginalName();
             $filePath = $request->file($fieldName)->storeAs('public/' . $folderName . '/' . auth()->id(), $fileName);
-            $dataUploadTrait = [
-
-                'file_path' => Storage::url($filePath)
-            ];
-            return $dataUploadTrait;
+            return Storage::url($filePath);
         }
         return null;
     }
@@ -25,9 +21,6 @@ trait StorageImageTrait
     {
         $fileName = $file->getClientOriginalName();
         $filePath = $file->storeAs('public/' . $folderName . '/' . auth()->id(), $fileName);
-        $dataUploadTrait = [
-            'file_path' => Storage::url($filePath)
-        ];
-        return $dataUploadTrait;
+        return Storage::url($filePath);
     }
 }

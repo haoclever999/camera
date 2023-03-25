@@ -26,9 +26,6 @@ Route::post('admin/dang-nhap', [AuthController::class, 'postDangNhap'])->name('p
 Route::get('admin/dang-xuat', [AuthController::class, 'DangXuat'])->name('DangXuat');
 
 Route::prefix('admin')->middleware('CheckLogout')->group(function () {
-    // Route::prefix('laravel-filemanager')->group(function () {
-    //     \UniSharp\LaravelFilemanager\Lfm::routes();
-    // });
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
     // Quản lý thương hiệu
@@ -50,21 +47,13 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
     // Quản lý sản phẩm
     Route::prefix('san-pham')->group(function () {
         Route::get('/', [SanPhamController::class, 'index'])->name('sanpham.index');
+        Route::get('/san-pham-chi-tiet/{id}', [SanPhamController::class, 'show'])->name('sanpham.show');
         Route::get('/them-san-pham', [SanPhamController::class, 'create'])->name('sanpham.create');
         Route::post('/them-san-pham', [SanPhamController::class, 'store'])->name('sanpham.store');
         Route::get('/cap-nhat-san-pham/{id}', [SanPhamController::class, 'edit'])->name('sanpham.edit');
         Route::post('/cap-nhat-san-pham/{id}', [SanPhamController::class, 'update'])->name('sanpham.update');
         Route::get('/xoa-san-pham/{id}', [SanPhamController::class, 'destroy'])->name('sanpham.destroy');
     });
-    // Quản lý khuyến mãi
-    Route::prefix('khuyen-mai')->group(function () {
-        Route::get('/', [KhuyenMaiController::class, 'index'])->name('khuyenmai.index');
-        Route::post('/them-khuyen-mai', [KhuyenMaiController::class, 'store'])->name('khuyenmai.store');
-        Route::get('/cap-nhat-khuyen-mai/{id}', [KhuyenMaiController::class, 'edit'])->name('khuyenmai.edit');
-        Route::post('/cap-nhat-khuyen-mai/{id}', [KhuyenMaiController::class, 'update'])->name('khuyenmai.update');
-        Route::get('/xoa-khuyen-mai/{id}', [KhuyenMaiController::class, 'destroy'])->name('khuyenmai.destroy');
-    });
-
     // Quản lý đơn hàng
     Route::prefix('don-hang')->group(function () {
         Route::get('/', [DonHangController::class, 'index'])->name('donhang.index');

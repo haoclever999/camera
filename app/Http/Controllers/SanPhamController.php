@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Components\GetOption;
 use App\Models\DanhMuc;
 use App\Models\HinhAnh;
-use App\Models\KhuyenMai;
 use App\Models\SanPham;
 use App\Models\ThuongHieu;
 use App\Models\Tag;
@@ -16,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Components\Traits\DeleteModelTrait;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class SanPhamController extends Controller
 {
@@ -25,16 +25,13 @@ class SanPhamController extends Controller
     private $tag;
     private $spham;
     private $thuonghieu;
-    private $kmai;
-    public function __construct(DanhMuc $dmuc, SanPham $spham, HinhAnh $hanh, Tag $tag, ThuongHieu $thuonghieu, KhuyenMai $kmai)
+    public function __construct(DanhMuc $dmuc, SanPham $spham, HinhAnh $hanh, Tag $tag, ThuongHieu $thuonghieu)
     {
-        //$this->middleware('auth');
         $this->dmuc = $dmuc;
         $this->hanh = $hanh;
         $this->tag = $tag;
         $this->spham = $spham;
         $this->thuonghieu = $thuonghieu;
-        $this->kmai = $kmai;
     }
 
     public function getDanhMuc($id)
@@ -49,12 +46,6 @@ class SanPhamController extends Controller
         $ThOpt = $recusive->OptionThuongHieu($id);
         return $ThOpt;
     }
-    public function getKhuyenMai($id)
-    {
-        $recusive = new GetOption($this->kmai::all());
-        $KmOpt = $recusive->OptionKhuyenMai($id);
-        return $KmOpt;
-    }
 
     public function index()
     {
@@ -68,7 +59,11 @@ class SanPhamController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $sp = $this->spham->find($id);
+        $DmOpt = $this->getDanhMuc($sp->dm_id);
+        $ThOpt = $this->getThuongHieu($sp->thuong_hieu_id);
+
+        return view('backend.sanpham.show', compact('sp', "DmOpt", "ThOpt"));
     }
 
     /**
@@ -78,8 +73,7 @@ class SanPhamController extends Controller
     {
         $DmOpt = $this->getDanhMuc('0');
         $ThOpt = $this->getThuongHieu('0');
-        $KmOpt = $this->getKhuyenMai('0');
-        return view('backend.sanpham.them', compact("DmOpt", "ThOpt", "KmOpt"));
+        return view('backend.sanpham.them', compact("DmOpt", "ThOpt"));
     }
 
     /**
@@ -90,40 +84,31 @@ class SanPhamController extends Controller
         $request->validate(
             [
                 'ten_sp' => 'required|max:191|unique:san_phams',
-                'num_soluong' => 'required|numeric',
-                'num_gia_nhap' => 'required|numeric',
-                'opt_tagsp' => 'required',
-                'opt_th' => 'required',
-                'opt_dm' => 'required',
+                'num_gia_ban' => 'gt:num_gia_nhap',
             ],
             [
                 'ten_sp.required' => 'Hãy nhập sản phẩm',
-                'ten_sp.max' => 'Sản phẩm tối đa 191 ký tự',
+                'ten_sp.max' => 'Tên sản phẩm quá dài',
                 'ten_sp.unique' => 'Sản phẩm đã tồn tại',
-                'num_soluong.required' => 'Hãy nhập số lượng',
-                'num_soluong.numeric' => 'Số lượng phải là số',
-                'num_gia_nhap.required' => 'Hãy nhập giá',
-                'num_gia_nhap.numeric' => 'Giá phải là số',
-                'opt_tagsp.required' => 'Hãy nhập tag sản phẩm',
-                'opt_th.required' => 'Hãy chọn thương hiệu',
-                'opt_dm.required' => 'Hãy nhập danh mục',
+                'num_gia_ban.gt' => 'Giá bán phải lớn hơn giá nhập',
             ]
         );
-        dd($request);
         try {
             DB::beginTransaction();
-            if (!empty($request->opt_km)) $km = $request->opt_km;
-            else $km = '0';
+
             if ($request->hasFile('fdaidien')) $hanh = $this->StorageTraitUpload($request, 'fdaidien', 'sanpham');
             $sanpham = $this->spham->create([
                 'ten_sp' => trim($request->ten_sp),
                 'slug' => Str::slug($request->ten_sp, "-"),
-                'hinh_anh_chinh' => implode('', $hanh),
-                'mo_ta' => $request->txt_mota,
-                'so_luong' => $request->num_soluong,
-                'ton' => $request->num_soluong,
-                'gia' => $request->num_gia,
-                'km_id' => $km,
+                'hinh_anh_chinh' => $hanh,
+                'mo_ta' => $request->txt_mo_ta,
+                'so_luong' => $request->num_so_luong,
+                'ton' => $request->num_so_luong,
+                'gia_nhap' => $request->num_gia_nhap,
+                'gia_ban' => $request->num_gia_ban,
+                'giam_gia' => $request->num_giam_gia,
+                'bao_hanh' => $request->num_bao_hanh,
+                'tinh_nang' => $request->txt_tinh_nang,
                 'dm_id' => $request->opt_dm,
                 'thuong_hieu_id' => $request->opt_th,
                 'user_id' => auth()->id(),
@@ -133,7 +118,7 @@ class SanPhamController extends Controller
                 foreach ($request->fchitiet as $fItem) {
                     $dataHinhChiTiet = $this->StorageTraitUploadMutiple($fItem, 'sanpham');
                     $sanpham->HinhAnh()->create([
-                        'hinh_anh' => $dataHinhChiTiet['file_path'],
+                        'hinh_anh' => $dataHinhChiTiet,
                     ]);
                 }
             }
@@ -149,11 +134,12 @@ class SanPhamController extends Controller
             }
             $sanpham->SanPhamTag()->attach($tagId);
             DB::commit();
-            Session::flash('mgs', 'Thêm sản phẩm thành công');
+            Alert::success('Thành công', 'Thêm sản phẩm thành công');
             return redirect()->route('sanpham.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Thêm sản phẩm thất bại');
             return redirect()->route('sanpham.create');
         }
     }
@@ -164,10 +150,10 @@ class SanPhamController extends Controller
     public function edit($id)
     {
         $sp = $this->spham->find($id);
-        $htmlOpt = $this->getDanhMuc($sp->dm_id);
+        $DmOpt = $this->getDanhMuc($sp->dm_id);
         $ThOpt = $this->getThuongHieu($sp->thuong_hieu_id);
-        $KmOpt = $this->getKhuyenMai($sp->km_id);
-        return view('backend.sanpham.sua', compact('sp', "htmlOpt", "ThOpt", "KmOpt"));
+
+        return view('backend.sanpham.sua', compact('sp', "DmOpt", "ThOpt"));
     }
 
     /**
@@ -180,7 +166,7 @@ class SanPhamController extends Controller
             'num_soluong' => 'required|numeric|min:0|not_in:0',
             'num_gia' => 'required|numeric',
             'opt_tagsp' => 'required',
-            'opt_km' => 'required',
+
             'opt_th' => 'required',
             'opt_dm' => 'required',
         ], [
@@ -193,7 +179,7 @@ class SanPhamController extends Controller
             'num_gia.required' => 'Hãy nhập giá',
             'num_gia.numeric' => 'Giá phải là số',
             'opt_tagsp.required' => 'Hãy nhập tag sản phẩm',
-            'opt_km.required' => 'Hãy chọn khuyến mãi',
+
             'opt_th.required' => 'Hãy chọn thương hiệu',
             'opt_dm.required' => 'Hãy nhập danh mục',
         ]);
@@ -211,7 +197,7 @@ class SanPhamController extends Controller
                 'so_luong' => $request->num_soluong,
                 'ton' => $request->num_soluong,
                 'gia' => $request->num_gia,
-                'km_id' => $request->opt_km,
+
                 'dm_id' => $request->opt_dm,
                 'thuong_hieu_id' => $request->opt_th,
                 'user_id' => auth()->id(),

@@ -110,6 +110,8 @@
         <script src="{{ asset('frontend/js/sweetalert2@11.js') }}"></script>
         <script src="{{ asset('frontend/js/sweetalert2.all.js') }}"></script>
         <script src="{{ asset('frontend/js/camera.js') }}"></script>
+        <script src="{{ asset('frontend/ckeditor/ckeditor.js') }}"></script>
+        <script src="{{ asset('frontend/js/select2.min.js') }}"></script>
         <script type="text/javascript">
             $(document).ready(function () {
                 setTimeout(function () {

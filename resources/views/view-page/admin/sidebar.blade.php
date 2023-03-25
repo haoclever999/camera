@@ -48,12 +48,6 @@
         >
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('khuyenmai.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Khuyến mãi</span></a
-        >
-    </li>
-    <li class="nav-item">
         <a class="nav-link" href="{{ route('sanpham.index') }}">
             <i class="fas fa-fw fa-chart-area"></i>
             <span>Sản phẩm</span></a

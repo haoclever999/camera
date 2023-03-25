@@ -101,7 +101,9 @@
                                 name="opt_quyen"
                                 value="{{ old('opt_quyen') }}"
                             >
-                                <option selected value="">-Chọn quyền-</option>
+                                <option selected value="">
+                                    - Chọn quyền -
+                                </option>
                                 <option value="Quản trị">Quản trị</option>
                                 <option value="Nhân viên">Nhân viên</option>
                                 <option value="Khách hàng">Khách hàng</option>

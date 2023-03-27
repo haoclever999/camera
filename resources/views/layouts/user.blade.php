@@ -76,10 +76,10 @@
             href="{{ asset('frontend/assets_theme/pages/css/components.css') }}"
             rel="stylesheet"
         />
-        <link
+        <!-- <link
             href="{{ asset('frontend/assets_theme/pages/css/slider.css') }}"
             rel="stylesheet"
-        />
+        /> -->
         <link
             href="{{ asset('frontend/assets_theme/pages/css/style-shop.css') }}"
             rel="stylesheet"
@@ -99,7 +99,7 @@
         />
         <link
             href="{{
-                asset('frontend/assets_theme/corporate/css/themes/red.css')
+                asset('frontend/assets_theme/corporate/css/themes/blue.css')
             }}"
             rel="stylesheet"
             id="style-color"

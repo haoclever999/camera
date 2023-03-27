@@ -13,10 +13,9 @@ use Illuminate\Support\Str;
 use App\Components\Traits\StorageImageTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Session;
 use App\Components\Traits\DeleteModelTrait;
 use RealRashid\SweetAlert\Facades\Alert;
-use Carbon\Carbon;
+
 
 class SanPhamController extends Controller
 {
@@ -37,14 +36,14 @@ class SanPhamController extends Controller
 
     public function getDanhMuc($id)
     {
-        $recusive = new GetOption($this->dmuc::all());
-        $DmOpt = $recusive->OptionDanhMuc($id);
+        $option = new GetOption($this->dmuc::all());
+        $DmOpt = $option->OptionDanhMuc($id);
         return $DmOpt;
     }
     public function getThuongHieu($id)
     {
-        $recusive = new GetOption($this->thuonghieu::all());
-        $ThOpt = $recusive->OptionThuongHieu($id);
+        $option = new GetOption($this->thuonghieu::all());
+        $ThOpt = $option->OptionThuongHieu($id);
         return $ThOpt;
     }
 

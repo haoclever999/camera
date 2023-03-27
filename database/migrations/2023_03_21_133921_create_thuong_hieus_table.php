@@ -16,6 +16,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('ten_thuong_hieu', 191);
             $table->string('slug', 191);
+            $table->string('logo', 191);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->softDeletes();

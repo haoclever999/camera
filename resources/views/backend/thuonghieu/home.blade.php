@@ -38,13 +38,21 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Tên thương hiệu</th>
+                                <th>Logo thương hiệu</th>
                                 <th>Ngày cập nhật</th>
                                 <th>Hành động</th>
                             </tr>
                             @foreach($th as $t)
                             <tr>
                                 <td>{{ +(+$i) }}</td>
-                                <td>{{ $t-> slug }}</td>
+                                <td>{{ $t->ten_thuong_hieu}}</td>
+                                <td>
+                                    <img
+                                        class="list_sp_img_150"
+                                        src="{{ $t->logo}}"
+                                        alt="HaoNganTelecom"
+                                    />
+                                </td>
                                 <td>
                                     {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $t->updated_at)->format('H:i:s d/m/Y') }}
                                 </td>
@@ -108,6 +116,24 @@
                                 </span>
                                 @endif
                             </div>
+                            <div class="form-group">
+                                <label for="logo" class="form-label">
+                                    <b> Logo thương hiệu</b>
+                                </label>
+                                <input
+                                    type="file"
+                                    class="form-control-file"
+                                    id="logo"
+                                    name="logo"
+                                    accept="image/jpg, image/png, image/jpeg"
+                                    onchange="preview(event)"
+                                    required
+                                />
+                                <div
+                                    class="logo_container col-md-3"
+                                    id="container_preview"
+                                ></div>
+                            </div>
                             <button type="submit" class="btn btn-primary">
                                 Thêm thương hiệu
                             </button>
@@ -124,4 +150,17 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+@endsection @section('js')
+<script>
+    function preview(event) {
+        var image = document.createElement("img");
+        image.setAttribute("class", "sp_img_dai_dien");
+        image.setAttribute("id", "img_preview");
+
+        document.getElementById("container_preview").appendChild(image);
+
+        var img_preview = document.getElementById("img_preview");
+        img_preview.src = URL.createObjectURL(event.target.files[0]);
+    }
+</script>
 @endsection

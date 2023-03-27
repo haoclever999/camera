@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
+use App\Components\Traits\StorageImageTrait;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ThuongHieuController extends Controller
@@ -47,9 +48,11 @@ class ThuongHieuController extends Controller
         );
         try {
             DB::beginTransaction();
+            if ($request->hasFile('logo')) $logo = $this->StorageTraitUpload($request, 'logo', 'thuonghieu');
             $this->thuonghieu->firstOrCreate([
                 'ten_thuong_hieu' => trim($request->ten_thuong_hieu),
                 'slug' => Str::slug($request->ten_thuong_hieu, "-"),
+                'logo' => $logo,
             ]);
             DB::commit();
             Alert::success('Thành công', 'Thêm thương hiệu thành công');
@@ -89,9 +92,14 @@ class ThuongHieuController extends Controller
         try {
             DB::beginTransaction();
             $th = $this->thuonghieu->find($id);
+
+            if ($request->hasFile('logo')) $logo = $this->StorageTraitUpload($request, 'logo', 'thuonghieu');
+            else $logo = $th->logo;
+
             $th->id = $request->id;
             $th->ten_thuong_hieu = $request->ten_thuong_hieu;
             $th->slug = Str::slug($request->ten_thuong_hieu, "-");
+            $th->logo = $logo;
             $th->save();
             DB::commit();
             Alert::success('Thành công', 'Cập nhật thương hiệu thành công');

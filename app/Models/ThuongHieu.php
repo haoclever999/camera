@@ -11,7 +11,7 @@ class ThuongHieu extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'thuong_hieus';
     protected $fillable = [
-        'ten_thuong_hieu', 'slug',
+        'ten_thuong_hieu', 'slug', 'logo',
     ];
 
     public function SanPham()

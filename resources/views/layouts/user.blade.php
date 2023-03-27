@@ -29,51 +29,86 @@
             rel="stylesheet"
             type="text/css"
         />
-        <!-- Fonts END -->
-
         <!-- Global styles START -->
         <link
             href="{{
                 asset(
-                    'frontend/vendor/fontawesome-free/css/font-awesome.min.css'
+                    'frontend/assets_theme/plugins/font-awesome/css/font-awesome.min.css'
                 )
             }}"
             rel="stylesheet"
         />
-
         <link
             href="{{
-                asset('frontend/vendor/bootstrap/css/bootstrap.min.css')
+                asset(
+                    'frontend/assets_theme/plugins/bootstrap/css/bootstrap.min.css'
+                )
             }}"
             rel="stylesheet"
         />
+        <!-- Global styles END -->
 
-        <link href="{{ asset('frontend/css/animate.css') }}" rel="stylesheet" />
+        <!-- Page level plugin styles START -->
         <link
-            href="{{ asset('frontend/vendor/jquery/jquery.fancybox.css') }}"
+            href="{{ asset('frontend/assets_theme/pages/css/animate.css') }}"
             rel="stylesheet"
         />
         <link
-            href="{{ asset('frontend/vendor/owl.carousel/owl.carousel.css') }}"
+            href="{{
+                asset(
+                    'frontend/assets_theme/plugins/fancybox/source/jquery.fancybox.css'
+                )
+            }}"
             rel="stylesheet"
         />
         <link
-            href="{{ asset('frontend/css/components.css') }}"
+            href="{{
+                asset(
+                    'frontend/assets_theme/plugins/owl.carousel/assets/owl.carousel.css'
+                )
+            }}"
             rel="stylesheet"
         />
-        <link href="{{ asset('frontend/css/slider.css') }}" rel="stylesheet" />
-        <link
-            href="{{ asset('frontend/css/style-shop.css') }}"
-            rel="stylesheet"
-        />
-        <link
-            href="{{ asset('frontend/css/style-responsive.css') }}"
-            rel="stylesheet"
-        />
-        <link href="{{ asset('frontend/css/red.css') }}" rel="stylesheet" />
+        <!-- Page level plugin styles END -->
 
+        <!-- Theme styles START -->
+        <link
+            href="{{ asset('frontend/assets_theme/pages/css/components.css') }}"
+            rel="stylesheet"
+        />
+        <link
+            href="{{ asset('frontend/assets_theme/pages/css/slider.css') }}"
+            rel="stylesheet"
+        />
+        <link
+            href="{{ asset('frontend/assets_theme/pages/css/style-shop.css') }}"
+            rel="stylesheet"
+            type="text/css"
+        />
+        <link
+            href="{{ asset('frontend/assets_theme/corporate/css/style.css') }}"
+            rel="stylesheet"
+        />
+        <link
+            href="{{
+                asset(
+                    'frontend/assets_theme/corporate/css/style-responsive.css'
+                )
+            }}"
+            rel="stylesheet"
+        />
+        <link
+            href="{{
+                asset('frontend/assets_theme/corporate/css/themes/red.css')
+            }}"
+            rel="stylesheet"
+            id="style-color"
+        />
+        <link
+            href="{{ asset('frontend/assets_theme/corporate/css/custom.css') }}"
+            rel="stylesheet"
+        />
         <!-- Theme styles END -->
-
         @yield('css')
     </head>
 
@@ -95,73 +130,104 @@
             <i class="fas fa-angle-up"></i>
         </a>
         @yield('js')
+        <!-- Load javascripts at bottom, this will reduce page load time -->
+        <!-- BEGIN CORE PLUGINS (REQUIRED FOR ALL PAGES) -->
+        <!--[if lt IE 9]>
+            <script src="assets/plugins/respond.min.js"></script>
+        <![endif]-->
+        <script
+            src="{{ asset('frontend/assets_theme/plugins/jquery.min.js') }}"
+            type="text/javascript"
+        ></script>
+        <script
+            src="{{
+                asset('frontend/assets_theme/plugins/jquery-migrate.min.js')
+            }}"
+            type="text/javascript"
+        ></script>
+        <script
+            src="{{
+                asset(
+                    'frontend/assets_theme/plugins/bootstrap/js/bootstrap.min.js'
+                )
+            }}"
+            type="text/javascript"
+        ></script>
+        <script
+            src="{{
+                asset('frontend/assets_theme/corporate/scripts/back-to-top.js')
+            }}"
+            type="text/javascript"
+        ></script>
+        <script
+            src="{{
+                asset(
+                    'frontend/assets_theme/plugins/jquery-slimscroll/jquery.slimscroll.min.js'
+                )
+            }}"
+            type="text/javascript"
+        ></script>
+        <!-- END CORE PLUGINS -->
+
+        <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
+        <script
+            src="{{
+                asset(
+                    'frontend/assets_theme/plugins/fancybox/source/jquery.fancybox.pack.js'
+                )
+            }}"
+            type="text/javascript"
+        ></script>
+        <!-- pop up -->
+        <script
+            src="{{
+                asset(
+                    'frontend/assets_theme/plugins/owl.carousel/owl.carousel.min.js'
+                )
+            }}"
+            type="text/javascript"
+        ></script>
+        <!-- slider for products -->
+        <script
+            src="{{
+                asset('frontend/assets_theme/plugins/zoom/jquery.zoom.min.js')
+            }}"
+            type="text/javascript"
+        ></script>
+        <!-- product zoom -->
+        <script
+            src="{{
+                asset(
+                    'frontend/assets_theme/plugins/bootstrap-touchspin/bootstrap.touchspin.js'
+                )
+            }}"
+            type="text/javascript"
+        ></script>
+        <!-- Quantity -->
+
+        <script
+            src="{{
+                asset('frontend/assets_theme/corporate/scripts/layout.js')
+            }}"
+            type="text/javascript"
+        ></script>
+        <script
+            src="{{
+                asset('frontend/assets_theme/pages/scripts/bs-carousel.js')
+            }}"
+            type="text/javascript"
+        ></script>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                Layout.init();
+                Layout.initOWL();
+                Layout.initImageZoom();
+                Layout.initTouchspin();
+                Layout.initTwitter();
+
+                Layout.initFixHeaderWithPreHeader();
+                Layout.initNavScrolling();
+            });
+        </script>
     </body>
-    <script
-        src="{{ asset('frontend/vendor/jquery/jquery.min.js') }}"
-        type="text/javascript"
-    ></script>
-    <script
-        src="{{ asset('frontend/vendor/jquery/jquery-migrate.min.js') }}"
-        type="text/javascript"
-    ></script>
-    <script
-        src="{{ asset('frontend/vendor/bootstrap/js/bootstrap.min.js') }}"
-        type="text/javascript"
-    ></script>
-    <!-- chưa  -->
-    <script
-        src="{{ asset('frontend/corporate/scripts/back-to-top.js') }}"
-        type="text/javascript"
-    ></script>
-    <!--  -->
-    <script
-        src="{{ asset('frontend/vendor/jquery/jquery.slimscroll.min.js') }}"
-        type="text/javascript"
-    ></script>
-    <!-- END CORE vendor -->
-
-    <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
-    <script
-        src="{{ asset('frontend/vendor/jquery/jquery.fancybox.pack.js') }}"
-        type="text/javascript"
-    ></script>
-    <!-- pop up -->
-    <script
-        src="{{ asset('frontend/vendor/owl.carousel/owl.carousel.min.js') }}"
-        type="text/javascript"
-    ></script>
-    <!-- slider for products -->
-    <script
-        src="{{ asset('frontend/vendor/zoom/jquery.zoom.min.js') }}"
-        type="text/javascript"
-    ></script>
-    <!-- product zoom -->
-    <script
-        src="{{
-            asset('frontend/vendor/bootstrap-touchspin/bootstrap.touchspin.js')
-        }}"
-        type="text/javascript"
-    ></script>
-    <!-- Quantity -->
-
-    <script
-        src="{{ asset('frontend/js/layout.js') }}"
-        type="text/javascript"
-    ></script>
-    <script
-        src="{{ asset('frontend/vendor/owl.carousel/bs-carousel.js') }}"
-        type="text/javascript"
-    ></script>
-    <script type="text/javascript">
-        jQuery(document).ready(function () {
-            Layout.init();
-            Layout.initOWL();
-            Layout.initImageZoom();
-            Layout.initTouchspin();
-            Layout.initTwitter();
-
-            Layout.initFixHeaderWithPreHeader();
-            Layout.initNavScrolling();
-        });
-    </script>
 </html>

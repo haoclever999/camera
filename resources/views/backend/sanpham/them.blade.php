@@ -283,7 +283,7 @@
 
     function preview(event) {
         var image = document.createElement("img");
-        image.setAttribute("class", "sp_img_daidien");
+        image.setAttribute("class", "sp_img_dai_dien");
         image.setAttribute("id", "img_preview");
 
         document.getElementById("container_preview").appendChild(image);
@@ -310,7 +310,7 @@
             img +=
                 ` <div id="pre_Multiple">
                     <img
-                        class="sp_img_chitiet"
+                        class="sp_img_chi_tiet"
                         src="` +
                 i.url +
                 `"

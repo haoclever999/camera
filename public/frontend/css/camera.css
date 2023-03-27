@@ -3,8 +3,8 @@
     max-height: 100px;
     object-fit: contain;
 }
-.sp_img_chitiet,
-.sp_img_daidien {
+.sp_img_chi_tiet,
+.sp_img_dai_dien {
     min-width: 150px;
     width: 100%;
     height: 100%;
@@ -24,8 +24,10 @@ div.row > div#pre_Multiple {
     overflow-x: scroll;
 }
 .table {
-    min-width: max-content;
     text-align: center;
+}
+td {
+    word-break: break-word;
 }
 
 .fdaidien_container,
@@ -37,8 +39,7 @@ div.row > div#pre_Multiple {
     color: darkcyan;
 }
 .container-fluid,
-.col-md-12 > .table,
-.col-md-6 > .table {
+.table {
     color: rgba(0, 0, 0, 0.8);
 }
 

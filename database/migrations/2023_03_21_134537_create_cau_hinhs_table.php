@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('settings', function (Blueprint $table) {
+        Schema::create('cau_hinhs', function (Blueprint $table) {
             $table->increments('id');
             $table->string('config_key');
             $table->string('config_value');
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('settings');
+        Schema::dropIfExists('cau_hinhs');
     }
 };

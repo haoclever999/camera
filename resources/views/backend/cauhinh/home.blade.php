@@ -1,10 +1,10 @@
 <!-- resources/views/child.blade.php -->
 
 @extends('layouts.admin') @section('title')
-<title>Quản lý thương hiệu</title>
+<title>Quản lý cấu hình</title>
 @endsection @section('title-action')
 <div class="title-action">
-    <h2 class="m-0"><b>Danh sách thương hiệu </b></h2>
+    <h2 class="m-0"><b>Danh sách cấu hình</b></h2>
 </div>
 <form
     class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 navbar-search"
@@ -29,24 +29,25 @@
 <div class="content-wrapper">
     <!-- Main content -->
     <div class="content">
-        <div class="container-fluid">
-            <br />
+        <div class="container-fluid" style="padding-left: -24px">
             <div class="row">
-                <div class="col-md-12">
+                <div>
                     <div class="col-md-8" style="float: left">
                         <table class="table">
                             <tr>
                                 <th>STT</th>
-                                <th>Tên thương hiệu</th>
+                                <th>Tên</th>
+                                <th>Giá trị</th>
                                 <th>Ngày cập nhật</th>
                                 <th>Hành động</th>
                             </tr>
-                            @foreach($th as $t)
+                            @foreach($cauhinh as $ch)
                             <tr>
                                 <td>{{ +(+$i) }}</td>
-                                <td>{{ $t-> slug }}</td>
+                                <td>{{ $ch-> config_key }}</td>
+                                <td>{{ $ch-> config_value }}</td>
                                 <td>
-                                    {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $t->updated_at)->format('H:i:s d/m/Y') }}
+                                    {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ch->updated_at)->format('H:i:s d/m/Y') }}
                                 </td>
                                 <td>
                                     <a
@@ -56,7 +57,7 @@
                                             margin: 3px;
                                         "
                                         class="btn btn-warning"
-                                        href="{{ route('thuonghieu.edit', ['id' => $t->id]) }}"
+                                        href="{{ route('cauhinh.edit', ['id' => $ch->id]) }}"
                                     >
                                         Cập nhật
                                     </a>
@@ -68,7 +69,7 @@
                                         "
                                         class="btn btn-danger action_del"
                                         href=""
-                                        data-url="{{ route('thuonghieu.destroy', ['id' => $t->id]) }}"
+                                        data-url="{{ route('cauhinh.destroy', ['id' => $ch->id]) }}"
                                     >
                                         Xóa
                                     </a>
@@ -77,45 +78,61 @@
                             @endforeach
                         </table>
                     </div>
-
                     <div class="col-md-4" style="float: right">
-                        <h2 class="m-0"><b>Thêm thương hiệu </b></h2>
+                        <h2 class="m-0"><b>Thêm cấu hình </b></h2>
                         <br />
-
                         <form
-                            action="{{ route('thuonghieu.store') }}"
+                            action="{{ route('cauhinh.store') }}"
                             method="post"
                         >
                             @csrf
                             <div class="form-group">
-                                <label for="ten_thuong_hieu" class="form-label">
-                                    <b> Tên thương hiệu </b>
+                                <label for="config_key" class="form-label">
+                                    <b>Tên cấu hình</b>
                                 </label>
                                 <input
                                     type="text"
-                                    class="form-control @error('ten_thuong_hieu') is-invalid @enderror"
-                                    id="ten_thuong_hieu"
-                                    name="ten_thuong_hieu"
-                                    placeholder="Nhập tên thương hiệu"
-                                    value="{{ old('ten_thuong_hieu') }}"
+                                    class="form-control @error('config_key') is-invalid @enderror"
+                                    id="config_key"
+                                    name="config_key"
+                                    value="{{ old('config_key') }}"
+                                    placeholder="Nhập tên cấu hình"
                                     required
                                 />
-                                @if ($errors->has('ten_thuong_hieu'))
+                                @if ($errors->has('config_key'))
                                 <span class="help-block" style="color: #ff3f3f">
-                                    <b>
-                                        {{ $errors->first('ten_thuong_hieu') }}
-                                    </b>
+                                    <b>{{ $errors->first('config_key') }}</b>
                                 </span>
                                 @endif
                             </div>
+
+                            <div class="form-group">
+                                <label for="config_value" class="form-label">
+                                    <b>Giá trị của cấu hình</b>
+                                </label>
+                                <input
+                                    type="text"
+                                    class="form-control @error('config_value') is-invalid @enderror"
+                                    id="config_value"
+                                    name="config_value"
+                                    value="{{ old('config_value') }}"
+                                    placeholder="Nhập giá trị của cấu hình"
+                                    required
+                                />
+                                @if ($errors->has('config_value'))
+                                <span class="help-block" style="color: #ff3f3f">
+                                    <b>{{ $errors->first('config_value') }}</b>
+                                </span>
+                                @endif
+                            </div>
+
                             <button type="submit" class="btn btn-primary">
-                                Thêm thương hiệu
+                                Thêm cấu hình
                             </button>
                         </form>
                     </div>
                 </div>
-
-                <div class="col-md-12">{!! $th->links()!!}</div>
+                <div class="col-md-12">{!! $cauhinh->links()!!}</div>
             </div>
             <!-- /.row -->
         </div>

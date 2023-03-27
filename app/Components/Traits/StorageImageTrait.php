@@ -2,7 +2,9 @@
 
 namespace App\Components\Traits;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 trait StorageImageTrait
 {
@@ -10,8 +12,9 @@ trait StorageImageTrait
     {
         if ($request->hasFile($fieldName)) {
             $file = $request->$fieldName;
-            $fileName = $file->getClientOriginalName();
-            $filePath = $request->file($fieldName)->storeAs('public/' . $folderName . '/' . auth()->id(), $fileName);
+            $a = Carbon::now()->format('d-m-Y-H-i-s') . '.' . Str::random(30);
+            $fileNameHash = $a . '.' . $file->getClientOriginalExtension();
+            $filePath = $request->file($fieldName)->storeAs('public/' . $folderName . '/' . auth()->id(), $fileNameHash);
             return Storage::url($filePath);
         }
         return null;
@@ -19,8 +22,9 @@ trait StorageImageTrait
 
     public function StorageTraitUploadMutiple($file, $folderName)
     {
-        $fileName = $file->getClientOriginalName();
-        $filePath = $file->storeAs('public/' . $folderName . '/' . auth()->id(), $fileName);
+        $a = Carbon::now()->format('d-m-Y-H-i-s') . '.' . Str::random(30);
+        $fileNameHash = $a . '.' . $file->getClientOriginalExtension();
+        $filePath = $file->storeAs('public/' . $folderName . '/' . auth()->id(), $fileNameHash);
         return Storage::url($filePath);
     }
 }

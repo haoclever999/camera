@@ -70,8 +70,17 @@
         >
     </li>
     <!-- Divider -->
-    <hr class="sidebar-divider d-none d-md-block" />
+    <hr class="sidebar-divider" />
     @endif
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('cauhinh.index') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Cấu hình</span></a
+        >
+    </li>
+
+    <hr class="sidebar-divider d-none d-md-block" />
+
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
         <button class="rounded-circle border-0" id="sidebarToggle"></button>

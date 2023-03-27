@@ -1,4 +1,9 @@
 -design
 	set color title action
 --
-    Check login admin
+    xong link user page
+    
+
+-- 
+    điều chỉnh hrel header.blade.php
+    tổng tiền, tổng sp header.blade.php

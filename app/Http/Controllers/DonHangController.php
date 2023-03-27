@@ -11,7 +11,6 @@ class DonHangController extends Controller
 
     public function __construct(DonHang $donhang)
     {
-        // $this->middleware('auth');
         $this->donhang = $donhang;
     }
     public function index()

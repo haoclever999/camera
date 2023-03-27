@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Components\Traits\DeleteModelTrait;
 use RealRashid\SweetAlert\Facades\Alert;
+use Carbon\Carbon;
 
 class SanPhamController extends Controller
 {
@@ -51,7 +52,7 @@ class SanPhamController extends Controller
     {
         $page = 10;
         $sp = $this->spham::orderBy('id', 'desc')->paginate($page);
-        return view('backend.sanpham.home', compact("sp"))->with('i', (request()->input('page', 1) - 1) * $page);
+        return view('backend.sanpham.home', compact('sp'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     /**
@@ -60,10 +61,7 @@ class SanPhamController extends Controller
     public function show(string $id)
     {
         $sp = $this->spham->find($id);
-        $DmOpt = $this->getDanhMuc($sp->dm_id);
-        $ThOpt = $this->getThuongHieu($sp->thuong_hieu_id);
-
-        return view('backend.sanpham.show', compact('sp', "DmOpt", "ThOpt"));
+        return view('backend.sanpham.show', compact('sp'));
     }
 
     /**
@@ -73,7 +71,7 @@ class SanPhamController extends Controller
     {
         $DmOpt = $this->getDanhMuc('0');
         $ThOpt = $this->getThuongHieu('0');
-        return view('backend.sanpham.them', compact("DmOpt", "ThOpt"));
+        return view('backend.sanpham.them', compact('DmOpt', 'ThOpt'));
     }
 
     /**
@@ -81,6 +79,7 @@ class SanPhamController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate(
             [
                 'ten_sp' => 'required|max:191|unique:san_phams',
@@ -99,7 +98,7 @@ class SanPhamController extends Controller
             if ($request->hasFile('fdaidien')) $hanh = $this->StorageTraitUpload($request, 'fdaidien', 'sanpham');
             $sanpham = $this->spham->create([
                 'ten_sp' => trim($request->ten_sp),
-                'slug' => Str::slug($request->ten_sp, "-"),
+                'slug' => Str::slug($request->ten_sp, '-'),
                 'hinh_anh_chinh' => $hanh,
                 'mo_ta' => $request->txt_mo_ta,
                 'so_luong' => $request->num_so_luong,
@@ -153,7 +152,7 @@ class SanPhamController extends Controller
         $DmOpt = $this->getDanhMuc($sp->dm_id);
         $ThOpt = $this->getThuongHieu($sp->thuong_hieu_id);
 
-        return view('backend.sanpham.sua', compact('sp', "DmOpt", "ThOpt"));
+        return view('backend.sanpham.sua', compact('sp', 'DmOpt', 'ThOpt'));
     }
 
     /**
@@ -161,48 +160,64 @@ class SanPhamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'ten_sp' => 'required|max:191',
-            'num_soluong' => 'required|numeric|min:0|not_in:0',
-            'num_gia' => 'required|numeric',
-            'opt_tagsp' => 'required',
+        if ($request->has('ten_sp')) {
+            $request->validate(
+                [
+                    'ten_sp' => 'required|max:191|unique:san_phams',
+                    'num_gia_ban' => 'gt:num_gia_nhap',
+                ],
+                [
+                    'ten_sp.required' => 'Hãy nhập sản phẩm',
+                    'ten_sp.max' => 'Tên sản phẩm quá dài',
+                    'ten_sp.unique' => 'Sản phẩm đã tồn tại',
+                    'num_gia_ban.gt' => 'Giá bán phải lớn hơn giá nhập',
+                ]
+            );
+        } else {
 
-            'opt_th' => 'required',
-            'opt_dm' => 'required',
-        ], [
-            'ten_sp.required' => 'Hãy nhập sản phẩm',
-            'ten_sp.max' => 'Sản phẩm tối đa 191 ký tự',
-            'num_soluong.required' => 'Hãy nhập số lượng',
-            'num_soluong.numeric' => 'Số lượng phải là số',
-            'num_soluong.min' => 'Số lượng phải lớn hơn 0',
-            'num_soluong.not_in' => 'Số lượng phải khác 0',
-            'num_gia.required' => 'Hãy nhập giá',
-            'num_gia.numeric' => 'Giá phải là số',
-            'opt_tagsp.required' => 'Hãy nhập tag sản phẩm',
-
-            'opt_th.required' => 'Hãy chọn thương hiệu',
-            'opt_dm.required' => 'Hãy nhập danh mục',
-        ]);
+            $request->validate(
+                [
+                    'ten_spham' => 'required|max:191',
+                    'num_gia_ban' => 'gt:num_gia_nhap',
+                ],
+                [
+                    'ten_spham.required' => 'Hãy nhập sản phẩm',
+                    'ten_spham.max' => 'Tên sản phẩm quá dài',
+                    'num_gia_ban.gt' => 'Giá bán phải lớn hơn giá nhập',
+                ]
+            );
+        }
         try {
             DB::beginTransaction();
-            if ($request->hasFile('fdaidien'))
-                $hanh = implode('', $this->StorageTraitUpload($request, 'fdaidien', 'sanpham'));
-            else
-                $hanh = $this->spham->find($id)->hinh_anh_chinh;
-            $this->spham->find($id)->update([
-                'ten_sp' => trim($request->ten_sp),
-                'slug' => Str::slug($request->ten_sp, "-"),
-                'hinh_anh_chinh' => $hanh,
-                'mo_ta' => $request->txt_mota,
-                'so_luong' => $request->num_soluong,
-                'ton' => $request->num_soluong,
-                'gia' => $request->num_gia,
+            $sanpham = $this->spham->find($id);
 
+            if ($request->hasFile('fdaidien')) $hanh = $this->StorageTraitUpload($request, 'fdaidien', 'sanpham');
+            else $hanh = $sanpham->hinh_anh_chinh;
+
+            if ($request->has('ten_spham')) $ten_sp = $request->ten_spham;
+            else $ten_sp = $request->ten_sp;
+
+            if (!empty($request->num_so_luong)) $sluong = $sanpham->so_luong + $request->num_so_luong;
+            else $sluong = $sanpham->so_luong;
+
+            $ton = $sluong - $sanpham->luot_mua;
+
+            $sanpham->update([
+                'ten_sp' => trim($ten_sp),
+                'slug' => Str::slug($ten_sp, '-'),
+                'hinh_anh_chinh' => $hanh,
+                'mo_ta' => $request->txt_mo_ta,
+                'so_luong' => $sluong,
+                'ton' =>  $ton,
+                'gia_nhap' => $request->num_gia_nhap,
+                'gia_ban' => $request->num_gia_ban,
+                'giam_gia' => $request->num_giam_gia,
+                'bao_hanh' => $request->num_bao_hanh,
+                'tinh_nang' => $request->txt_tinh_nang,
                 'dm_id' => $request->opt_dm,
                 'thuong_hieu_id' => $request->opt_th,
                 'user_id' => auth()->id(),
             ]);
-            $sanpham = $this->spham->find($id);
 
             //insert image vào bảng hinhanh
             if ($request->hasFile('fchitiet')) {
@@ -210,14 +225,14 @@ class SanPhamController extends Controller
                 foreach ($request->fchitiet as $fItem) {
                     $dataHinhChiTiet = $this->StorageTraitUploadMutiple($fItem, 'sanpham');
                     $sanpham->HinhAnh()->create([
-                        'hinh_anh' => $dataHinhChiTiet['file_path'],
+                        'hinh_anh' => $dataHinhChiTiet,
                     ]);
                 }
             }
 
             //insert tag vào bảng sp_tag
             $tagId = [];
-            if (!empty($request->tags)) {
+            if (!empty($request->opt_tagsp)) {
                 foreach ($request->opt_tagsp as $tagItem) {
                     $tag = $this->tag->firstOrCreate([
                         'ten_tag' => $tagItem
@@ -225,14 +240,15 @@ class SanPhamController extends Controller
                     $tagId[] = $tag->id;
                 }
             }
-            $this->spham->SanPhamTag()->sync($tagId);
+
+            $sanpham->SanPhamTag()->sync($tagId);
             DB::commit();
-            Session::flash('mgs-update', 'Cập nhật sản phẩm thành công');
+            Alert::success('Thành công', 'Cập nhật sản phẩm thành công');
             return redirect()->route('sanpham.index');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            Session::flash('error', 'Cập nhật sản phẩm thất bại.');
+            Alert::error('Thất bại', 'Cập nhật sản phẩm thất bại');
             return redirect()->route('sanpham.edit', ['id' => $id]);
         }
     }

@@ -16,7 +16,6 @@ class ThuongHieuController extends Controller
     private $thuonghieu;
     public function __construct(ThuongHieu $thuonghieu)
     {
-        // $this->middleware('auth');
         $this->thuonghieu = $thuonghieu;
     }
 

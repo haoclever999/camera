@@ -50,13 +50,18 @@
                                 <input
                                     type="text"
                                     class="form-control @error('ten_sp') is-invalid @enderror"
-                                    name="ten_sp"
+                                    name="ten_spham"
                                     id="ten_sp"
                                     value="{{$sp->ten_sp}}"
+                                    onchange="changeName()"
                                     placeholder="Nhập tên sản phẩm"
                                     required
                                 />
-                                @if ($errors->has('ten_sp'))
+                                @if ($errors->has('ten_spham'))
+                                <span class="help-block" style="color: #ff3f3f">
+                                    <b>{{ $errors->first('ten_spham') }}</b>
+                                </span>
+                                @endif @if ($errors->has('ten_sp'))
                                 <span class="help-block" style="color: #ff3f3f">
                                     <b>{{ $errors->first('ten_sp') }}</b>
                                 </span>
@@ -66,18 +71,35 @@
                                 <label for="num_so_luong" class="form-label">
                                     <b>Số lượng</b>
                                 </label>
-                                <input
-                                    type="number"
-                                    class="form-control @error('num_so_luong') is-invalid @enderror"
-                                    id="num_so_luong"
-                                    name="num_so_luong"
-                                    value="{{$sp->so_luong}}"
-                                    max="999999"
-                                    min="1"
-                                    step="1"
-                                    placeholder="Nhập số lượng"
-                                    required
-                                />
+                                <div class="row">
+                                    <div
+                                        class="form-group col-md-4"
+                                        style="float: left"
+                                    >
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            value="{{$sp->so_luong}}"
+                                            disabled
+                                        />
+                                    </div>
+
+                                    <div
+                                        class="form-group col-md-8"
+                                        style="float: right"
+                                    >
+                                        <input
+                                            type="number"
+                                            class="form-control @error('num_so_luong') is-invalid @enderror"
+                                            id="num_so_luong"
+                                            name="num_so_luong"
+                                            max="999999"
+                                            min="-{{$sp->ton}}"
+                                            step="1"
+                                            placeholder="Nhập số lượng thêm hoặc bớt"
+                                        />
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="form-group">
@@ -156,7 +178,6 @@
                                     required
                                 />
                             </div>
-                            <!-- tới đây -->
                             <div class="form-group">
                                 <label class="form-label">
                                     <b>Nhập tag cho sản phẩm</b>
@@ -166,7 +187,16 @@
                                     class="form-control @error('opt_tagsp') is-invalid @enderror tag_select"
                                     multiple="multiple"
                                     required
-                                ></select>
+                                >
+                                    @foreach($sp->SanPhamTag as $tagItem )
+                                    <option
+                                        value="{{ $tagItem->ten_tag }}"
+                                        selected
+                                    >
+                                        {{ $tagItem->ten_tag }}
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
 
                             <div class="form-group">
@@ -178,7 +208,7 @@
                                     name="opt_th"
                                     required
                                 >
-                                    <option disabled selected value="">
+                                    <option disabled value="">
                                         - Chọn thương hiệu -
                                     </option>
                                     {!! $ThOpt !!}
@@ -193,7 +223,7 @@
                                     name="opt_dm"
                                     required
                                 >
-                                    <option disabled selected value="">
+                                    <option disabled value="">
                                         - Chọn danh mục -
                                     </option>
                                     {!! $DmOpt !!}
@@ -212,12 +242,17 @@
                                     name="fdaidien"
                                     accept="image/jpg, image/png, image/jpeg"
                                     onchange="preview(event)"
-                                    required
                                 />
                                 <div
                                     class="fdaidien_container col-md-3"
                                     id="container_preview"
-                                ></div>
+                                >
+                                    <img
+                                        id="img_dai_dien"
+                                        class="sp_img_dai_dien"
+                                        src="{{$sp->hinh_anh_chinh}}"
+                                    />
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="fchitiet" class="form-label">
@@ -228,7 +263,6 @@
                                     class="form-control-file"
                                     id="fchitiet"
                                     name="fchitiet[]"
-                                    required
                                     onchange="preview_Multiple()"
                                     multiple
                                     accept="image/jpg, image/png, image/jpeg, video/mp4"
@@ -237,7 +271,17 @@
                                     <div
                                         class="row"
                                         id="container_previewMultiple"
-                                    ></div>
+                                    >
+                                        @foreach($sp->HinhAnh as $hanh)
+                                        <div id="pre_Multiple">
+                                            <img
+                                                class="sp_img_chi_tiet"
+                                                src="{{$hanh->hinh_anh}}"
+                                                alt="HaoNganTelecom"
+                                            />
+                                        </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -250,7 +294,7 @@
                                     name="txt_mo_ta"
                                     required
                                 >
-                                {{ old("txt_mo_ta") }} 
+                                 {{$sp->mo_ta}}
                                 </textarea>
                             </div>
 
@@ -264,7 +308,7 @@
                                     name="txt_tinh_nang"
                                     required
                                 >
-                                {{ old("txt_tinh_nang") }}
+                                {{$sp->tinh_nang}}
                             </textarea
                                 >
                             </div>
@@ -273,244 +317,9 @@
                                 type="submit"
                                 class="btn btn-primary"
                             >
-                                Thêm sản phẩm
-                            </button>
-                        </div>
-                        <!-- <div class="col-md-6" style="float: left">
-                            <div class="form-group">
-                                <label for="ten_sp" class="form-label">
-                                    <b>Tên sản phẩm</b>
-                                </label>
-                                <input
-                                    type="text"
-                                    class="form-control{{ $errors->has('ten_sp') ? ' has-error' : '' }}"
-                                    name="ten_sp"
-                                    id="ten_sp"
-                                    placeholder="Nhập tên sản phẩm"
-                                    value="{{$sp->ten_sp}}"
-                                    required
-                                />
-                                @if ($errors->has('ten_sp'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('ten_sp') }}</b>
-                                </span>
-                                @endif
-                            </div>
-
-                            <div class="form-group">
-                                <label for="num_soluong" class="form-label">
-                                    <b> Số lượng</b>
-                                </label>
-                                <input
-                                    type="number"
-                                    class="form-control{{ $errors->has('num_soluong') ? ' has-error' : '' }}"
-                                    id="num_soluong"
-                                    name="num_soluong"
-                                    value="{{$sp->so_luong}}"
-                                    maxlength="5"
-                                    required
-                                />
-                                @if ($errors->has('num_soluong'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('num_soluong') }}</b>
-                                </span>
-                                @endif
-                            </div>
-                            <div class="form-group">
-                                <label for="num_gia" class="form-label">
-                                    <b>Giá</b>
-                                </label>
-                                <input
-                                    type="number"
-                                    class="form-control{{ $errors->has('num_gia') ? ' has-error' : '' }}"
-                                    id="num_gia"
-                                    name="num_gia"
-                                    maxlength="9"
-                                    value="{{$sp->gia}}"
-                                    required
-                                />
-                                @if ($errors->has('num_gia'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('num_gia') }}</b>
-                                </span>
-                                @endif
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <b>Nhập tag cho sản phẩm</b>
-                                </label>
-                                <select
-                                    name="opt_tagsp[]"
-                                    class="form-control{{ $errors->has('opt_tagsp') ? ' has-error' : '' }} tag_select2"
-                                    multiple="multiple"
-                                    required
-                                >
-                                    @foreach($sp->SanPhamTag as $tagItem )
-                                    <option value="{{ $tagItem->id }}" selected>
-                                        {{ $tagItem->ten_tag }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                                @if ($errors->has('opt_tagsp'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('opt_tagsp') }}</b>
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="col-md-6" style="float: right">
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <b>Chọn khuyến mãi</b>
-                                </label>
-                                <select
-                                    class="form-control{{ $errors->has('opt_km') ? ' has-error' : '' }}"
-                                    name="opt_km"
-                                >
-                                    <option selected value="">
-                                        -Chọn khuyến mãi-
-                                    </option>
-                                    {!! $KmOpt !!}
-                                </select>
-                                @if ($errors->has('opt_km'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('opt_km') }}</b>
-                                </span>
-                                @endif
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label">
-                                    <b>Chọn thương hiệu</b>
-                                </label>
-                                <select
-                                    class="form-control{{ $errors->has('opt_th') ? ' has-error' : '' }} "
-                                    name="opt_th"
-                                    required
-                                >
-                                    <option selected value="">
-                                        -Chọn thương hiệu-
-                                    </option>
-                                    {!! $ThOpt !!}
-                                </select>
-                                @if ($errors->has('opt_th'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('opt_th') }}</b>
-                                </span>
-                                @endif
-                            </div>
-                            <div class="form-group">
-                                <label class="form-label"
-                                    ><b>Chọn danh mục</b></label
-                                >
-                                <select
-                                    class="form-control{{ $errors->has('opt_dm') ? ' has-error' : '' }} "
-                                    name="opt_dm"
-                                    required
-                                >
-                                    <option selected value="">
-                                        -Chọn danh mục-
-                                    </option>
-                                    {!! $htmlOpt !!}
-                                </select>
-                                @if ($errors->has('opt_dm'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('opt_dm') }}</b>
-                                </span>
-                                @endif
-                            </div>
-                            <div class="form-group">
-                                <label for="ten_sp" class="form-label">
-                                    <b>Đã bán: </b> <span>{{$sp->slug}}</span>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label for="ten_sp" class="form-label">
-                                    <b>Lượt xem: </b>
-                                    <span>{{$sp->luot_xem}}</span>
-                                </label>
-                            </div>
-                            <div class="form-group">
-                                <label for="ten_sp" class="form-label">
-                                    <b>Người tạo: </b>
-                                    <span>{{optional($sp->User)->ho_ten}}</span>
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group col-md-12" style="float: left">
-                            <div class="form-group">
-                                <label for="fdaidien" class="form-label">
-                                    <b>Ảnh đại diện</b>
-                                </label>
-                                <div class="col-md-3 fdaidien_container">
-                                    <div class="row">
-                                        <img
-                                            class="sp_img_daidien"
-                                            src="{{$sp->hinh_anh_chinh}}"
-                                            alt="HaoNganTelecom"
-                                        />
-                                    </div>
-                                </div>
-                                <input
-                                    type="file"
-                                    class="form-control-file"
-                                    id="fdaidien"
-                                    name="fdaidien"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="fchitiet" class="form-label">
-                                    <b>Ảnh chi tiết</b>
-                                </label>
-                                <div class="col-md-12 fchitiet_container">
-                                    <div class="row">
-                                        @foreach($sp->HinhAnh as $hanh)
-                                        <div class="col-md-3">
-                                            <img
-                                                class="sp_img_chitiet"
-                                                src="{{$hanh->hinh_anh}}"
-                                                alt="HaoNganTelecom"
-                                            />
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                <input
-                                    multiple
-                                    type="file"
-                                    class="form-control-file"
-                                    id="fchitiet"
-                                    name="fchitiet[]"
-                                />
-                            </div>
-                            <div class="form-group">
-                                <label for="txt_mota" class="form-label">
-                                    <b>Mô tả</b>
-                                </label>
-                                <textarea
-                                    class="form-control{{ $errors->has('opt_dm') ? ' has-error' : '' }} mota_editor"
-                                    id="txt_mota"
-                                    name="txt_mota"
-                                >
-                                {{$sp->mo_ta}}
-                                </textarea
-                                >@if ($errors->has('opt_dm'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('opt_dm') }}</b>
-                                </span>
-                                @endif
-                            </div>
-                            <button
-                                style="float: left"
-                                type="submit"
-                                class="btn btn-primary"
-                            >
                                 Cập nhật sản phẩm
                             </button>
-                        </div> -->
-                        <br />
-                        <br />
-                        <br />
+                        </div>
                     </form>
                 </div>
             </div>
@@ -521,4 +330,49 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+@endsection @section('js')
+<script>
+    CKEDITOR.replace("txt_mo_ta");
+    CKEDITOR.replace("txt_tinh_nang");
+
+    function preview(event) {
+        var img_preview = document.getElementById("img_dai_dien");
+        img_preview.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    var images = [];
+    function preview_Multiple() {
+        var img_previewMultiple = document.getElementById("fchitiet").files;
+        for (i = 0; i < img_previewMultiple.length; i++) {
+            images.push({
+                url: URL.createObjectURL(img_previewMultiple[i]),
+            });
+        }
+        const parent = document.getElementById("container_previewMultiple");
+        while (parent.firstChild) {
+            parent.firstChild.remove();
+        }
+        parent.innerHTML = show_previewMultiple();
+    }
+
+    function show_previewMultiple() {
+        var img = "";
+        images.forEach((i) => {
+            img +=
+                ` <div id="pre_Multiple">
+                    <img
+                        class="sp_img_chi_tiet"
+                        src="` +
+                i.url +
+                `"
+                    />
+                </div>`;
+        });
+        return img;
+    }
+
+    function changeName() {
+        document.getElementById("ten_sp").setAttribute("name", "ten_sp");
+    }
+</script>
 @endsection

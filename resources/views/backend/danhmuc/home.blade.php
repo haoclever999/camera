@@ -33,7 +33,7 @@
             <br />
             <div class="row">
                 <div>
-                    <div class="col-md-6" style="float: left">
+                    <div class="col-md-8" style="float: left">
                         <table class="table">
                             <tr>
                                 <th>STT</th>
@@ -43,7 +43,7 @@
                             </tr>
                             @foreach($dm as $d)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ +(+$i) }}</td>
                                 <td>{{ $d-> ten_dm }}</td>
                                 <td>
                                     {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $d->updated_at)->format('H:i:s d/m/Y') }}
@@ -51,8 +51,8 @@
                                 <td>
                                     <a
                                         style="
-                                            min-width: max-content;
-                                            padding: 3px 12px;
+                                            width: 88px;
+                                            padding: 3px 10px;
                                             margin: 3px;
                                         "
                                         class="btn btn-warning"
@@ -62,8 +62,8 @@
                                     </a>
                                     <a
                                         style="
-                                            min-width: max-content;
-                                            padding: 3px 12px;
+                                            width: 88px;
+                                            padding: 3px 10px;
                                             margin: 3px;
                                         "
                                         class="btn btn-danger action_del"
@@ -77,7 +77,7 @@
                             @endforeach
                         </table>
                     </div>
-                    <div class="col-md-5" style="float: right">
+                    <div class="col-md-4" style="float: right">
                         <h2 class="m-0"><b>Thêm danh mục </b></h2>
                         <br />
                         <form

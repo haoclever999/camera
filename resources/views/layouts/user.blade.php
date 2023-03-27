@@ -9,6 +9,15 @@
         />
         <meta name="description" content="" />
         <meta name="author" content="" />
+
+        <meta property="og:site_name" content="-CUSTOMER VALUE-" />
+        <meta property="og:title" content="-CUSTOMER VALUE-" />
+        <meta property="og:description" content="-CUSTOMER VALUE-" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="-CUSTOMER VALUE-" />
+        <!-- link to image for socio -->
+        <meta property="og:url" content="-CUSTOMER VALUE-" />
+        @yield('title')
         <!-- Fonts START -->
         <link
             href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|PT+Sans+Narrow|Source+Sans+Pro:200,300,400,600,700,900&amp;subset=all"
@@ -20,91 +29,66 @@
             rel="stylesheet"
             type="text/css"
         />
-        <!--- fonts for slider on the index page -->
         <!-- Fonts END -->
 
         <!-- Global styles START -->
         <link
             href="{{
-                asset('frontend/plugins/font-awesome/css/font-awesome.min.css')
+                asset(
+                    'frontend/vendor/fontawesome-free/css/font-awesome.min.css'
+                )
             }}"
             rel="stylesheet"
         />
-        <link
-            href="{{
-                asset('frontend/plugins/bootstrap/css/bootstrap.min.css')
-            }}"
-            rel="stylesheet"
-        />
-        <!-- Global styles END -->
 
-        <!-- Page level plugin styles START -->
-        <link
-            href="{{ asset('frontend/pages/css/animate.css') }}"
-            rel="stylesheet"
-        />
         <link
             href="{{
-                asset('frontend/plugins/fancybox/source/jquery.fancybox.css')
+                asset('frontend/vendor/bootstrap/css/bootstrap.min.css')
             }}"
             rel="stylesheet"
         />
-        <link
-            href="{{
-                asset('frontend/plugins/owl.carousel/assets/owl.carousel.css')
-            }}"
-            rel="stylesheet"
-        />
-        <!-- Page level plugin styles END -->
 
-        <!-- Theme styles START -->
+        <link href="{{ asset('frontend/css/animate.css') }}" rel="stylesheet" />
         <link
-            href="{{ asset('frontend/pages/css/components.css') }}"
+            href="{{ asset('frontend/vendor/jquery/jquery.fancybox.css') }}"
             rel="stylesheet"
         />
         <link
-            href="{{ asset('frontend/pages/css/slider.css') }}"
+            href="{{ asset('frontend/vendor/owl.carousel/owl.carousel.css') }}"
             rel="stylesheet"
         />
         <link
-            href="{{ asset('frontend/pages/css/style-shop.css') }}"
-            rel="stylesheet"
-            type="text/css"
-        />
-        <link
-            href="{{ asset('frontend/corporate/css/style.css') }}"
+            href="{{ asset('frontend/css/components.css') }}"
             rel="stylesheet"
         />
+        <link href="{{ asset('frontend/css/slider.css') }}" rel="stylesheet" />
         <link
-            href="{{ asset('frontend/corporate/css/style-responsive.css') }}"
+            href="{{ asset('frontend/css/style-shop.css') }}"
             rel="stylesheet"
         />
         <link
-            href="{{ asset('frontend/corporate/css/themes/red.css') }}"
-            rel="stylesheet"
-            id="style-color"
-        />
-        <link
-            href="{{ asset('frontend/corporate/css/custom.css') }}"
+            href="{{ asset('frontend/css/style-responsive.css') }}"
             rel="stylesheet"
         />
+        <link href="{{ asset('frontend/css/red.css') }}" rel="stylesheet" />
+
         <!-- Theme styles END -->
-        <title>
-            Cửa Hàng Bán Camera Quan Sát, Camera An Ninh, Camera Giám Sát
-        </title>
+
         @yield('css')
     </head>
 
     <body id="page-top">
-        <div id="wrapper">
-            <!-- Sidebar -->
-            @include('view-page.user.header') @include('view-page.user.sidebar')
-            <div class="main">
-                <div class="container">@yield('content')</div>
-            </div>
-
-            @include('view-page.user.footer')
+        <!-- Top bar-->
+        @include('view-page.user.topbar')
+        <!-- Header-->
+        @include('view-page.user.header')
+        <!-- Slider -->
+        @include('view-page.user.slider')
+        <div class="main">
+            <div class="container">@yield('content')</div>
         </div>
+
+        @include('view-page.user.footer')
 
         <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
@@ -113,61 +97,59 @@
         @yield('js')
     </body>
     <script
-        src="{{ asset('frontend/plugins/jquery.min.js') }}"
+        src="{{ asset('frontend/vendor/jquery/jquery.min.js') }}"
         type="text/javascript"
     ></script>
     <script
-        src="{{ asset('frontend/plugins/jquery-migrate.min.js') }}"
+        src="{{ asset('frontend/vendor/jquery/jquery-migrate.min.js') }}"
         type="text/javascript"
     ></script>
     <script
-        src="{{ asset('frontend/plugins/bootstrap/js/bootstrap.min.js') }}"
+        src="{{ asset('frontend/vendor/bootstrap/js/bootstrap.min.js') }}"
         type="text/javascript"
     ></script>
+    <!-- chưa  -->
     <script
         src="{{ asset('frontend/corporate/scripts/back-to-top.js') }}"
         type="text/javascript"
     ></script>
+    <!--  -->
     <script
-        src="{{
-            asset('frontend/plugins/jquery-slimscroll/jquery.slimscroll.min.js')
-        }}"
+        src="{{ asset('frontend/vendor/jquery/jquery.slimscroll.min.js') }}"
         type="text/javascript"
     ></script>
-    <!-- END CORE PLUGINS -->
+    <!-- END CORE vendor -->
 
     <!-- BEGIN PAGE LEVEL JAVASCRIPTS (REQUIRED ONLY FOR CURRENT PAGE) -->
     <script
-        src="{{
-            asset('frontend/plugins/fancybox/source/jquery.fancybox.pack.js')
-        }}"
+        src="{{ asset('frontend/vendor/jquery/jquery.fancybox.pack.js') }}"
         type="text/javascript"
     ></script>
     <!-- pop up -->
     <script
-        src="{{ asset('frontend/plugins/owl.carousel/owl.carousel.min.js') }}"
+        src="{{ asset('frontend/vendor/owl.carousel/owl.carousel.min.js') }}"
         type="text/javascript"
     ></script>
     <!-- slider for products -->
     <script
-        src="{{ asset('frontend/plugins/zoom/jquery.zoom.min.js') }}"
+        src="{{ asset('frontend/vendor/zoom/jquery.zoom.min.js') }}"
         type="text/javascript"
     ></script>
     <!-- product zoom -->
     <script
         src="{{
-            asset('frontend/plugins/bootstrap-touchspin/bootstrap.touchspin.js')
+            asset('frontend/vendor/bootstrap-touchspin/bootstrap.touchspin.js')
         }}"
         type="text/javascript"
     ></script>
     <!-- Quantity -->
 
     <script
-        src="{{ asset('frontend/corporate/scripts/layout.js') }}"
+        src="{{ asset('frontend/js/layout.js') }}"
         type="text/javascript"
     ></script>
     <script
-        src="{{ asset('frontend/pages/scripts/bs-carousel.js') }}"
+        src="{{ asset('frontend/vendor/owl.carousel/bs-carousel.js') }}"
         type="text/javascript"
     ></script>
     <script type="text/javascript">

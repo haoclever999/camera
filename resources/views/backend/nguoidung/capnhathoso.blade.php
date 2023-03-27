@@ -53,7 +53,11 @@
                                 value="{{ $user->ho_ten }}"
                                 required
                             />
-                            @if ($errors->has('ho_ten'))
+                            @if ($errors->has('ten_nd'))
+                            <span class="help-block" style="color: #ff3f3f">
+                                <b>{{ $errors->first('ten_nd') }}</b>
+                            </span>
+                            @endif @if ($errors->has('ho_ten'))
                             <span class="help-block" style="color: #ff3f3f">
                                 <b>{{ $errors->first('ho_ten') }}</b>
                             </span>

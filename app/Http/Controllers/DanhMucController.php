@@ -17,7 +17,6 @@ class DanhMucController extends Controller
 
     public function __construct(DanhMuc $dmuc)
     {
-        // $this->middleware('auth');
         $this->dmuc = $dmuc;
     }
 

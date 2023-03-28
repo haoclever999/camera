@@ -93,7 +93,6 @@ class SanPhamController extends Controller
         );
         try {
             DB::beginTransaction();
-
             if ($request->hasFile('fdaidien')) $hanh = $this->StorageTraitUpload($request, 'fdaidien', 'sanpham');
             $sanpham = $this->spham->create([
                 'ten_sp' => trim($request->ten_sp),

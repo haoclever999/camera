@@ -60,6 +60,8 @@
                                     >
                                         Cập nhật
                                     </a>
+                                    @if(auth()->check() &&
+                                    auth()->user()->quyen=='Quản trị')
                                     <a
                                         style="
                                             width: 88px;
@@ -72,6 +74,7 @@
                                     >
                                         Xóa
                                     </a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

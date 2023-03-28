@@ -36,6 +36,7 @@
                     <form
                         action="{{ route('thuonghieu.update', ['id' => $th->id] ) }}"
                         method="post"
+                        enctype="multipart/form-data"
                     >
                         @csrf
                         <div class="form-group">
@@ -46,16 +47,39 @@
                                 type="text"
                                 class="form-control @error('ten_thuong_hieu') is-invalid @enderror"
                                 id="ten_thuong_hieu"
-                                name="ten_thuong_hieu"
+                                name="ten_thuong_hieu2"
                                 value="{{ $th->ten_thuong_hieu}}"
+                                onchange="changeName()"
                                 placeholder="Nhập tên thương hiệu"
-                                required
                             />
                             @if ($errors->has('ten_thuong_hieu'))
                             <span class="help-block" style="color: #ff3f3f">
                                 <b>{{ $errors->first('ten_thuong_hieu') }}</b>
                             </span>
                             @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="logo_thuong_hieu" class="form-label">
+                                <b> Logo thương hiệu</b>
+                            </label>
+                            <input
+                                type="file"
+                                class="form-control-file"
+                                id="logo_thuong_hieu"
+                                name="logo_thuong_hieu"
+                                accept="image/jpg, image/png, image/jpeg"
+                                onchange="preview(event)"
+                            />
+                            <div
+                                class="logo_container col-md-3"
+                                id="container_preview"
+                            >
+                                <img
+                                    id="img_logo"
+                                    class="img_logo"
+                                    src="{{$th->logo}}"
+                                />
+                            </div>
                         </div>
 
                         <button type="submit" class="btn btn-primary">
@@ -71,4 +95,16 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+@endsection @section('js')
+<script>
+    function preview(event) {
+        var img_preview = document.getElementById("img_logo");
+        img_preview.src = URL.createObjectURL(event.target.files[0]);
+    }
+    function changeName() {
+        document
+            .getElementById("ten_thuong_hieu")
+            .setAttribute("name", "ten_thuong_hieu");
+    }
+</script>
 @endsection

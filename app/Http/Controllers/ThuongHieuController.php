@@ -13,7 +13,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ThuongHieuController extends Controller
 {
-    use DeleteModelTrait;
+    use DeleteModelTrait, StorageImageTrait;
     private $thuonghieu;
     public function __construct(ThuongHieu $thuonghieu)
     {
@@ -48,7 +48,7 @@ class ThuongHieuController extends Controller
         );
         try {
             DB::beginTransaction();
-            if ($request->hasFile('logo')) $logo = $this->StorageTraitUpload($request, 'logo', 'thuonghieu');
+            if ($request->hasFile('logo_thuong_hieu')) $logo = $this->StorageTraitUpload($request, 'logo_thuong_hieu', 'thuonghieu');
             $this->thuonghieu->firstOrCreate([
                 'ten_thuong_hieu' => trim($request->ten_thuong_hieu),
                 'slug' => Str::slug($request->ten_thuong_hieu, "-"),
@@ -60,8 +60,8 @@ class ThuongHieuController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            Alert::error('Thất bại', 'Thêm thương hiệu thành công');
-            return redirect()->route('thuonghieu.create');
+            Alert::error('Thất bại', 'Thêm thương hiệu thất bại');
+            return redirect()->route('thuonghieu.index');
         }
     }
 
@@ -79,26 +79,31 @@ class ThuongHieuController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate(
-            [
-                'ten_thuong_hieu' => 'required|max:191|unique:thuong_hieus',
-            ],
-            [
-                'ten_thuong_hieu.required' => 'Hãy nhập thương hiệu',
-                'ten_thuong_hieu.max' => 'Tên thương hiệu quá dài',
-                'ten_thuong_hieu.unique' => 'Thương hiệu đã tồn tại',
-            ]
-        );
+        if ($request->has('ten_thuong_hieu')) {
+            $request->validate(
+                [
+                    'ten_thuong_hieu' => 'required|max:191|unique:thuong_hieus',
+                ],
+                [
+                    'ten_thuong_hieu.required' => 'Hãy nhập thương hiệu',
+                    'ten_thuong_hieu.max' => 'Tên thương hiệu quá dài',
+                    'ten_thuong_hieu.unique' => 'Thương hiệu đã tồn tại',
+                ]
+            );
+        }
         try {
             DB::beginTransaction();
             $th = $this->thuonghieu->find($id);
 
-            if ($request->hasFile('logo')) $logo = $this->StorageTraitUpload($request, 'logo', 'thuonghieu');
+            if ($request->hasFile('logo_thuong_hieu')) $logo = $this->StorageTraitUpload($request, 'logo_thuong_hieu', 'thuonghieu');
             else $logo = $th->logo;
 
+            if ($request->has('ten_thuong_hieu2')) $ten_th = $request->ten_thuong_hieu2;
+            else $ten_th = $request->ten_thuong_hieu;
+
             $th->id = $request->id;
-            $th->ten_thuong_hieu = $request->ten_thuong_hieu;
-            $th->slug = Str::slug($request->ten_thuong_hieu, "-");
+            $th->ten_thuong_hieu = $ten_th;
+            $th->slug = Str::slug($ten_th, "-");
             $th->logo = $logo;
             $th->save();
             DB::commit();
@@ -107,7 +112,7 @@ class ThuongHieuController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            Alert::error('Thất bại', 'Cập nhật thương hiệu thành công');
+            Alert::error('Thất bại', 'Cập nhật thương hiệu thất bại');
             return redirect()->route('thuonghieu.edit', ['id' => $id]);
         }
     }

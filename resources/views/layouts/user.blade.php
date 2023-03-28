@@ -118,7 +118,7 @@
         <!-- Header-->
         @include('view-page.user.header')
         <!-- Slider -->
-        @include('view-page.user.slider')
+        @yield('slider')
         <div class="main">
             <div class="container">@yield('content')</div>
         </div>

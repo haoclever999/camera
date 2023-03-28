@@ -119,6 +119,8 @@
                                         Cập nhật
                                     </a>
                                     <br />
+                                    @if(auth()->check() &&
+                                    auth()->user()->quyen=='Quản trị')
                                     <a
                                         style="
                                             min-width: 110px;
@@ -131,6 +133,7 @@
                                     >
                                         Xóa
                                     </a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach

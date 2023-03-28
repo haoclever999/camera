@@ -68,6 +68,8 @@
                                     >
                                         Cập nhật
                                     </a>
+                                    @if(auth()->check() &&
+                                    auth()->user()->quyen=='Quản trị')
                                     <a
                                         style="
                                             width: 88px;
@@ -80,6 +82,7 @@
                                     >
                                         Xóa
                                     </a>
+                                    @endif
                                 </td>
                             </tr>
                             @endforeach
@@ -93,6 +96,7 @@
                         <form
                             action="{{ route('thuonghieu.store') }}"
                             method="post"
+                            enctype="multipart/form-data"
                         >
                             @csrf
                             <div class="form-group">
@@ -117,14 +121,17 @@
                                 @endif
                             </div>
                             <div class="form-group">
-                                <label for="logo" class="form-label">
+                                <label
+                                    for="logo_thuong_hieu"
+                                    class="form-label"
+                                >
                                     <b> Logo thương hiệu</b>
                                 </label>
                                 <input
                                     type="file"
                                     class="form-control-file"
-                                    id="logo"
-                                    name="logo"
+                                    id="logo_thuong_hieu"
+                                    name="logo_thuong_hieu"
                                     accept="image/jpg, image/png, image/jpeg"
                                     onchange="preview(event)"
                                     required

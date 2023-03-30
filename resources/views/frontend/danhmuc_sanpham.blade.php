@@ -1,5 +1,5 @@
 @extends('layouts.user') @section('title')
-<title>Cửa Hàng Bán Camera Quan Sát, Camera An Ninh, Camera Giám Sát</title>
+<title>Danh mục sản phẩm</title>
 @endsection @section('content')
 
 <div class="row margin-bottom-40" style="margin-top: 40px">
@@ -83,6 +83,9 @@
                     </h3>
                     <div class="pi-price">
                         {{number_format(round(($s->gia_ban-($s->gia_ban*$s->giam_gia/100)),-3),0,",",".")
+
+
+
                         }}đ
                     </div>
                     <a
@@ -110,9 +113,7 @@
         <!-- END PRODUCT LIST -->
         <!-- BEGIN PAGINATOR -->
         <div class="row">
-            <div class="col-md-4 col-sm-4 items-info">
-                Items 1 to 9 of 10 total
-            </div>
+            <div class="col-md-4 col-sm-4 items-info"></div>
             <div class="col-md-8 col-sm-8" style="float: right">
                 {!! $sp->links()!!}
             </div>

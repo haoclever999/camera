@@ -467,10 +467,10 @@ Header and header elements
 }
 .goods-data th,
 .checkout-page th {
-    font: 16px "PT Sans Narrow", sans-serif;
-    text-transform: uppercase;
+    font: 16px "Open Sans", sans-serif;
+    font-weight: bold;
     border-bottom: solid 1px #ecebeb;
-    padding-bottom: 8px;
+    padding: 8px;
 }
 .goods-data td,
 .checkout-page td {

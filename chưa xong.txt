@@ -9,6 +9,8 @@
     tổng tiền, tổng sp header.blade.php
     đổi logo
 
---  danh muc san pham
 -- sửa url trang back-to-top
--- getThuongHieuSanPham
+-- chức năng lọc và hiển thị số lượt xem
+-- chức năng cmt, review
+
+----* Your requirements could not be resolved to an installable set of packages.

@@ -5,7 +5,6 @@
         <li class="list-group-item clearfix dropdown">
             <a href="">
                 <i class="fa fa-angle-right"></i>
-
                 {{$d->ten_dm}}
             </a>
             <ul class="dropdown-menu" id="danhmuc_{{$d->id}}">
@@ -45,18 +44,19 @@
 
     <h4><b>Thương hiệu</b></h4>
     <ul class="list-group margin-bottom-25 sidebar-menu">
-        @foreach($th_sp as $th)
+        @foreach($th_sp as $th) @foreach($ten_dm as $ten)
+
         <li class="list-group-item clearfix dropdown">
             <a
                 href="{{route('thuonghieu.sanpham',
             [
-            'slug'=>$th->slug,'id'=>$th->id
+            'slug'=>$th->slug,'id'=>$th->id,'id_dm'=>$ten->id
             ]
             )}}"
             >
                 {{$th->ten_thuong_hieu}}
             </a>
         </li>
-        @endforeach
+        @endforeach @endforeach
     </ul>
 </div>

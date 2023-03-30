@@ -1,5 +1,5 @@
 @extends('layouts.user') @section('title')
-<title>Sản phẩm</title>
+<title>Thương hiệu sản phẩm</title>
 @endsection @section('content')
 
 <div class="row margin-bottom-40" style="margin-top: 40px">
@@ -7,7 +7,9 @@
     <div class="col-md-9 col-sm-7">
         <div class="row list-view-sorting clearfix">
             <div class="col-md-7 col-sm-7">
-                <h3><b>Tất cả sản phẩm</b></h3>
+                @foreach($ten_th as $key=> $ten)
+                <h3>{{$ten->ten_thuong_hieu}}</h3>
+                @endforeach
             </div>
             <div class="col-md-5 col-sm-5">
                 <div class="pull-right">
@@ -85,8 +87,6 @@
 
 
 
-
-
                         }}đ
                     </div>
                     <a
@@ -96,6 +96,7 @@
                     >
                         Thêm vào giỏ
                     </a>
+
                     @if($s->giam_gia !=0)
                     <div class="sticker sticker-sale"></div>
                     @endif

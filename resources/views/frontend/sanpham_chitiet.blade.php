@@ -1,5 +1,5 @@
 @extends('layouts.user') @section('title')
-<title>Cửa Hàng Bán Camera Quan Sát, Camera An Ninh, Camera Giám Sát</title>
+<title>Sản phẩm chi tiết</title>
 @endsection @section('css')
 
 <link
@@ -99,21 +99,37 @@
                             {{$spct->ThuongHieu->ten_thuong_hieu}}
                         </span>
                     </div>
-
+                    @if($spct->ton>0)
                     <div class="product-page-cart" style="margin-top: 30px">
-                        <div class="product-quantity">
+                        <form
+                            action="{{ route('giohang.themgiohang') }}"
+                            method="post"
+                        >
+                            @csrf
                             <input
-                                id="product-quantity"
-                                type="text"
-                                value="1"
-                                readonly
-                                class="form-control input-sm"
+                                type="hidden"
+                                name="id_sp"
+                                value="{{$spct->id}}"
                             />
-                        </div>
-                        <button class="btn btn-primary" type="submit">
-                            Thêm vào giỏ
-                        </button>
+                            <div class="product-quantity">
+                                <input
+                                    id="product-quantity"
+                                    name="num_soluong"
+                                    type="number"
+                                    min="1"
+                                    value="1"
+                                    onchange="SoLuongMinMax(this)"
+                                    max="{{$spct->ton}}"
+                                    readonly
+                                    class="form-control input-sm"
+                                />
+                            </div>
+                            <button class="btn btn-primary" type="submit">
+                                Thêm vào giỏ
+                            </button>
+                        </form>
                     </div>
+                    @endif
                     <div class="review">
                         <input
                             type="range"
@@ -349,9 +365,19 @@
     }}"
     type="text/javascript"
 ></script>
-
 <script src="{{
         asset('frontend/assets_theme/plugins/carousel/carousel.js')
     }}"></script>
-
+<script>
+    function SoLuongMinMax(el) {
+        if (el.value != "") {
+            if (parseInt(el.value) < parseInt(el.min)) {
+                el.value = el.min;
+            }
+            if (parseInt(el.value) > parseInt(el.max)) {
+                el.value = el.max;
+            }
+        }
+    }
+</script>
 @endsection

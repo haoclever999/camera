@@ -133,15 +133,17 @@ class ThuongHieuController extends Controller
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
-    public function getThuongHieuSanPham($slug, $id)
+    public function getThuongHieuSanPham($id_dm, $slug, $id)
     {
-        $sp = $this->sanpham->where('dm_id', $id)->paginate(6);
+        $sp = $this->sanpham->where('thuong_hieu_id', $id)->where('dm_id', $id_dm)->paginate(6);
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
+        $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
+        $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
 
-        foreach ($sp as $value)
+        $spham = $this->sanpham->where('dm_id', $id_dm)->paginate(6);
+        foreach ($spham as $value)
             $id_th[] = $value->thuong_hieu_id;
         $th_sp = $this->thuonghieu->whereIn('id', $id_th)->distinct()->get();
-
-        return view('frontend.danhmuc_sanpham', compact('dm', 'sp', 'ten_dm', 'th_sp'));
+        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp'));
     }
 }

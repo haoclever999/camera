@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DanhMucController;
 use App\Http\Controllers\DonHangController;
 use App\Http\Controllers\CauHinhController;
+use App\Http\Controllers\GioHangController;
 use App\Http\Controllers\NguoiDungController;
 use App\Http\Controllers\SanPhamController;
 use App\Http\Controllers\ThuongHieuController;
@@ -99,6 +100,9 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
 //user
 Route::get('/', [HomeController::class, 'home'])->name('home.index');
 Route::get('/danh-muc/{slug}/{id}', [DanhMucController::class, 'getDanhMucSanPham'])->name('danhmuc.sanpham');
-Route::get('/thuong-hieu/{slug}/{id}', [ThuongHieuController::class, 'getThuongHieuSanPham'])->name('thuonghieu.sanpham');
+Route::get('/danh-muc/{id_dm}/thuong-hieu/{slug}/{id}', [ThuongHieuController::class, 'getThuongHieuSanPham'])->name('thuonghieu.sanpham');
 Route::get('/chi-tiet-san-pham/{id}', [SanPhamController::class, 'getChiTietSanPham'])->name('sanpham.chitiet');
 Route::get('/san-pham', [SanPhamController::class, 'getAllSanPham'])->name('sanpham.all');
+
+//giỏ hàng
+Route::post('/them-gio-hang', [GioHangController::class, 'show'])->name('giohang.themgiohang');

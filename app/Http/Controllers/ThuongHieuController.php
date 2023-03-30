@@ -9,15 +9,21 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
 use App\Components\Traits\StorageImageTrait;
+use App\Models\DanhMuc;
+use App\Models\SanPham;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ThuongHieuController extends Controller
 {
     use DeleteModelTrait, StorageImageTrait;
     private $thuonghieu;
-    public function __construct(ThuongHieu $thuonghieu)
+    private $dmuc;
+    private $sanpham;
+    public function __construct(DanhMuc $dmuc, SanPham $sanpham,  ThuongHieu $thuonghieu)
     {
         $this->thuonghieu = $thuonghieu;
+        $this->dmuc = $dmuc;
+        $this->sanpham = $sanpham;
     }
 
     // Bat dau trang admin
@@ -124,11 +130,18 @@ class ThuongHieuController extends Controller
     {
         return $this->deleteModelTrait($id, $this->thuonghieu);
     }
-
     // Kết thúc trang admin
 
+    // Bắt đầu trang người dùng
     public function getThuongHieuSanPham($slug, $id)
     {
-        return 'ok';
+        $sp = $this->sanpham->where('dm_id', $id)->paginate(6);
+        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
+
+        foreach ($sp as $value)
+            $id_th[] = $value->thuong_hieu_id;
+        $th_sp = $this->thuonghieu->whereIn('id', $id_th)->distinct()->get();
+
+        return view('frontend.danhmuc_sanpham', compact('dm', 'sp', 'ten_dm', 'th_sp'));
     }
 }

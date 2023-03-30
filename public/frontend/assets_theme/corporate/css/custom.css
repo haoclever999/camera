@@ -1,3 +1,13 @@
 .col-md-12.sale-product {
     margin: 10px 0;
 }
+.product-item > .pi-img-wrapper > .img-responsive {
+    height: 150px;
+    object-fit: contain;
+}
+.banner_qc > img {
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    vertical-align: middle;
+}

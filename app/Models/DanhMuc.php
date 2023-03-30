@@ -11,8 +11,13 @@ class DanhMuc extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'danh_mucs';
     protected $fillable = [
-        'ten_dm', 'slug',
+        'ten_dm', 'slug', 'parent_id',
     ];
+
+    public function DanhMucCon()
+    {
+        return $this->hasMany(DanhMuc::class, 'parent_id');
+    }
 
     public function SanPham()
     {

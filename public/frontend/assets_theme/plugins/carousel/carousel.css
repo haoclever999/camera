@@ -1,0 +1,32 @@
+@media (max-width: 767px) {
+    .carousel-inner .item > div {
+        display: none;
+    }
+    .carousel-inner .item > div:first-child {
+        display: block;
+    }
+}
+
+.carousel-inner .item.active,
+.carousel-inner .item-next,
+.carousel-inner .item-prev {
+    display: flex;
+}
+
+/* medium and up screens */
+@media (min-width: 768px) {
+    .carousel-inner .item-end.active,
+    .carousel-inner .item-next {
+        transform: translateX(25%);
+    }
+
+    .carousel-inner .item-start.active,
+    .carousel-inner .item-prev {
+        transform: translateX(-25%);
+    }
+}
+
+.carousel-inner .item-end,
+.carousel-inner .item-start {
+    transform: translateX(0);
+}

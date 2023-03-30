@@ -20,7 +20,7 @@ class ThuongHieuController extends Controller
         $this->thuonghieu = $thuonghieu;
     }
 
-
+    // Bat dau trang admin
     /**
      * Display a listing of the resource.
      */
@@ -123,5 +123,12 @@ class ThuongHieuController extends Controller
     public function destroy($id)
     {
         return $this->deleteModelTrait($id, $this->thuonghieu);
+    }
+
+    // Kết thúc trang admin
+
+    public function getThuongHieuSanPham($slug, $id)
+    {
+        return 'ok';
     }
 }

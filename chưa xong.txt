@@ -9,4 +9,6 @@
     tổng tiền, tổng sp header.blade.php
     đổi logo
 
---  thêm logo thương hiệu
+--  danh muc san pham
+-- sửa url trang back-to-top
+-- getThuongHieuSanPham

@@ -34,6 +34,7 @@ class SanPhamController extends Controller
         $this->thuonghieu = $thuonghieu;
     }
 
+    // Bắt đầu trang admin
     public function getDanhMuc($id)
     {
         $option = new GetOption($this->dmuc::all());
@@ -54,18 +55,12 @@ class SanPhamController extends Controller
         return view('backend.sanpham.home', compact('sp'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $sp = $this->spham->find($id);
         return view('backend.sanpham.show', compact('sp'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $DmOpt = $this->getDanhMuc('0');
@@ -73,9 +68,6 @@ class SanPhamController extends Controller
         return view('backend.sanpham.them', compact('DmOpt', 'ThOpt'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
 
@@ -141,9 +133,6 @@ class SanPhamController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $sp = $this->spham->find($id);
@@ -153,9 +142,6 @@ class SanPhamController extends Controller
         return view('backend.sanpham.sua', compact('sp', 'DmOpt', 'ThOpt'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         if ($request->has('ten_sp')) {
@@ -251,11 +237,30 @@ class SanPhamController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         return $this->deleteModelTrait($id, $this->spham);
     }
+    // Kết thúc trang admin
+
+    // Bắt đầu trang người dùng
+    public function getChiTietSanPham($id)
+    {
+        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
+        $sp_chitiet = $this->spham->where('id', $id)->limit(1)->get();
+        foreach ($sp_chitiet as $value)
+            $id_dm = $value->dm_id;
+        $sp_lienquan = $this->spham->where('dm_id', $id_dm)->whereNotIn('id', [$id])->get();
+        return view('frontend.sanpham_chitiet', compact('dm', 'sp_chitiet', 'sp_lienquan'));
+    }
+
+    public function getAllSanPham()
+    {
+        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
+
+        $sp = $this->spham->orderBy('ten_sp')->paginate(12);;
+        return view('frontend.sanpham_all', compact('dm', 'sp'));
+    }
+
+    // Kết thúc trang người dùng
 }

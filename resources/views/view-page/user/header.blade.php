@@ -58,7 +58,7 @@
                 <li>
                     <a href="#"> <b> Trang chủ </b> </a>
                 </li>
-                <li>
+                <li class="dropdown dropdown-megamenu">
                     <a
                         class="dropdown-toggle"
                         data-toggle="dropdown"
@@ -67,12 +67,40 @@
                     >
                         <b> Danh mục </b>
                     </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <div class="header-navigation-content">
+                                <div class="row">
+                                    @foreach($dm as $d)
+                                    <div class="col-md-3 header-navigation-col">
+                                        <h4>{{$d->ten_dm}}</h4>
+                                        <ul>
+                                            @foreach($d->DanhMucCon as $dmc)
+                                            <li>
+                                                <a
+                                                    href="{{route('danhmuc.sanpham',
+                                                    [
+                                                    'slug'=>$dmc->slug,'id'=>$dmc->id
+                                                    ]
+                                                    )}}"
+                                                >
+                                                    {{$dmc->ten_dm}}
+                                                </a>
+                                            </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </li>
                 <li>
-                    <a href="#"> <b> Sản phẩm </b> </a>
+                    <a href="{{route('sanpham.all')}}"> <b> Sản phẩm </b> </a>
                 </li>
                 <li>
-                    <a href="#"> <b> 7 ngày đổi trả </b> </a>
+                    <a href="#"> <b> Liên hệ </b> </a>
                 </li>
 
                 <!-- BEGIN TOP SEARCH -->

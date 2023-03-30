@@ -46,7 +46,8 @@
                                 type="text"
                                 class="form-control @error('ten_dm') is-invalid @enderror"
                                 id="ten_dm"
-                                name="ten_dm"
+                                name="ten_dm2"
+                                onchange="changeName()"
                                 value="{{ $dm->ten_dm}}"
                                 placeholder="Nhập tên danh mục"
                                 required
@@ -56,6 +57,20 @@
                                 <b>{{ $errors->first('ten_dm') }}</b>
                             </span>
                             @endif
+                        </div>
+
+                        <div class="form-group">
+                            <label for="opt_dm">Chọn danh mục cha</label>
+                            <select
+                                class="form-control"
+                                id="opt_dm"
+                                name="opt_dm"
+                            >
+                                <option disabled value="">
+                                    - Chọn danh mục cha -
+                                </option>
+                                {!! $DmOpt !!}
+                            </select>
                         </div>
 
                         <button type="submit" class="btn btn-primary">
@@ -71,4 +86,10 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+@endsection @section('js')
+<script>
+    function changeName() {
+        document.getElementById("ten_dm").setAttribute("name", "ten_dm");
+    }
+</script>
 @endsection

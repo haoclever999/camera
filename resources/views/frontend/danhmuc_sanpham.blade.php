@@ -1,0 +1,142 @@
+@extends('layouts.user') @section('title')
+<title>Cửa Hàng Bán Camera Quan Sát, Camera An Ninh, Camera Giám Sát</title>
+@endsection @section('content')
+
+<div class="row margin-bottom-40" style="margin-top: 40px">
+    @include('view-page.user.sidebar_menu')
+    <div class="col-md-9 col-sm-7">
+        <div class="row list-view-sorting clearfix">
+            <div class="col-md-7 col-sm-7">
+                @foreach($ten_dm as $key=> $ten)
+                <h3>{{$ten->ten_dm}}</h3>
+                @endforeach
+            </div>
+            <div class="col-md-5 col-sm-5">
+                <div class="pull-right">
+                    <label class="control-label">Hiển thị:</label>
+                    <select class="form-control input-sm">
+                        <option value="#?limit=24" selected="selected">
+                            24
+                        </option>
+                        <option value="#?limit=25">25</option>
+                        <option value="#?limit=50">50</option>
+                        <option value="#?limit=75">75</option>
+                        <option value="#?limit=100">100</option>
+                    </select>
+                </div>
+                <div class="pull-right">
+                    <label class="control-label">Lọc:</label>
+                    <select class="form-control input-sm">
+                        <option
+                            value="#?sort=p.sort_order&amp;order=ASC"
+                            selected="selected"
+                        >
+                            Default
+                        </option>
+                        <option value="#?sort=pd.name&amp;order=ASC">
+                            Tên (A - Z)
+                        </option>
+                        <option value="#?sort=pd.name&amp;order=DESC">
+                            Tên (Z - A)
+                        </option>
+                        <option value="#?sort=p.price&amp;order=ASC">
+                            Giá (Thấp &gt; Cao)
+                        </option>
+                        <option value="#?sort=p.price&amp;order=DESC">
+                            Giá (Cao &gt; Thấp)
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- BEGIN PRODUCT LIST -->
+        <div class="row product-list">
+            <!-- PRODUCT ITEM START -->
+
+            @if($sp->count()>0) @foreach($sp as $s)
+            <div class="col-md-4 col-sm-6 col-xs-12">
+                <div class="product-item">
+                    <div class="pi-img-wrapper">
+                        <img
+                            src="{{$s->hinh_anh_chinh}}"
+                            class="img-responsive"
+                        />
+                        <div>
+                            <a
+                                href="{{$s->hinh_anh_chinh}}"
+                                class="btn btn-default fancybox-button"
+                            >
+                                Phóng to
+                            </a>
+                            <a
+                                href="{{route('sanpham.chitiet',[$s->id])}}"
+                                class="btn btn-default fancybox-fast-view"
+                            >
+                                Chi tiết
+                            </a>
+                        </div>
+                    </div>
+                    <h3>
+                        <a href="{{route('sanpham.chitiet',[$s->id])}}">
+                            <b> {{$s->ten_sp}} </b>
+                        </a>
+                    </h3>
+                    <div class="pi-price">
+                        {{number_format(round(($s->gia_ban-($s->gia_ban*$s->giam_gia/100)),-3),0,",",".")
+                        }}đ
+                    </div>
+                    <a
+                        href="javascript:;"
+                        class="btn add2cart"
+                        style="background-color: rgba(204, 204, 204, 0.5)"
+                    >
+                        Thêm vào giỏ
+                    </a>
+
+                    @if($s->giam_gia !=0)
+                    <div class="sticker sticker-sale"></div>
+                    @endif
+                </div>
+            </div>
+            @endforeach
+            <!-- PRODUCT ITEM END -->
+            @else
+            <div>
+                <h3>Không có sản phẩm</h3>
+            </div>
+            @endif
+        </div>
+
+        <!-- END PRODUCT LIST -->
+        <!-- BEGIN PAGINATOR -->
+        <div class="row">
+            <div class="col-md-4 col-sm-4 items-info">
+                Items 1 to 9 of 10 total
+            </div>
+            <div class="col-md-8 col-sm-8" style="float: right">
+                {!! $sp->links()!!}
+            </div>
+        </div>
+        <!-- END PAGINATOR -->
+    </div>
+</div>
+
+@endsection @section('js')
+<script
+    src="{{
+        asset('frontend/assets_theme/plugins/uniform/jquery.uniform.min.js')
+    }}"
+    type="text/javascript"
+></script>
+<script
+    src="{{
+        asset('frontend/assets_theme/plugins/rateit/src/jquery.rateit.js')
+    }}"
+    type="text/javascript"
+></script>
+<script
+    src="{{ asset('frontend/assets_theme/plugins/jquery-ui.js') }}"
+    type="text/javascript"
+></script>
+<!-- for slider-range -->
+@endsection

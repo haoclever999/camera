@@ -76,10 +76,7 @@
             href="{{ asset('frontend/assets_theme/pages/css/components.css') }}"
             rel="stylesheet"
         />
-        <!-- <link
-            href="{{ asset('frontend/assets_theme/pages/css/slider.css') }}"
-            rel="stylesheet"
-        /> -->
+
         <link
             href="{{ asset('frontend/assets_theme/pages/css/style-shop.css') }}"
             rel="stylesheet"
@@ -126,9 +123,7 @@
         @include('view-page.user.footer')
 
         <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
+
         @yield('js')
         <!-- Load javascripts at bottom, this will reduce page load time -->
         <!-- BEGIN CORE PLUGINS (REQUIRED FOR ALL PAGES) -->

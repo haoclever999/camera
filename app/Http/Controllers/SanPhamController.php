@@ -70,7 +70,6 @@ class SanPhamController extends Controller
 
     public function store(Request $request)
     {
-
         $request->validate(
             [
                 'ten_sp' => 'required|max:191|unique:san_phams',
@@ -257,9 +256,9 @@ class SanPhamController extends Controller
     public function getAllSanPham()
     {
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
-
-        $sp = $this->spham->orderBy('ten_sp')->paginate(12);;
-        return view('frontend.sanpham_all', compact('dm', 'sp'));
+        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
+        $sp = $this->spham->orderBy('ten_sp')->paginate(12);
+        return view('frontend.sanpham_all', compact('dm', 'sp', 'th'));
     }
 
     // Kết thúc trang người dùng

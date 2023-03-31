@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('so_luong_ban');
             $table->decimal('gia', 9, 0);
             $table->decimal('thanh_tien', 9, 0);
-            $table->text('ghi_chu');
+            $table->text('ghi_chu')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

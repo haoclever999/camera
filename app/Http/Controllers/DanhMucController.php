@@ -125,10 +125,13 @@ class DanhMucController extends Controller
         $sp = $this->sanpham->where('dm_id', $id_dm)->paginate(6);
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
         $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
-
-        foreach ($sp as $value)
-            $id_th[] = $value->thuong_hieu_id;
-        $th_sp = $this->thuonghieu->whereIn('id', $id_th)->distinct()->get();
+        if (count($sp) > 0) {
+            foreach ($sp as $value)
+                $id_th[] = $value->thuong_hieu_id;
+            $th_sp = $this->thuonghieu->whereIn('id', $id_th)->distinct()->get();
+        } else {
+            $th_sp = [];
+        }
 
         return view('frontend.danhmuc_sanpham', compact('dm', 'sp', 'ten_dm', 'th_sp'));
     }

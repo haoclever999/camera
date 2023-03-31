@@ -496,3 +496,25 @@ iframe {
         opacity: 1;
     }
 }
+
+/* user  */
+.social {
+    margin: 5px;
+    text-align: center;
+}
+
+.social a {
+    display: inline-block;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+}
+.social a img {
+    border-radius: 5px;
+}
+
+.login_message > p > a:hover#dangky {
+    font-weight: bold !important;
+    color: #11009f !important;
+}

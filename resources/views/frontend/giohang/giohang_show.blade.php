@@ -30,94 +30,157 @@
     <div class="col-md-12 col-sm-12">
         <h1>Giỏ hàng của bạn</h1>
         <div class="goods-page">
+            @if(Session::has('success'))
+            <h3>{{ Session::get('success')}}</h3>
+            @endif @if(Cart::count()>0)
             <div class="goods-data clearfix">
                 <div class="table-wrapper-responsive">
                     <table summary="Shopping cart">
                         <tr style="background-color: rgba(204, 204, 204, 0.8)">
                             <th class="goods-page-name">Sản phẩm</th>
                             <th class="goods-page-image">Hình ảnh</th>
-                            <th class="goods-page-description">Description</th>
                             <th class="goods-page-quantity">Số lượng</th>
                             <th class="goods-page-price">Giá bán</th>
                             <th class="goods-page-total" colspan="2">Tổng</th>
                         </tr>
-                        @foreach()
+                        @foreach(Cart::content() as $nd)
+
                         <tr>
                             <td class="goods-page-name">
-                                <a href="javascript:;"
-                                    ><img
-                                        src="assets/pages/img/products/model3.jpg"
-                                        alt="Berry Lace Dress"
-                                /></a>
+                                <a
+                                    href="route('sanpham.chitiet',[$nd->id])"
+                                    style="font-size: 20px"
+                                >
+                                    {{$nd->name}}
+                                </a>
                             </td>
                             <td class="goods-page-image">
-                                <a href="javascript:;"
-                                    ><img
-                                        src="assets/pages/img/products/model3.jpg"
-                                        alt="Berry Lace Dress"
-                                /></a>
+                                <img src="{{$nd->options->hinh_anh}}" />
                             </td>
-                            <td class="goods-page-description">
-                                <h3>
-                                    <a href="javascript:;"
-                                        >Cool green dress with red bell</a
-                                    >
-                                </h3>
-                                <p>
-                                    <strong>Item 1</strong> - Color: Green;
-                                    Size: S
-                                </p>
-                                <em>More info is here</em>
-                            </td>
-                            <td class="goods-page-quantity">
-                                <div class="product-quantity">
+                            <td
+                                class="goods-page-quantity"
+                                style="max-width: 100px"
+                            >
+                                <form
+                                    action="{{
+                                        route('giohang.capnhat_soluong')
+                                    }}"
+                                    method="post"
+                                >
+                                    @csrf
                                     <input
-                                        id="product-quantity"
-                                        type="text"
-                                        value="1"
-                                        readonly
-                                        class="form-control input-sm"
+                                        type="hidden"
+                                        name="rowId"
+                                        value="{{$nd->rowId}}"
                                     />
-                                </div>
+                                    <div class="product-quantity">
+                                        <input
+                                            id="product-quantity"
+                                            name="num_so_luong"
+                                            type="text"
+                                            value="{{$nd->qty}}"
+                                            onchange="SoLuongMinMax(this)"
+                                            max="{{$nd->options->ton}}"
+                                            readonly
+                                            class="form-control input-sm"
+                                        />
+                                    </div>
+                                    <button
+                                        class="btn btn-primary"
+                                        id="capnhat_soluong"
+                                        type="submit"
+                                        style="
+                                            display: none;
+                                            float: none;
+                                            margin-left: auto;
+                                            vertical-align: center;
+                                            padding-top: 9px;
+                                            padding-bottom: 9px;
+                                        "
+                                    >
+                                        Cập nhật
+                                    </button>
+                                </form>
                             </td>
                             <td class="goods-page-price">
-                                <strong><span>$</span>47.00</strong>
+                                <strong>
+                                    {{number_format($nd->price,0,',','.')}}
+                                    đ
+                                </strong>
                             </td>
                             <td class="goods-page-total">
-                                <strong><span>$</span>47.00</strong>
+                                <strong>
+                                    {{number_format(($nd->price*$nd->qty),0,',','.')
+                                    }}
+                                    đ
+                                </strong>
                             </td>
                             <td class="del-goods-col">
-                                <a class="del-goods" href="javascript:;"
-                                    >&nbsp;</a
+                                <a
+                                    class="del-goods"
+                                    href="{{route('giohang.xoa_sp',['rowId'=>$nd->rowId])}}"
+                                    style="background-color: #ff3737"
                                 >
+                                    &nbsp;
+                                </a>
                             </td>
                         </tr>
+                        @endforeach
                     </table>
                 </div>
 
                 <div class="shopping-total">
                     <ul>
                         <li>
-                            <em>Sub total</em>
-                            <strong class="price"><span>$</span>47.00</strong>
+                            <em>Tổng tiền</em>
+                            <strong class="price">
+                                {{Cart::subtotal(0,',','.') }}
+                                đ
+                            </strong>
                         </li>
                         <li>
-                            <em>Shipping cost</em>
-                            <strong class="price"><span>$</span>3.00</strong>
+                            <em>Thuế</em>
+                            <strong class="price">
+                                {{Cart::tax(0,',','.')}} đ</strong
+                            >
+                        </li>
+                        <li>
+                            <em>Phí vận chuyển</em>
+                            <strong class="price">Free</strong>
                         </li>
                         <li class="shopping-total-price">
-                            <em>Total</em>
-                            <strong class="price"><span>$</span>50.00</strong>
+                            <em>Thành tiền</em>
+                            <strong class="price">
+                                {{Cart::total(0,',','.') }}
+                                đ
+                            </strong>
                         </li>
                     </ul>
                 </div>
             </div>
-            <button class="btn btn-default" type="submit">
-                Continue shopping <i class="fa fa-shopping-cart"></i>
-            </button>
-            <button class="btn btn-primary" type="submit">
-                Checkout <i class="fa fa-check"></i>
-            </button>
+            @else
+            <div style="min-height: 300px">
+                <br />
+                <h3 style="padding-left: 50px">Không có sản phẩm trong giỏ</h3>
+            </div>
+
+            @endif
+            <a
+                href="{{ route('sanpham.all') }}"
+                class="btn btn-default"
+                type="button"
+            >
+                Tiếp tục mua sản phẩm <i class="fa fa-shopping-cart"></i>
+            </a>
+            @if(Cart::count()>0)
+            <a
+                href="{{ route('thanhtoan.getThanhToan') }}"
+                class="btn btn-primary"
+                type="button"
+            >
+                Thanh toán <i class="fa fa-check"></i>
+            </a>
+            @endif
         </div>
     </div>
 </div>
@@ -139,8 +202,21 @@
     }}"
     type="text/javascript"
 ></script>
-<script src="{{
-        asset('frontend/assets_theme/plugins/carousel/carousel.js')
-    }}"></script>
-
+<script
+    src="{{ asset('frontend/assets_theme/plugins/carousel/carousel.js') }}"
+    type="text/javascript"
+></script>
+<script>
+    function SoLuongMinMax(el) {
+        if (el.value != "") {
+            if (parseInt(el.value) < parseInt(el.min)) {
+                el.value = el.min;
+            }
+            if (parseInt(el.value) > parseInt(el.max)) {
+                el.value = el.max;
+            }
+        }
+        document.getElementById("capnhat_soluong").style.display = "block";
+    }
+</script>
 @endsection

@@ -13,11 +13,7 @@
         class="sidebar-brand d-flex align-items-center justify-content-center"
         href="{{ route('admin.index') }}"
     >
-        <img
-            src="{{ asset('frontend/img/Logo_trong.png') }}"
-            alt="HaoNganTelecom"
-            width="100"
-        />
+        <img src="{{ asset('frontend/img/logo.png') }}" width="60px" />
     </a>
 
     <!-- Divider -->

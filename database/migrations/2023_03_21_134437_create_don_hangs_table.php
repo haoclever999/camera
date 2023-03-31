@@ -16,10 +16,12 @@ return new class extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onUpdate('cascade');
+            $table->string('ten_kh', 191);
             $table->string('sdt_kh', 191);
             $table->string('dia_chi_kh', 191);
             $table->integer('tong_so_luong');
             $table->decimal('tong_tien', 9, 0);
+            $table->text('ghi_chu')->nullable();
             $table->string('trang_thai', 191);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

@@ -13,4 +13,6 @@
 -- chức năng lọc và hiển thị số lượt xem
 -- chức năng cmt, review
 
-----* Your requirements could not be resolved to an installable set of packages.
+--  icon người dùng trang home
+    check quyền người dùng
+    thêm đơn hàng chi tiết

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Đăng nhập Admin</title>
+        <title>Đăng nhập</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -83,7 +83,7 @@
                 <div class="wrap-login100" style="padding-top: 55px">
                     <form
                         class="login100-form validate-form was-validated"
-                        action="{{ route('postDangNhap') }}"
+                        action="{{ route('postDangNhapUser') }}"
                         method="post"
                     >
                         @csrf
@@ -139,6 +139,26 @@
                             @endif
                         </div>
 
+                        <div class="login_remember_box">
+                            <label
+                                class="control control--checkbox"
+                                style="
+                                    font-family: Poppins-Regular;
+                                    color: #555555;
+                                "
+                            >
+                                Ghi nhớ
+                                <input type="checkbox" />
+                                <span class="control__indicator"></span>
+                            </label>
+                            <a
+                                href="{{ route('getQuenMatKhauUser') }}"
+                                style="text-decoration: none; float: right"
+                            >
+                                Quên mật khẩu
+                            </a>
+                        </div>
+
                         <div class="container-login100-form-btn">
                             <div class="wrap-login100-form-btn">
                                 <div class="login100-form-bgbtn"></div>
@@ -146,6 +166,45 @@
                                     Đăng nhập
                                 </button>
                             </div>
+                        </div>
+                        <br />
+                        <div class="login_message">
+                            <p style="text-align: center">
+                                Không có tài khoản?
+                                <a
+                                    href="{{ route('getDangKy') }}"
+                                    id="dangky"
+                                    style="
+                                        text-decoration: none;
+                                        color: #2713cf;
+                                    "
+                                >
+                                    Đăng ký</a
+                                >
+                            </p>
+                        </div>
+
+                        <h4 style="text-align: center">hoặc</h4>
+                        <div class="social">
+                            <a href="#" class="facebook">
+                                <img
+                                    src="{{
+                                        asset('frontend/img/facebook-logo.png')
+                                    }}"
+                                    width="40px"
+                                />
+                            </a>
+
+                            <a href="#" class="google">
+                                <img
+                                    src="{{
+                                        asset(
+                                            'frontend/img/google-plus-logo.png'
+                                        )
+                                    }}"
+                                    width="40px"
+                                />
+                            </a>
                         </div>
                     </form>
                 </div>

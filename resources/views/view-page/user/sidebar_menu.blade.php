@@ -44,7 +44,22 @@
 
     <h4><b>Thương hiệu</b></h4>
     <ul class="list-group margin-bottom-25 sidebar-menu">
-        @foreach($th_sp as $th) @foreach($ten_dm as $ten)
+        <!-- Kiểm tra $th tồn tại  -->
+        @if(!empty($th)) @foreach($th as $t)
+
+        <li class="list-group-item clearfix dropdown">
+            <a
+                href="{{route('thuonghieu.sanpham_all',
+            [
+            'slug'=>$t->slug,'id'=>$t->id
+            ]
+            )}}"
+            >
+                {{$t->ten_thuong_hieu}}
+            </a>
+        </li>
+        @endforeach @elseif(isset($th_sp)) @foreach($th_sp as $th)
+        @foreach($ten_dm as $ten)
 
         <li class="list-group-item clearfix dropdown">
             <a
@@ -57,6 +72,6 @@
                 {{$th->ten_thuong_hieu}}
             </a>
         </li>
-        @endforeach @endforeach
+        @endforeach @endforeach @endif
     </ul>
 </div>

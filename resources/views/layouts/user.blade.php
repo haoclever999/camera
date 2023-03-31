@@ -106,6 +106,7 @@
             rel="stylesheet"
         />
         <!-- Theme styles END -->
+
         @yield('css')
     </head>
 

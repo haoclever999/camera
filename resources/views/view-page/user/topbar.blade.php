@@ -4,24 +4,91 @@
             <!-- BEGIN TOP BAR LEFT PART -->
             <div class="col-md-6 col-sm-6 additional-shop-info">
                 <ul class="list-unstyled list-inline">
-                    <li><i class="fa fa-phone"></i><span>+1 456 6717</span></li>
-                    <!-- BEGIN CURRENCIES -->
-                    <li class="shop-currencies">
-                        <a href="javascript:void(0);">€</a>
-                        <a href="javascript:void(0);">£</a>
-                        <a href="javascript:void(0);" class="current">$</a>
-                    </li>
-                    <!-- END CURRENCIES -->
+                    <li><i class="fa fa-phone"></i><span>0766917312</span></li>
                 </ul>
             </div>
             <!-- END TOP BAR LEFT PART -->
             <!-- BEGIN TOP BAR MENU -->
             <div class="col-md-6 col-sm-6 additional-nav">
                 <ul class="list-unstyled list-inline pull-right">
-                    <li><a href="#">My Account</a></li>
-                    <li><a href="#">My Wishlist</a></li>
-                    <li><a href="#">Checkout</a></li>
-                    <li><a href="#">Log In</a></li>
+                    @if(Auth::check())
+                    <li class="nav-item dropdown no-arrow">
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            id="userDropdown"
+                            role="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                            style="
+                                text-decoration: none;
+                                vertical-align: middle;
+                                margin: -5px;
+                            "
+                        >
+                            <span
+                                style="
+                                    vertical-align: middle;
+                                    font-size: 1.5rem;
+                                "
+                            >
+                                {{Auth::user()->ho_ten}}
+                            </span>
+                            <img
+                                src="{{
+                                    asset('frontend/img/undraw_profile.svg')
+                                }}"
+                                width="20px"
+                            />
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div
+                            class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                            aria-labelledby="userDropdown"
+                            style="margin-top: 0"
+                        >
+                            <a
+                                class="dropdown-item"
+                                href="{{ route('nguoidung.gethosoUser',['id'=>Auth::user()->id]) }}"
+                                style="text-decoration: none"
+                            >
+                                <i
+                                    class="fas fa-user fa-sm fa-fw mr-2 text-gray"
+                                >
+                                </i>
+                                Hồ sơ cá nhân
+                            </a>
+                            <a
+                                class="dropdown-item"
+                                href="{{ route('nguoidung.getdoimatkhauUser',['id'=>Auth::user()->id]) }}"
+                                style="text-decoration: none"
+                            >
+                                <i
+                                    class="fas fa-cogs fa-sm fa-fw mr-2 text-gray"
+                                >
+                                </i>
+                                Đổi mật khẩu
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a
+                                class="dropdown-item"
+                                href="{{ route('DangXuatUser') }}"
+                                style="text-decoration: none"
+                            >
+                                <i
+                                    class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray"
+                                >
+                                </i>
+                                Đăng xuất
+                            </a>
+                        </div>
+                    </li>
+                    @else
+                    <li>
+                        <a href="{{ route('getDangNhapUser') }}">Đăng nhập</a>
+                    </li>
+                    @endif
                 </ul>
             </div>
             <!-- END TOP BAR MENU -->

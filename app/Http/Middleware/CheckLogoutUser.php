@@ -4,10 +4,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
-class CheckLogin
+class CheckLogoutUser
 {
     /**
      * Handle an incoming request.
@@ -16,10 +16,9 @@ class CheckLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && auth()->user()->quyen == 'Khách hàng')
-            return redirect()->route('home.index');
-        if (Auth::check() && auth()->user()->quyen != 'Khách hàng')
-            return redirect()->route('admin.index');
+        if (Auth::guest()) {
+            return redirect()->route('getDangNhapUser');
+        }
         return $next($request);
     }
 }

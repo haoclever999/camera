@@ -56,14 +56,14 @@
                     <div class="price-availability-block clearfix">
                         <div class="price">
                             <strong>
-                                {{number_format(round(($spct->gia_ban-($spct->gia_ban*$spct->giam_gia/100)),-3),0,",",".")
+                                {{number_format(($spct->gia_ban-($spct->gia_ban*$spct->giam_gia/100)),0,',','.')
                                 }}
                                 đ
                             </strong>
                             @if($spct->giam_gia!=0)
                             <span style="font-size: 18px">
                                 <del>
-                                    {{number_format(round(($spct->gia_ban),-3),0,",",".")
+                                    {{number_format(($spct->gia_ban),0,',','.')
                                     }}
                                     đ
                                 </del>
@@ -102,7 +102,7 @@
                     @if($spct->ton>0)
                     <div class="product-page-cart" style="margin-top: 30px">
                         <form
-                            action="{{ route('giohang.themgiohang') }}"
+                            action="{{ route('giohang.them_giohang') }}"
                             method="post"
                         >
                             @csrf
@@ -111,10 +111,15 @@
                                 name="id_sp"
                                 value="{{$spct->id}}"
                             />
+                            <input
+                                type="hidden"
+                                name="gia"
+                                value="{{number_format(($spct->gia_ban-($spct->gia_ban*$spct->giam_gia/100)),0,',','.')}}"
+                            />
                             <div class="product-quantity">
                                 <input
                                     id="product-quantity"
-                                    name="num_soluong"
+                                    name="num_so_luong"
                                     type="number"
                                     min="1"
                                     value="1"
@@ -233,7 +238,7 @@
                                                     </a>
                                                 </h3>
                                                 <div class="pi-price">
-                                                    {{number_format(round(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),-3),0,",",".")
+                                                    {{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')
                                                     }}
                                                     đ
                                                 </div>

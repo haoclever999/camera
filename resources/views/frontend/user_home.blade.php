@@ -35,18 +35,34 @@
                     </a>
                 </h3>
                 <div class="pi-price">
-                    {{number_format(round(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),-3),0,",",".")
-                    }}đ
-                </div>
-                <a
-                    href="javascript:;"
-                    class="btn add2cart"
-                    style="background-color: rgba(204, 204, 204, 0.5)"
-                >
-                    Thêm vào giỏ
-                </a>
+                    {{number_format(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),0,',','.')
 
-                @if($sp_m->giam_gia !=0)
+                    }}
+                </div>
+                @if($sp_m->ton>0)
+                <form
+                    action="{{ route('giohang.them_giohang') }}"
+                    method="post"
+                >
+                    @csrf
+                    <input type="hidden" name="id_sp" value="{{$sp_m->id}}" />
+                    <input
+                        type="hidden"
+                        name="gia"
+                        value="{{number_format(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),0,',','.')}}"
+                    />
+                    <div class="product-quantity">
+                        <input name="num_so_luong" type="hidden" value="1" />
+                    </div>
+                    <button
+                        class="btn add2cart"
+                        type="submit"
+                        style="background-color: rgba(204, 204, 204, 0.5)"
+                    >
+                        Thêm vào giỏ
+                    </button>
+                </form>
+                @endif @if($sp_m->giam_gia !=0)
                 <div class="sticker sticker-sale"></div>
                 @endif
             </div>
@@ -97,19 +113,35 @@
                     </a>
                 </h3>
                 <div class="pi-price">
-                    {{number_format(round(($sp_nb->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),-3),0,",",".")
+                    {{number_format(($sp_nb->gia_ban-($sp_nb->gia_ban*$sp_nb->giam_gia/100)),0,',','.')
 
-                    }}đ
+                    }}
+                    đ
                 </div>
-                <a
-                    href="javascript:;"
-                    class="btn add2cart"
-                    style="background-color: rgba(204, 204, 204, 0.5)"
+                @if($sp_nb->ton>0)
+                <form
+                    action="{{ route('giohang.them_giohang') }}"
+                    method="post"
                 >
-                    Thêm vào giỏ
-                </a>
-
-                @if($sp_nb->giam_gia !=0)
+                    @csrf
+                    <input type="hidden" name="id_sp" value="{{$sp_nb->id}}" />
+                    <input
+                        type="hidden"
+                        name="gia"
+                        value="{{number_format(($sp_nb->gia_ban-($sp_nb->gia_ban*$sp_nb->giam_gia/100)),0,',','.')}}"
+                    />
+                    <div class="product-quantity">
+                        <input name="num_so_luong" type="hidden" value="1" />
+                    </div>
+                    <button
+                        class="btn add2cart"
+                        type="submit"
+                        style="background-color: rgba(204, 204, 204, 0.5)"
+                    >
+                        Thêm vào giỏ
+                    </button>
+                </form>
+                @endif @if($sp_nb->giam_gia !=0)
                 <div class="sticker sticker-sale"></div>
                 @endif
             </div>

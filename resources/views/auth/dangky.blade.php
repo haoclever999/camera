@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Đăng nhập Admin</title>
+        <title>Đăng ký</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -83,7 +83,7 @@
                 <div class="wrap-login100" style="padding-top: 55px">
                     <form
                         class="login100-form validate-form was-validated"
-                        action="{{ route('postDangNhap') }}"
+                        action="{{ route('postDangNhapUser') }}"
                         method="post"
                     >
                         @csrf
@@ -96,6 +96,23 @@
                         <br />
                         <br />
                         @endif
+
+                        <div
+                            class="wrap-input100 validate-input"
+                            data-validate="Nhập họ tên"
+                        >
+                            <input class="input100" type="text" name="ho_ten" />
+                            <span
+                                class="focus-input100"
+                                data-placeholder="Họ tên"
+                            >
+                            </span>
+                            @if ($errors->has('ho_ten'))
+                            <span class="help-block" style="color: #ff3f3f">
+                                <b>{{ $errors->first('ho_ten') }}</b>
+                            </span>
+                            @endif
+                        </div>
 
                         <div
                             class="wrap-input100 validate-input"
@@ -139,11 +156,36 @@
                             @endif
                         </div>
 
+                        <div
+                            class="wrap-input100 validate-input"
+                            data-validate="Nhập lại mật khẩu"
+                        >
+                            <span class="btn-show-pass">
+                                <i class="zmdi zmdi-eye"></i>
+                            </span>
+                            <input
+                                class="input100"
+                                type="password"
+                                name="confirm_password"
+                                minlength="6"
+                            />
+                            <span
+                                class="focus-input100"
+                                data-placeholder="Nhập lại mật khẩu"
+                            >
+                            </span>
+                            @if ($errors->has('password'))
+                            <span class="help-block" style="color: #ff3f3f">
+                                <b>{{ $errors->first('password') }}</b>
+                            </span>
+                            @endif
+                        </div>
+
                         <div class="container-login100-form-btn">
                             <div class="wrap-login100-form-btn">
                                 <div class="login100-form-bgbtn"></div>
                                 <button class="login100-form-btn">
-                                    Đăng nhập
+                                    Đăng ký
                                 </button>
                             </div>
                         </div>

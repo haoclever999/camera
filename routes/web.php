@@ -98,11 +98,34 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
 });
 
 //user
+
+Route::get('dang-nhap', [AuthController::class, 'getDangNhapUser'])->name('getDangNhapUser')->middleware('CheckLogin');
+Route::post('dang-nhap', [AuthController::class, 'postDangNhapUser'])->name('postDangNhapUser');
+Route::get('dang-xuat', [AuthController::class, 'DangXuatUser'])->name('DangXuatUser');
+Route::get('dang-nhap/quen-mat-khau', [AuthController::class, 'getQuenMatKhauUser'])->name('getQuenMatKhauUser');
+Route::post('dang-nhap/quen-mat-khau', [AuthController::class, 'postQuenMatKhauUser'])->name('postQuenMatKhauUser');
+Route::get('dang-ky', [AuthController::class, 'getDangKy'])->name('getDangKy');
+Route::post('dang-ky', [AuthController::class, 'postDangKy'])->name('postDangKy');
+
+//tài khoản người dùng
+Route::get('/ho-so-nguoi-dung/{id}', [NguoiDungController::class, 'gethosoUser'])->name('nguoidung.gethosoUser');
+Route::post('/ho-so-nguoi-dung/{id}', [NguoiDungController::class, 'posthosoUser'])->name('nguoidung.posthosoUser');
+Route::get('/doi-mat-khau/{id}', [NguoiDungController::class, 'getdoimatkhauUser'])->name('nguoidung.getdoimatkhauUser');
+Route::post('/doi-mat-khau/{id}', [NguoiDungController::class, 'postdoimatkhauUser'])->name('nguoidung.postdoimatkhauUser');
+//sản phẩm
 Route::get('/', [HomeController::class, 'home'])->name('home.index');
 Route::get('/danh-muc/{slug}/{id}', [DanhMucController::class, 'getDanhMucSanPham'])->name('danhmuc.sanpham');
-Route::get('/danh-muc/{id_dm}/thuong-hieu/{slug}/{id}', [ThuongHieuController::class, 'getThuongHieuSanPham'])->name('thuonghieu.sanpham');
+Route::get('/danh-muc/{id_dm}/thuong-hieu/{slug}/{id}', [ThuongHieuController::class, 'getThuongHieuDanhMuc'])->name('thuonghieu.sanpham');
+Route::get('/thuong-hieu/{slug}/{id}', [ThuongHieuController::class, 'getThuongHieuSanPham'])->name('thuonghieu.sanpham_all');
 Route::get('/chi-tiet-san-pham/{id}', [SanPhamController::class, 'getChiTietSanPham'])->name('sanpham.chitiet');
 Route::get('/san-pham', [SanPhamController::class, 'getAllSanPham'])->name('sanpham.all');
 
 //giỏ hàng
-Route::post('/them-gio-hang', [GioHangController::class, 'show'])->name('giohang.themgiohang');
+Route::post('/them-gio-hang', [GioHangController::class, 'create'])->name('giohang.them_giohang');
+Route::get('/gio-hang', [GioHangController::class, 'show'])->name('giohang.show_giohang');
+Route::post('/gio-hang/cap-nhat-so-luong', [GioHangController::class, 'update'])->name('giohang.capnhat_soluong');
+Route::get('/gio-hang/xoa-san-pham/{rowId}', [GioHangController::class, 'remove'])->name('giohang.xoa_sp');
+
+//thanh toán
+Route::get('/thanh-toan', [GioHangController::class, 'getThanhToan'])->name('thanhtoan.getThanhToan')->middleware('CheckLogoutUser');
+Route::post('/thanh-toan', [GioHangController::class, 'postThanhToan'])->name('thanhtoan.postThanhToan')->middleware('CheckLogoutUser');

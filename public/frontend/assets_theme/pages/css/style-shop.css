@@ -7,7 +7,7 @@ body.ecommerce {
 .ecommerce h4,
 .ecommerce h5,
 .ecommerce h6 {
-    font-family: "PT Sans Narrow", sans-serif;
+    font-family: "Open Sans", sans-serif;
     margin: 0 0 10px;
     text-transform: uppercase;
 }
@@ -62,7 +62,7 @@ Header and header elements
 
 /* Navigation */
 .ecommerce .header-navigation {
-    font: 19px "PT Sans Narrow", sans-serif;
+    font: 19px "Open Sans", sans-serif;
     letter-spacing: 1px;
     margin: 0;
 }
@@ -343,7 +343,7 @@ Header and header elements
 /* breadcrumb */
 .ecommerce .breadcrumb {
     text-transform: uppercase;
-    font: 13px "PT Sans Narrow", sans-serif;
+    font: 13px "Open Sans", sans-serif;
 }
 
 /* Catalogue styles */
@@ -432,7 +432,7 @@ Header and header elements
 }
 .pi-price {
     color: #e84d1c;
-    font: 18px "PT Sans Narrow", sans-serif;
+    font: 18px "Open Sans", sans-serif;
     float: left;
     padding-top: 1px;
 }
@@ -474,7 +474,7 @@ Header and header elements
 }
 .goods-data td,
 .checkout-page td {
-    vertical-align: top;
+    vertical-align: center;
     padding: 20px 20px 20px 0;
     border-bottom: solid 1px #ecebeb;
 }
@@ -490,7 +490,7 @@ Header and header elements
 .goods-page-total,
 .checkout-price,
 .checkout-total {
-    font-family: "PT Sans Narrow", sans-serif;
+    font-family: "Open Sans", sans-serif;
 }
 .goods-page-price strong,
 .goods-page-total strong,
@@ -548,7 +548,7 @@ Header and header elements
 
 .shopping-total,
 .checkout-total-block {
-    width: 230px;
+    min-width: 300px;
     float: right;
     padding-top: 9px;
     color: #3e4d5c;
@@ -575,7 +575,7 @@ Header and header elements
 }
 .shopping-total em,
 .checkout-total-block em {
-    font: 18px "PT Sans Narrow", sans-serif;
+    font: 18px "Open Sans", sans-serif;
     float: left;
     text-transform: uppercase;
     position: relative;
@@ -584,7 +584,7 @@ Header and header elements
 .shopping-total strong,
 .checkout-total-block strong {
     color: #e84d1c;
-    font: 21px "PT Sans Narrow", sans-serif;
+    font: 21px "Open Sans", sans-serif;
     font-weight: normal;
     float: right;
 }
@@ -605,7 +605,7 @@ Header and header elements
 .checkout-page h2 {
     background: #a7b0b8;
     color: #fff;
-    font: 17px "PT Sans Narrow", sans-serif;
+    font: 17px "Open Sans", sans-serif;
     margin: 0 0 15px;
 }
 .checkout-page h2 a {
@@ -631,7 +631,7 @@ Header and header elements
     color: #e02222;
 }
 .checkout-page h3 {
-    font: 23px "PT Sans Narrow", sans-serif;
+    font: 23px "Open Sans", sans-serif;
     color: #3e4d5c;
     padding-top: 10px;
 }
@@ -815,7 +815,7 @@ div.radio.disabled.active span.checked {
 }
 
 .ecommerce .sidebar {
-    font: 15px "PT Sans Narrow", sans-serif;
+    font: 15px "Open Sans", sans-serif;
     color: #3e4d5c;
     text-transform: uppercase;
 }
@@ -905,7 +905,7 @@ div.radio.disabled.active span.checked {
 .sidebar-products .price {
     margin-left: 80px;
     color: #e84d1c;
-    font: 16px "PT Sans Narrow", sans-serif;
+    font: 16px "Open Sans", sans-serif;
 }
 
 /* BEGIN product page */
@@ -944,7 +944,7 @@ div.radio.disabled.active span.checked {
 }
 .price-availability-block .price {
     float: left;
-    font-family: "PT Sans Narrow", sans-serif;
+    font-family: "Open Sans", sans-serif;
 }
 .price-availability-block .price strong {
     color: #e84d1c;
@@ -992,7 +992,7 @@ div.radio.disabled.active span.checked {
     font-weight: normal;
     text-transform: uppercase;
     color: #8e9ca8;
-    font-family: "PT Sans Narrow", sans-serif;
+    font-family: "Open Sans", sans-serif;
     float: left;
     margin-right: 10px;
     padding-top: 2px;
@@ -1119,7 +1119,7 @@ table .product-quantity .input-group {
 
 .ecommerce .nav-tabs {
     text-transform: uppercase;
-    font: 16px/1 "PT Sans Narrow", sans-serif;
+    font: 16px/1 "Open Sans", sans-serif;
 }
 .ecommerce .nav-tabs > li > a,
 .ecommerce .nav-tabs > li > a:hover,
@@ -1210,7 +1210,7 @@ table .product-quantity .input-group {
 
     font-size: 14px;
     color: rgba(0, 0, 0, 0.8);
-    font-family: "PT Sans Narrow", sans-serif;
+    font-family: "Open Sans", sans-serif;
     float: left;
     margin-right: 10px;
     position: relative;
@@ -1231,7 +1231,7 @@ table .product-quantity .input-group {
 }
 
 .content-form-page legend {
-    font: 18px "PT Sans Narrow", sans-serif;
+    font: 18px "Open Sans", sans-serif;
     text-transform: uppercase;
     margin-bottom: 14px;
 }

@@ -1,10 +1,7 @@
 <div class="header">
     <div class="container">
         <a class="site-logo" href="{{ route('home.index') }}">
-            <img
-                src="{{ asset('frontend/img/logo_ne.png') }}"
-                alt="HaoNganTelecom"
-            />
+            <img src="{{ asset('frontend/img/logo.png') }}" width="70px" />
         </a>
 
         <a href="#" class="mobi-toggler">
@@ -14,38 +11,66 @@
         <!-- BEGIN CART -->
         <div class="top-cart-block">
             <div class="top-cart-info">
-                <!-- tổng sản phẩm điều chỉnh -->
-                <a href="#" class="top-cart-info-count"> 3 items </a>
-                <!-- tổng tiền điều chỉnh -->
-                <a href="#" class="top-cart-info-value"> $1260 </a>
+                <span class="top-cart-info-count">
+                    {{Cart::count()}} sản phẩm
+                </span>
+                <span class="top-cart-info-value">
+                    {{Cart::total(0,',','.')}} đ
+                </span>
             </div>
             <i class="fa fa-shopping-cart"></i>
 
             <div class="top-cart-content-wrapper">
                 <div class="top-cart-content">
                     <ul class="scroller" style="height: 250px">
-                        <!-- foreach hình ảnh, số lượng, tên sp, xóa  -->
+                        @foreach(Cart::content() as $nd)
                         <li>
-                            <a href="#"
-                                ><img
-                                    src="assets/pages/img/cart-img.jpg"
-                                    alt="Rolex Classic Watch"
+                            <a href="route('sanpham.chitiet',[$nd->id])">
+                                <img
+                                    src="{{$nd->options->hinh_anh}}"
                                     width="37"
                                     height="34"
-                            /></a>
-                            <span class="cart-content-count">x 1</span>
-                            <strong
-                                ><a href="#"> Rolex Classic Watch </a></strong
+                                />
+                            </a>
+                            <span class="cart-content-count">
+                                x {{$nd->qty}}
+                            </span>
+                            <strong>
+                                <a href="route('sanpham.chitiet',[$nd->id])">
+                                    {{$nd->name}}
+                                </a>
+                            </strong>
+                            <em>
+                                {{number_format(($nd->price*$nd->qty),0,',','.')
+                                }}
+                                đ
+                            </em>
+
+                            <a
+                                class="del-goods"
+                                href="{{route('giohang.xoa_sp',['rowId'=>$nd->rowId])}}"
+                                style="background-color: #ff3737"
                             >
-                            <em>$1230</em>
-                            <a href="javascript:void(0);" class="del-goods"
-                                >&nbsp;</a
-                            >
+                                &nbsp;
+                            </a>
                         </li>
+                        @endforeach
                     </ul>
                     <div class="text-right">
-                        <a href="#" class="btn btn-default"> Xem giỏ hàng </a>
-                        <a href="#" class="btn btn-primary"> Thanh toán </a>
+                        <a
+                            href="{{ route('giohang.show_giohang') }}"
+                            class="btn btn-default"
+                        >
+                            Xem giỏ hàng
+                        </a>
+                        @if(Cart::count()>0)
+                        <a
+                            href="{{ route('thanhtoan.getThanhToan') }}"
+                            class="btn btn-primary"
+                        >
+                            Thanh toán
+                        </a>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -97,7 +122,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="{{route('sanpham.all')}}"> <b> Sản phẩm </b> </a>
+                    <a href="{{ route('sanpham.all') }}"> <b> Sản phẩm </b> </a>
                 </li>
                 <li>
                     <a href="#"> <b> Liên hệ </b> </a>

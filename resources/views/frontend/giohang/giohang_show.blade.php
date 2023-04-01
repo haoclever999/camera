@@ -31,8 +31,11 @@
         <h1>Giỏ hàng của bạn</h1>
         <div class="goods-page">
             @if(Session::has('success'))
-            <h3>{{ Session::get('success')}}</h3>
-            @endif @if(Cart::count()>0)
+            <div style="min-height: 300px">
+                <br />
+                <h3 style="padding-left: 50px">{{ Session::get('success')}}</h3>
+            </div>
+            @elseif(Cart::count()>0)
             <div class="goods-data clearfix">
                 <div class="table-wrapper-responsive">
                     <table summary="Shopping cart">
@@ -79,7 +82,7 @@
                                             name="num_so_luong"
                                             type="text"
                                             value="{{$nd->qty}}"
-                                            onchange="SoLuongMinMax(this)"
+                                            onchange="SoLuongMinMax('{{$nd->rowId}}')"
                                             max="{{$nd->options->ton}}"
                                             readonly
                                             class="form-control input-sm"
@@ -87,7 +90,7 @@
                                     </div>
                                     <button
                                         class="btn btn-primary"
-                                        id="capnhat_soluong"
+                                        id="capnhat_soluong({{$nd->rowId}})"
                                         type="submit"
                                         style="
                                             display: none;
@@ -216,7 +219,9 @@
                 el.value = el.max;
             }
         }
-        document.getElementById("capnhat_soluong").style.display = "block";
+
+        document.getElementById("capnhat_soluong(" + el + ")").style.display =
+            "block";
     }
 </script>
 @endsection

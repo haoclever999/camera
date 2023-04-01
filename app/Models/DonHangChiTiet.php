@@ -10,7 +10,7 @@ class DonHangChiTiet extends Model
     use HasFactory;
     protected $table = 'don_hang_chi_tiets';
     protected $fillable = [
-        'don_hang_id', 'sp_id', 'so_luong_ban', 'gia', 'thanh_tien', 'ghi_chu',
+        'don_hang_id', 'sp_id', 'so_luong_ban', 'gia', 'thanh_tien',
     ];
 
     public function SanPham()

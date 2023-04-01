@@ -32,11 +32,6 @@
         <div class="col-sm-6">
             <form method="post" action="{{ route('thanhtoan.postThanhToan') }}">
                 @csrf
-                <input
-                    type="hidden"
-                    name="txtid"
-                    value="{{Auth::user()->id}}"
-                />
                 <div class="form-group">
                     <label>Email</label>
                     <input
@@ -53,7 +48,7 @@
                         type="text"
                         class="form-control"
                         name="ho_ten"
-                        value="{{Auth::user()->ho_ten}}"
+                        value="{{ Auth::user()->ho_ten }}"
                         required
                     />
                 </div>
@@ -64,18 +59,16 @@
                         class="form-control"
                         name="sdt"
                         maxlength="10"
-                        value="{{Auth::user()->sdt}}"
+                        value="{{ Auth::user()->sdt }}"
                         required
                     />
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ giao hàng</label>
-                    <textarea
-                        class="form-control"
-                        name="dia_chi"
-                        value="{{Auth::user()->dia_chi}}"
-                        required
-                    ></textarea>
+                    <textarea class="form-control" name="dia_chi" required>
+                    {{ Auth::user()->dia_chi }}
+                </textarea
+                    >
                 </div>
                 <div class="form-group">
                     <label>Ghi chú</label>

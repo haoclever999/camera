@@ -55,7 +55,7 @@ class SanPhamController extends Controller
         return view('backend.sanpham.home', compact('sp'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    public function show(string $id)
+    public function show($id)
     {
         $sp = $this->spham->find($id);
         return view('backend.sanpham.show', compact('sp'));
@@ -261,5 +261,9 @@ class SanPhamController extends Controller
         return view('frontend.sanpham_all', compact('dm', 'sp', 'th'));
     }
 
+    public function timKiemSanPham()
+    {
+        return "ok";
+    }
     // Kết thúc trang người dùng
 }

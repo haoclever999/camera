@@ -86,7 +86,7 @@ class GioHangController extends Controller
 
             if (!empty($request->ghi_chu)) $ghi_chu = $request->ghi_chu;
             else $ghi_chu = '';
-            $d = $this->donhang->create([
+            $dhang = $this->donhang->create([
                 'user_id' => auth()->id(),
                 'ten_kh' => $request->ho_ten,
                 'sdt_kh' => $request->sdt,
@@ -99,14 +99,18 @@ class GioHangController extends Controller
 
 
             //thêm đơn hàng chi tiết
-            // if ($request->hasFile('fchitiet')) {
-            //     foreach ($request->fchitiet as $fItem) {
-            //         $donhang->DonHangChiTiet()->create([
-            //             'hinh_anh' => 'hinh_anh',
-            //         ]);
-            //     }
-            // }
 
+            $tt_giohang = Cart::content();
+            if (count($tt_giohang) > 0) {
+                foreach ($tt_giohang as $key => $item) {
+                    $dhang->DonHangChiTiet()->create([
+                        'sp_id' => $item->id,
+                        'so_luong_ban' => $item->qty,
+                        'gia' => $item->price,
+                        'thanh_tien' => $item->price * $item->qty,
+                    ]);
+                }
+            }
             DB::commit();
             Cart::destroy();
             session()->flash('success', 'Vui lòng chờ xác nhận đơn hàng.');

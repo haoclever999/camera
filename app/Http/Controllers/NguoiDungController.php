@@ -18,9 +18,7 @@ class NguoiDungController extends Controller
     {
         $this->user = $user;
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $id_sua = '0';
@@ -30,17 +28,13 @@ class NguoiDungController extends Controller
         return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+
     public function create()
     {
         return view('backend.nguoidung.them');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(Request $request)
     {
         $request->validate([
@@ -241,7 +235,7 @@ class NguoiDungController extends Controller
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            Alert::error('Thất bại', 'Thay đổi trạng thái tài khoản thành công');
+            Alert::error('Thất bại', 'Thay đổi trạng thái tài khoản thất bại');
             return redirect()->route('nguoidung.index');
         }
     }

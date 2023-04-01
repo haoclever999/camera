@@ -79,11 +79,9 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
     // Quản lý đơn hàng
     Route::prefix('don-hang')->group(function () {
         Route::get('/', [DonHangController::class, 'index'])->name('donhang.index');
-        Route::get('/them-don-hang', [DonHangController::class, 'create'])->name('donhang.create');
-        Route::get('/xem-don-hang', [DonHangController::class, 'show'])->name('donhang.show');
-        Route::post('/them-don-hang', [DonHangController::class, 'store'])->name('donhang.store');
-        Route::get('/cap-nhat-don-hang/{id}', [DonHangController::class, 'edit'])->name('donhang.edit');
-        Route::post('/cap-nhat-don-hang/{id}', [DonHangController::class, 'update'])->name('donhang.update');
+        Route::get('/xem-don-hang/{id}', [DonHangController::class, 'show'])->name('donhang.show');
+        Route::get('/xac-nhan-don-hang/{id}', [DonHangController::class, 'xacnhan'])->name('donhang.xacnhan');
+        Route::get('/huy-don-hang/{id}', [DonHangController::class, 'huy'])->name('donhang.huy');
         Route::get('/xoa-don-hang/{id}', [DonHangController::class, 'destroy'])->name('donhang.destroy');
     });
 
@@ -98,6 +96,7 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
 });
 
 //user
+Route::get('/', [HomeController::class, 'home'])->name('home.index');
 
 Route::get('dang-nhap', [AuthController::class, 'getDangNhapUser'])->name('getDangNhapUser')->middleware('CheckLogin');
 Route::post('dang-nhap', [AuthController::class, 'postDangNhapUser'])->name('postDangNhapUser');
@@ -113,7 +112,6 @@ Route::post('/ho-so-nguoi-dung/{id}', [NguoiDungController::class, 'posthosoUser
 Route::get('/doi-mat-khau/{id}', [NguoiDungController::class, 'getdoimatkhauUser'])->name('nguoidung.getdoimatkhauUser');
 Route::post('/doi-mat-khau/{id}', [NguoiDungController::class, 'postdoimatkhauUser'])->name('nguoidung.postdoimatkhauUser');
 //sản phẩm
-Route::get('/', [HomeController::class, 'home'])->name('home.index');
 Route::get('/danh-muc/{slug}/{id}', [DanhMucController::class, 'getDanhMucSanPham'])->name('danhmuc.sanpham');
 Route::get('/danh-muc/{id_dm}/thuong-hieu/{slug}/{id}', [ThuongHieuController::class, 'getThuongHieuDanhMuc'])->name('thuonghieu.sanpham');
 Route::get('/thuong-hieu/{slug}/{id}', [ThuongHieuController::class, 'getThuongHieuSanPham'])->name('thuonghieu.sanpham_all');
@@ -129,3 +127,6 @@ Route::get('/gio-hang/xoa-san-pham/{rowId}', [GioHangController::class, 'remove'
 //thanh toán
 Route::get('/thanh-toan', [GioHangController::class, 'getThanhToan'])->name('thanhtoan.getThanhToan')->middleware('CheckLogoutUser');
 Route::post('/thanh-toan', [GioHangController::class, 'postThanhToan'])->name('thanhtoan.postThanhToan')->middleware('CheckLogoutUser');
+
+//tìm kiếm
+Route::get('/tim-kiem-san-pham', [SanPhamController::class, 'timKiemSanPham'])->name('sanpham.timkiem');

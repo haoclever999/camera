@@ -57,7 +57,7 @@
             <div class="row">
                 <div class="tbl-fixed">
                     <div class="col-md-12">
-                        <table class="table" style="max-width: max-content">
+                        <table class="table" style="min-width: max-content">
                             <tr>
                                 <th>STT</th>
                                 <th>Tên sản phẩm</th>
@@ -77,7 +77,6 @@
                                     <img
                                         class="list_sp_img_150"
                                         src="{{$s->hinh_anh_chinh}}"
-                                        alt="HaoNganTelecom"
                                     />
                                 </td>
                                 <td>
@@ -104,7 +103,7 @@
                                         class="btn btn-primary"
                                         href="{{ route('sanpham.show', ['id' => $s->id]) }}"
                                     >
-                                        Xem chi tiết
+                                        Chi tiết
                                     </a>
                                     <br />
                                     <a

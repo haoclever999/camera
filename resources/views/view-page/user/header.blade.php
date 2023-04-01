@@ -22,7 +22,8 @@
 
             <div class="top-cart-content-wrapper">
                 <div class="top-cart-content">
-                    <ul class="scroller" style="height: 250px">
+                    @if(Cart::count()>0)
+                    <ul class="scroller">
                         @foreach(Cart::content() as $nd)
                         <li>
                             <a href="route('sanpham.chitiet',[$nd->id])">
@@ -63,15 +64,19 @@
                         >
                             Xem giỏ hàng
                         </a>
-                        @if(Cart::count()>0)
+
                         <a
                             href="{{ route('thanhtoan.getThanhToan') }}"
                             class="btn btn-primary"
                         >
                             Thanh toán
                         </a>
-                        @endif
                     </div>
+                    @else
+                    <h5 style="margin: 10px; padding-left: 30px">
+                        Không có sản phẩm
+                    </h5>
+                    @endif
                 </div>
             </div>
         </div>
@@ -81,7 +86,7 @@
         <div class="header-navigation" style="text-align: center">
             <ul>
                 <li>
-                    <a href="#"> <b> Trang chủ </b> </a>
+                    <a href="{{ route('home.index') }}"> <b> Trang chủ </b> </a>
                 </li>
                 <li class="dropdown dropdown-megamenu">
                     <a
@@ -133,19 +138,20 @@
                     <span class="sep"></span>
                     <i class="fa fa-search search-btn"></i>
                     <div class="search-box">
-                        <form action="#">
+                        <form action="{{ route('sanpham.timkiem') }}">
                             <div class="input-group">
                                 <input
                                     type="text"
-                                    placeholder="Search"
+                                    placeholder="Tìm kiếm..."
                                     class="form-control"
+                                    name="timkiem"
                                 />
                                 <span class="input-group-btn">
                                     <button
                                         class="btn btn-primary"
                                         type="submit"
                                     >
-                                        Search
+                                        Tìm kiếm
                                     </button>
                                 </span>
                             </div>

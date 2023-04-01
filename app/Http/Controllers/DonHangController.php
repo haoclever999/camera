@@ -3,68 +3,78 @@
 namespace App\Http\Controllers;
 
 use App\Models\DonHang;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use RealRashid\SweetAlert\Facades\Alert;
+use App\Components\Traits\DeleteModelTrait;
 
 class DonHangController extends Controller
 {
+    use DeleteModelTrait;
     private $donhang;
 
     public function __construct(DonHang $donhang)
     {
         $this->donhang = $donhang;
     }
+
     public function index()
     {
         $page = 10;
-        $dhang = $this->donhang::orderBy('id', 'desc')->paginate($page);
+        $dhang = $this->donhang::orderBy('created_at', 'desc')->paginate($page);
         return view('backend.donhang.home', compact("dhang"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function show($id)
     {
-        //
+        $dhang = $this->donhang->find($id);
+        return view('backend.donhang.show', compact('dhang'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function xacnhan($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $dhang = $this->donhang->find($id);
+            $dhang->id = $id;
+            $dhang->trang_thai = 'Đã xác nhận đơn';
+            $dhang->save();
+            DB::commit();
+            Alert::success('Thành công', 'Xác nhận đơn hàng thành công');
+            return redirect()->route('donhang.index');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Xác nhận đơn hàng thất bại');
+            return redirect()->route('donhang.index');
+        }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(DonHang $donHang)
+    public function huy($id)
     {
-        //
+        try {
+            DB::beginTransaction();
+            $dhang = $this->donhang->find($id);
+            $dhang->id = $id;
+            $dhang->trang_thai = 'Đã huỷ đơn';
+            $dhang->save();
+            DB::commit();
+            return response()->json([
+                'code' => 200,
+                'message' => 'success'
+            ], 200);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            return response()->json([
+                'code' => 500,
+                'message' => 'fail'
+            ], 500);
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(DonHang $donHang)
+    public function destroy($id)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, DonHang $donHang)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(DonHang $donHang)
-    {
-        //
+        return $this->deleteModelTrait($id, $this->donhang);
     }
 }

@@ -135,26 +135,7 @@
                         </form>
                     </div>
                     @endif
-                    <div class="review">
-                        <input
-                            type="range"
-                            value="4"
-                            step="0.25"
-                            id="backing4"
-                        />
-                        <div
-                            class="rateit"
-                            data-rateit-backingfld="#backing4"
-                            data-rateit-resetable="false"
-                            data-rateit-ispreset="true"
-                            data-rateit-min="0"
-                            data-rateit-max="5"
-                        ></div>
-                        <a href="javascript:;">7 reviews</a
-                        >&nbsp;&nbsp;|&nbsp;&nbsp;<a href="javascript:;"
-                            >Write a review</a
-                        >
-                    </div>
+
                     <ul class="social-icons">
                         <li>
                             <a
@@ -294,59 +275,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- BEGIN FORM-->
-                    <form action="#" class="reviews-form" role="form">
-                        <h2>Write a review</h2>
-                        <div class="form-group">
-                            <label for="name"
-                                >Name
-
-                                <span class="require">*</span></label
-                            >
-                            <input type="text" class="form-control" id="name" />
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="email"
-                            />
-                        </div>
-                        <div class="form-group">
-                            <label for="review"
-                                >Review <span class="require">*</span></label
-                            >
-                            <textarea
-                                class="form-control"
-                                rows="8"
-                                id="review"
-                            ></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Rating</label>
-                            <input
-                                type="range"
-                                value="4"
-                                step="0.25"
-                                id="backing5"
-                            />
-                            <div
-                                class="rateit"
-                                data-rateit-backingfld="#backing5"
-                                data-rateit-resetable="false"
-                                data-rateit-ispreset="true"
-                                data-rateit-min="0"
-                                data-rateit-max="5"
-                            ></div>
-                        </div>
-                        <div class="padding-top-20">
-                            <button type="submit" class="btn btn-primary">
-                                Send
-                            </button>
-                        </div>
-                    </form>
-                    <!-- END FORM-->
                 </div>
 
                 @if($spct->giam_gia !=0)
@@ -355,6 +283,21 @@
             </div>
         </div>
     </div>
+    <!-- Bắt đầu bình luận-->
+    <div class="col-md-12">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <div
+                class="fb-comments"
+                data-href="{{ $url_canonical }}"
+                data-width="100%"
+                data-numposts="10"
+                data-order-by="reverse-time"
+            ></div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+    <!--kết thúc bình luận-->
 </div>
 
 @endsection @section('js')
@@ -385,4 +328,5 @@
         }
     }
 </script>
+
 @endsection

@@ -29,7 +29,7 @@
 <div class="row margin-bottom-40" style="margin-top: 40px">
     <div class="col-md-12 col-sm-12">
         <h3>Vui lòng nhập đầy đủ thông tin</h3>
-        <div class="col-sm-6">
+        <div class="col-sm-7">
             <form method="post" action="{{ route('thanhtoan.postThanhToan') }}">
                 @csrf
                 <div class="form-group">
@@ -43,36 +43,96 @@
                     />
                 </div>
                 <div class="form-group">
-                    <label>Họ tên</label>
+                    <label for="ho_ten">Họ tên</label>
                     <input
                         type="text"
                         class="form-control"
                         name="ho_ten"
+                        id="ho_ten"
                         value="{{ Auth::user()->ho_ten }}"
                         required
                     />
                 </div>
                 <div class="form-group">
-                    <label>Số điện thoại</label>
+                    <label for="sdt">Số điện thoại</label>
                     <input
                         type="text"
                         class="form-control"
                         name="sdt"
+                        id="sdt"
                         maxlength="10"
                         value="{{ Auth::user()->sdt }}"
                         required
                     />
                 </div>
                 <div class="form-group">
-                    <label>Địa chỉ giao hàng</label>
-                    <textarea class="form-control" name="dia_chi" required>
-                    {{ Auth::user()->dia_chi }}
-                </textarea
+                    <label for="dia_chi">Địa chỉ giao hàng</label>
+                    <textarea
+                        class="form-control"
+                        name="dia_chi"
+                        id="dia_chi"
+                        required
                     >
+                    {{ Auth::user()->dia_chi }} 
+                    </textarea>
                 </div>
                 <div class="form-group">
-                    <label>Ghi chú</label>
-                    <textarea class="form-control" name="ghi_chu"></textarea>
+                    <label>Chọn hình thức thanh toán</label>
+                    <div style="margin-top: 1em">
+                        <input
+                            type="radio"
+                            id="chuyenkhoan"
+                            name="thanh_toan"
+                            value="Chuyển khoản"
+                            required
+                        />
+                        <label
+                            for="chuyenkhoan"
+                            style="
+                                font-weight: normal;
+                                vertical-align: middle;
+                                margin-right: 1em;
+                            "
+                        >
+                            Chuyển khoản ngân hàng
+                        </label>
+                        <input
+                            type="radio"
+                            id="tienmat"
+                            name="thanh_toan"
+                            value="Tiền mặt"
+                        />
+                        <label
+                            for="tienmat"
+                            style="
+                                font-weight: normal;
+                                vertical-align: middle;
+                                margin-right: 1em;
+                            "
+                        >
+                            Thanh toán khi nhận hàng
+                        </label>
+                        <input
+                            type="radio"
+                            id="momo"
+                            name="thanh_toan"
+                            value="Momo"
+                        />
+                        <label
+                            for="momo"
+                            style="font-weight: normal; vertical-align: middle"
+                        >
+                            Thanh toán bằng MOMO
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="ghi_chu">Ghi chú</label>
+                    <textarea
+                        class="form-control"
+                        name="ghi_chu"
+                        id="ghi_chu"
+                    ></textarea>
                 </div>
                 <div class="form-group">
                     <input
@@ -83,7 +143,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <h4><b> Các sản phẩm đã chọn</b></h4>
             <table class="table table-bordered" style="vertical-align: middle">
                 <tr class="info">

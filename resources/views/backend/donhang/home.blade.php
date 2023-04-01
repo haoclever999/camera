@@ -41,6 +41,7 @@
                                 <th>Địa chỉ</th>
                                 <th>Tổng số lượng</th>
                                 <th>Tổng tiền</th>
+                                <th>Hình thức</th>
                                 <th>Ghi chú</th>
                                 <th>Trạng thái</th>
                                 <th>Ngày tạo</th>
@@ -57,6 +58,9 @@
                                 <td>
                                     {{number_format($dh->tong_tien,0,",",".")}}
                                 </td>
+                                <td>
+                                    {{$dh->hinh_thuc}}
+                                </td>
                                 <td style="text-overflow: ellipsis">
                                     {{$dh->ghi_chu}}
                                 </td>
@@ -65,7 +69,7 @@
                                     {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dh->created_at)->format('H:i:s d/m/Y')}}
                                 </td>
                                 <td>
-                                    @if($dh->trang_thai=='Chờ xác nhận')
+                                    @if($dh->trang_thai=='Đang chờ xử lý')
                                     <a
                                         style="
                                             min-width: 110px;
@@ -99,7 +103,7 @@
                                             padding: 3px 12px;
                                             margin: 3px;
                                         "
-                                        class="btn btn-primary"
+                                        class="btn btn-success"
                                         href="{{ route('donhang.show', ['id' => $dh->id]) }}"
                                     >
                                         Chi tiết

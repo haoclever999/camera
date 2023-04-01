@@ -119,9 +119,9 @@ class DanhMucController extends Controller
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
-
-    public function getDanhMucSanPham($slug, $id_dm)
+    public function getDanhMucSanPham(Request $request, $slug, $id_dm)
     {
+        $url_canonical = $request->url();
         $sp = $this->sanpham->where('dm_id', $id_dm)->paginate(6);
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
         $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
@@ -133,7 +133,7 @@ class DanhMucController extends Controller
             $th_sp = [];
         }
 
-        return view('frontend.danhmuc_sanpham', compact('dm', 'sp', 'ten_dm', 'th_sp'));
+        return view('frontend.danhmuc_sanpham', compact('dm', 'sp', 'ten_dm', 'th_sp', 'url_canonical'));
     }
     // Kết thúc trang người dùng
 }

@@ -9,10 +9,17 @@
     tổng tiền, tổng sp header.blade.php
     đổi logo
 
--- sửa url trang back-to-top
 -- chức năng lọc và hiển thị số lượt xem
 -- chức năng cmt, review
 
+-- Tích hợp thanh toán
+    + https://transmoni.io/blog/tich-hop-thanh-toan-chuyen-khoan-vao-website-su-dung-laravel
+    + https://viblo.asia/p/tich-hop-cong-thanh-toan-vnpay-voi-laravel-Az45bGD6KxY
+    + https://sandbox.vnpayment.vn/apis/docs/huong-dan-tich-hop/
+
+-- Chia sẻ fb, nút thích
+
 --  icon người dùng trang home
     check quyền người dùng
-    tìm kiếm sản phẩm header
+    Bài 45 : Lập trình website bán hàng bằng Laravel - Thanh toán giỏ hàng #8 => 06:35
+    Hình thức thanh toán

@@ -17,9 +17,7 @@ class CauHinhController extends Controller
     {
         $this->cauhinh = $cauhinh;
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $page = 10;
@@ -27,9 +25,6 @@ class CauHinhController extends Controller
         return view('backend.cauhinh.home', compact("cauhinh"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -60,18 +55,12 @@ class CauHinhController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $cauhinh = $this->cauhinh->find($id);
         return view('backend.cauhinh.sua', compact('cauhinh'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         if ($request->has('config_key')) {
@@ -119,9 +108,6 @@ class CauHinhController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         return $this->deleteModelTrait($id, $this->cauhinh);

@@ -39,10 +39,11 @@ class GioHangController extends Controller
         return redirect()->route('giohang.show_giohang');
     }
 
-    public function show()
+    public function show(Request $request)
     {
+        $url_canonical = $request->url();
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
-        return view('frontend.giohang.giohang_show', compact('dm'));
+        return view('frontend.giohang.giohang_show', compact('dm', 'url_canonical'));
     }
 
 
@@ -60,13 +61,15 @@ class GioHangController extends Controller
 
     public function destroy(string $id)
     {
-        //xóa tất cả
+        Cart::destroy();
+        return redirect()->route('giohang.show_giohang');
     }
 
-    public function getThanhToan()
+    public function getThanhToan(Request $request)
     {
+        $url_canonical = $request->url();
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
-        return view('frontend.giohang.thanhtoan', compact('dm'));
+        return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical'));
     }
 
     public function postThanhToan(Request $request)
@@ -93,13 +96,13 @@ class GioHangController extends Controller
                 'dia_chi_kh' => $request->dia_chi,
                 'tong_so_luong' => Cart::count(),
                 'tong_tien' => Cart::total(0, '', ''),
+                'hinh_thuc' => $request->thanh_toan,
                 'ghi_chu' => $ghi_chu,
-                'trang_thai' => 'Chờ xác nhận',
+                'trang_thai' => 'Đang chờ xử lý',
             ]);
 
 
             //thêm đơn hàng chi tiết
-
             $tt_giohang = Cart::content();
             if (count($tt_giohang) > 0) {
                 foreach ($tt_giohang as $key => $item) {
@@ -113,12 +116,11 @@ class GioHangController extends Controller
             }
             DB::commit();
             Cart::destroy();
-            session()->flash('success', 'Vui lòng chờ xác nhận đơn hàng.');
+            session()->flash('success', 'Cảm ơn bạn đã đặt hàng. Đơn hàng đang chờ xử lý. Vui lòng chờ!');
             return redirect()->route('giohang.show_giohang');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-
             return redirect()->route('giohang.show_giohang');
         }
     }

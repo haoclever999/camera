@@ -19,6 +19,7 @@ class NguoiDungController extends Controller
         $this->user = $user;
     }
 
+    //Bắt đầu trang admin
     public function index()
     {
         $id_sua = '0';
@@ -239,11 +240,13 @@ class NguoiDungController extends Controller
             return redirect()->route('nguoidung.index');
         }
     }
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy($id)
     {
         return $this->deleteModelTrait($id, $this->user);
     }
+    // Kết thúc trang admin 
+
+    //Bắt đầu trang user
+
 }

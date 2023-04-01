@@ -78,21 +78,28 @@
                         <div class="form-group">
                             <label class="form-label">
                                 <b>Giá nhập: </b>
-                                <span>{{$sp->gia_nhap}}</span> VNĐ
+                                <span
+                                    >{{number_format($sp->gia_nhap,0,",",".")}}</span
+                                >
+                                đ
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">
                                 <b>Giá bán: </b
-                                ><span>{{$sp->gia_ban}}</span> VNĐ
+                                ><span
+                                    >{{number_format($sp->gia_ban,0,",",".")}}</span
+                                >
+                                đ
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">
                                 <b>Giảm giá: </b>
-                                <span>{{$sp->giam_gia}}</span> %
+                                <span>{{$sp->giam_gia}}</span
+                                >%
                             </label>
                         </div>
                     </div>

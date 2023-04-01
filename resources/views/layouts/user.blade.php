@@ -9,8 +9,9 @@
         />
         <meta name="description" content="" />
         <meta name="author" content="" />
+        <link rel="canonical" href="{{ $url_canonical }}" />
 
-        <meta property="og:site_name" content="-CUSTOMER VALUE-" />
+        <meta property="og:site_name" content="http://127.0.0.1:8000/" />
         <meta property="og:title" content="-CUSTOMER VALUE-" />
         <meta property="og:description" content="-CUSTOMER VALUE-" />
         <meta property="og:type" content="website" />
@@ -225,5 +226,14 @@
                 Layout.initNavScrolling();
             });
         </script>
+
+        <div id="fb-root"></div>
+        <script
+            async
+            defer
+            crossorigin="anonymous"
+            src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0"
+            nonce="BmLIUxuZ"
+        ></script>
     </body>
 </html>

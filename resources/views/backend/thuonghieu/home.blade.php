@@ -38,7 +38,7 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Tên thương hiệu</th>
-                                <th>Logo thương hiệu</th>
+                                <th>Logo</th>
                                 <th>Ngày cập nhật</th>
                                 <th>Hành động</th>
                             </tr>

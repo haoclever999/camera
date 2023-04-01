@@ -104,7 +104,7 @@
 
                             <div class="form-group">
                                 <label for="num_gia_nhap" class="form-label">
-                                    <b>Giá nhập (VNĐ)</b>
+                                    <b>Giá nhập (đ)</b>
                                 </label>
                                 <input
                                     type="number"
@@ -121,7 +121,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="num_gia_ban" class="form-label">
-                                    <b>Giá bán (VNĐ)</b>
+                                    <b>Giá bán (đ)</b>
                                 </label>
                                 <input
                                     type="number"

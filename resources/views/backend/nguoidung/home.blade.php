@@ -33,14 +33,14 @@
                 <div class="col-md-12">
                     <a
                         href="{{ route('nguoidung.create') }}"
-                        class="btn btn-success float-right m-2"
+                        class="btn btn-primary float-right m-2"
                     > 
                     Thêm người dùng 
                     </a>
                 </div>
                 <div class="tbl-fixed">
                     <div class="col-md-12">
-                        <table class="table">
+                        <table class="table" style="min-width: max-content">
                             <tr>
                                 <th>STT</th>
                                 <th>Người dùng</th>
@@ -70,7 +70,7 @@
                                                 <form action="{{ route('nguoidung.trangthai', ['id' => $u->id]) }}" method="post">
                                                     @csrf
                                                     <input type="hidden" name = "khoa" value="0">
-                                                    <button type="submit" class="btn btn-danger action_edit">Khóa</button>
+                                                    <button type="submit" class="btn btn-danger action_edit" >Khóa</button>
                                                 </form>
                                             </td>
                                         @else

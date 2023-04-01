@@ -139,6 +139,7 @@
                     <i class="fa fa-search search-btn"></i>
                     <div class="search-box">
                         <form action="{{ route('sanpham.timkiem') }}">
+                            @csrf
                             <div class="input-group">
                                 <input
                                     type="text"

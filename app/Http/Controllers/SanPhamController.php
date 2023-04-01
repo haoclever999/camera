@@ -243,27 +243,33 @@ class SanPhamController extends Controller
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
-    public function getChiTietSanPham($id)
+    public function getChiTietSanPham(Request $request, $id)
     {
+        $url_canonical = $request->url();
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
         $sp_chitiet = $this->spham->where('id', $id)->limit(1)->get();
         foreach ($sp_chitiet as $value)
             $id_dm = $value->dm_id;
         $sp_lienquan = $this->spham->where('dm_id', $id_dm)->whereNotIn('id', [$id])->get();
-        return view('frontend.sanpham_chitiet', compact('dm', 'sp_chitiet', 'sp_lienquan'));
+        return view('frontend.sanpham_chitiet', compact('dm', 'sp_chitiet', 'sp_lienquan', 'url_canonical'));
     }
 
-    public function getAllSanPham()
+    public function getAllSanPham(Request $request)
     {
+        $url_canonical = $request->url();
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
         $sp = $this->spham->orderBy('ten_sp')->paginate(12);
-        return view('frontend.sanpham_all', compact('dm', 'sp', 'th'));
+        return view('frontend.sanpham_all', compact('dm', 'sp', 'th', 'url_canonical'));
     }
 
-    public function timKiemSanPham()
+    public function timKiemSanPham(Request $request)
     {
-        return "ok";
+        $url_canonical = $request->url();
+        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
+        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
+        $timkiem =  $this->spham->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%')->paginate(12);;
+        return view('frontend.sanpham_timkiem', compact('dm', 'th', 'timkiem', 'url_canonical'));
     }
     // Kết thúc trang người dùng
 }

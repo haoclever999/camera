@@ -25,7 +25,7 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            @if($dhang->trang_thai=='Chờ xác nhận')
+            @if($dhang->trang_thai=='Đang chờ xử lý')
             <div class="row mb-2">
                 <div class="col-sm-12" style="float: right">
                     <a

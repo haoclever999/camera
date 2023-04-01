@@ -38,7 +38,7 @@
                     <!-- Topbar Search -->
                     <a
                         href="{{ route('sanpham.create') }}"
-                        class="btn btn-success float-right m-2"
+                        class="btn btn-primary float-right m-2"
                     >
                         Thêm sản phẩm
                     </a>
@@ -62,7 +62,7 @@
                                 <th>STT</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
-                                <th>Giá bán (VNĐ)</th>
+                                <th>Giá bán</th>
                                 <th>Tồn kho</th>
                                 <th>Danh mục</th>
                                 <th>Thương hiệu</th>
@@ -80,7 +80,7 @@
                                     />
                                 </td>
                                 <td>
-                                    {{number_format($s->gia_ban,0,",",".")}}
+                                    {{number_format($s->gia_ban,0,",",".")}} đ
                                 </td>
                                 <td>{{$s->ton}}</td>
 
@@ -100,7 +100,7 @@
                                             padding: 3px 12px;
                                             margin: 3px;
                                         "
-                                        class="btn btn-primary"
+                                        class="btn btn-success"
                                         href="{{ route('sanpham.show', ['id' => $s->id]) }}"
                                     >
                                         Chi tiết

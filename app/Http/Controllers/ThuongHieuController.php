@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
 use App\Components\Traits\StorageImageTrait;
+use App\Models\CauHinh;
 use App\Models\DanhMuc;
 use App\Models\SanPham;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -19,17 +20,16 @@ class ThuongHieuController extends Controller
     private $thuonghieu;
     private $dmuc;
     private $sanpham;
-    public function __construct(DanhMuc $dmuc, SanPham $sanpham,  ThuongHieu $thuonghieu)
+    private $cauhinh;
+    public function __construct(DanhMuc $dmuc, SanPham $sanpham,  ThuongHieu $thuonghieu, CauHinh $cauhinh)
     {
         $this->thuonghieu = $thuonghieu;
         $this->dmuc = $dmuc;
         $this->sanpham = $sanpham;
+        $this->cauhinh = $cauhinh;
     }
 
     // Bat dau trang admin
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         $page = 10;
@@ -37,9 +37,6 @@ class ThuongHieuController extends Controller
         return view('backend.thuonghieu.home', compact("th"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate(
@@ -71,18 +68,12 @@ class ThuongHieuController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
         $th = $this->thuonghieu->find($id);
         return view('backend.thuonghieu.sua', compact('th'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         if ($request->has('ten_thuong_hieu')) {
@@ -123,9 +114,6 @@ class ThuongHieuController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         return $this->deleteModelTrait($id, $this->thuonghieu);
@@ -133,8 +121,10 @@ class ThuongHieuController extends Controller
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
-    public function getThuongHieuDanhMuc($id_dm, $slug, $id)
+    public function getThuongHieuDanhMuc(Request $request, $id_dm, $slug, $id)
     {
+        $url_canonical = $request->url();
+        $thongtin = $this->cauhinh->all(); //xem laij
         $sp = $this->sanpham->where('thuong_hieu_id', $id)->where('dm_id', $id_dm)->paginate(6);
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
@@ -144,16 +134,17 @@ class ThuongHieuController extends Controller
         foreach ($spham as $value)
             $id_th[] = $value->thuong_hieu_id;
         $th_sp = $this->thuonghieu->whereIn('id', $id_th)->distinct()->get();
-        return view('frontend.thuonghieu_danhmuc', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp'));
+        return view('frontend.thuonghieu_danhmuc', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp', 'url_canonical'));
     }
 
-    public function getThuongHieuSanPham($slug, $id)
+    public function getThuongHieuSanPham(Request $request, $slug, $id)
     {
+        $url_canonical = $request->url();
         $sp = $this->sanpham->where('thuong_hieu_id', $id)->paginate(6);
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
 
-        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'th', 'ten_th'));
+        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'th', 'ten_th', 'url_canonical'));
     }
 }

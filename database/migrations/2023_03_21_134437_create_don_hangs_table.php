@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('dia_chi_kh', 191);
             $table->integer('tong_so_luong');
             $table->decimal('tong_tien', 9, 0);
+            $table->string('hinh_thuc', 191);
             $table->text('ghi_chu')->nullable();
             $table->string('trang_thai', 191);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

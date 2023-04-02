@@ -61,7 +61,12 @@
                                 <td>
                                     {{$dh->hinh_thuc}}
                                 </td>
-                                <td style="text-overflow: ellipsis">
+                                <td
+                                    style="
+                                        text-overflow: ellipsis;
+                                        width: 100px;
+                                    "
+                                >
                                     {{$dh->ghi_chu}}
                                 </td>
                                 <td>{{$dh->trang_thai}}</td>

@@ -245,11 +245,17 @@ class SanPhamController extends Controller
     // Bắt đầu trang người dùng
     public function getChiTietSanPham(Request $request, $id)
     {
+        //tăng lượt xem
+        $l_xem = $this->spham->find($id);
+        $xem = $l_xem->luot_xem;
+        $l_xem->update(['luot_xem' => $xem + 1]);
+
         $url_canonical = $request->url();
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
         $sp_chitiet = $this->spham->where('id', $id)->limit(1)->get();
-        foreach ($sp_chitiet as $value)
+        foreach ($sp_chitiet as $value) {
             $id_dm = $value->dm_id;
+        }
         $sp_lienquan = $this->spham->where('dm_id', $id_dm)->whereNotIn('id', [$id])->get();
         return view('frontend.sanpham_chitiet', compact('dm', 'sp_chitiet', 'sp_lienquan', 'url_canonical'));
     }

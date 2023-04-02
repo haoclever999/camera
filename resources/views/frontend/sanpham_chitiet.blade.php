@@ -99,6 +99,24 @@
                             {{$spct->ThuongHieu->ten_thuong_hieu}}
                         </span>
                     </div>
+
+                    <div
+                        class="description"
+                        style="margin-bottom: 8px; font-size: 18px"
+                    >
+                        <b> Lượt xem:</b>
+                        <span>
+                            {{$spct->luot_xem}}
+                        </span>
+                    </div>
+
+                    <div
+                        class="description"
+                        style="margin-bottom: 8px; font-size: 18px"
+                    >
+                        <b> Đã bán:</b>
+                        <span> {{$spct->luot_mua}} sản phẩm </span>
+                    </div>
                     @if($spct->ton>0)
                     <div class="product-page-cart" style="margin-top: 30px">
                         <form

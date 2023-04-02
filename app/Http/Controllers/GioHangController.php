@@ -67,9 +67,25 @@ class GioHangController extends Controller
 
     public function getThanhToan(Request $request)
     {
+
         $url_canonical = $request->url();
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
-        return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical'));
+        $tt_giohang = Cart::content();
+        if (count($tt_giohang) > 0) {
+            foreach ($tt_giohang as $key => $item) {
+                $sanpham = $this->spham->find($item->id);
+                $ton = $sanpham->ton;
+                if ($ton <= 0) {
+                    session()->flash('error', 'Sản phẩm ' . $sanpham->ten_sp . ' đã hết hàng.');
+                    return redirect()->route('giohang.show_giohang');
+                }
+                if ($ton > 0 && $ton < $item->qty) {
+                    session()->flash('error', 'Sản phẩm ' . $sanpham->ten_sp . ' không đủ.');
+                    return redirect()->route('giohang.show_giohang');
+                }
+            }
+            return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical'));
+        }
     }
 
     public function postThanhToan(Request $request)
@@ -111,6 +127,14 @@ class GioHangController extends Controller
                         'so_luong_ban' => $item->qty,
                         'gia' => $item->price,
                         'thanh_tien' => $item->price * $item->qty,
+                    ]);
+                    $sanpham = $this->spham->find($item->id);
+                    $lmua = $sanpham->luot_mua;
+                    $sluong = $sanpham->so_luong;
+
+                    $sanpham->update([
+                        'luot_mua' => $lmua + $item->qty,
+                        'ton' =>  $sluong -  $lmua + $item->qty,
                     ]);
                 }
             }

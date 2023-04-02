@@ -38,6 +38,13 @@
             @elseif(Cart::count()>0)
             <div class="goods-data clearfix">
                 <div class="table-wrapper-responsive">
+                    @if(Session::has('error'))
+
+                    <h3 style="color: red; font-size: 18px; font-weight: bold">
+                        {{ Session::get('error')}}
+                    </h3>
+
+                    @endif
                     <table summary="Shopping cart">
                         <tr style="background-color: rgba(204, 204, 204, 0.8)">
                             <th class="goods-page-name">Sản phẩm</th>
@@ -51,14 +58,18 @@
                         <tr>
                             <td class="goods-page-name">
                                 <a
-                                    href="route('sanpham.chitiet',[$nd->id])"
+                                    href="{{route('sanpham.chitiet',[$nd->id])}}"
                                     style="font-size: 20px"
                                 >
                                     {{$nd->name}}
                                 </a>
                             </td>
                             <td class="goods-page-image">
-                                <img src="{{$nd->options->hinh_anh}}" />
+                                <a
+                                    href="{{route('sanpham.chitiet',[$nd->id])}}"
+                                >
+                                    <img src="{{$nd->options->hinh_anh}}" />
+                                </a>
                             </td>
                             <td
                                 class="goods-page-quantity"
@@ -131,7 +142,7 @@
                         @endforeach
                     </table>
                 </div>
-
+                <br />
                 <div class="shopping-total">
                     <ul>
                         <li>

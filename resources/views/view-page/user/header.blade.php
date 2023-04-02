@@ -23,14 +23,18 @@
             <div class="top-cart-content-wrapper">
                 <div class="top-cart-content">
                     @if(Cart::count()>0)
-                    <ul class="scroller">
+
+                    <ul
+                        style="overflow: hidden; width: auto"
+                        height="100px !important"
+                    >
                         @foreach(Cart::content() as $nd)
                         <li>
                             <a href="route('sanpham.chitiet',[$nd->id])">
                                 <img
                                     src="{{$nd->options->hinh_anh}}"
-                                    width="37"
-                                    height="34"
+                                    width="43"
+                                    height="40"
                                 />
                             </a>
                             <span class="cart-content-count">
@@ -72,6 +76,7 @@
                             Thanh toán
                         </a>
                     </div>
+
                     @else
                     <h5 style="margin: 10px; padding-left: 30px">
                         Không có sản phẩm

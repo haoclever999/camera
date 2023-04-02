@@ -22,7 +22,7 @@ div.row > div#pre_Multiple {
     flex-wrap: wrap;
 }
 .tbl-fixed {
-    overflow-x: scroll;
+    overflow-x: auto;
 }
 .table {
     text-align: center;

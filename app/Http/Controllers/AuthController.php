@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use App\Rules\ReCaptcha;
 
 class AuthController extends Controller
 {
@@ -72,6 +73,7 @@ class AuthController extends Controller
 
     public function getQuenMatKhauUser()
     {
+        return view('auth.quenmatkhau');
     }
     public function postQuenMatKhauUser()
     {
@@ -80,7 +82,17 @@ class AuthController extends Controller
     {
         return view('auth.dangky');
     }
-    public function postDangKy()
+    public function postDangKy(Request $request)
     {
+        $request->validate(
+            [
+                'email' => 'max:191',
+                'g-recaptcha-response' => ['required', new ReCaptcha],
+            ],
+            [
+                'email.max' => 'Email tối đa 191 ký tự',
+                'g-recaptcha-response.required' => 'Google recaptcha là bắt buộc.'
+            ]
+        );
     }
 }

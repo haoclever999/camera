@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\DanhMuc;
 use App\Models\SanPham;
 use Illuminate\Http\Request;
+// use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -22,5 +23,10 @@ class HomeController extends Controller
         $sp_moi = $this->sp::orderBy('created_at', 'desc')->take(8)->get();
         $sp_noi_bat = $this->sp::orderBy('luot_xem', 'desc')->take(8)->get();
         return view('frontend.user_home', compact('dm', 'sp_moi', 'sp_noi_bat', 'url_canonical'));
+    }
+
+    public function guiMail()
+    {
+        return 'ok';
     }
 }

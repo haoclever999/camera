@@ -14,8 +14,8 @@ return new class extends Migration
     {
         Schema::create('cau_hinhs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('config_key');
-            $table->string('config_value');
+            $table->string('cau_hinh_key');
+            $table->string('cau_hinh_value');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->softDeletes();

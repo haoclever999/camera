@@ -53,10 +53,7 @@
                                 href="{{ route('nguoidung.gethosoUser',['id'=>Auth::user()->id]) }}"
                                 style="text-decoration: none"
                             >
-                                <i
-                                    class="fas fa-user fa-sm fa-fw mr-2 text-gray"
-                                >
-                                </i>
+                                <i class="fa fa-user" aria-hidden="true"></i>
                                 Hồ sơ cá nhân
                             </a>
                             <a
@@ -64,10 +61,7 @@
                                 href="{{ route('nguoidung.getdoimatkhauUser',['id'=>Auth::user()->id]) }}"
                                 style="text-decoration: none"
                             >
-                                <i
-                                    class="fas fa-cogs fa-sm fa-fw mr-2 text-gray"
-                                >
-                                </i>
+                                <i class="fa fa-cogs" aria-hidden="true"> </i>
                                 Đổi mật khẩu
                             </a>
                             <div class="dropdown-divider"></div>
@@ -76,10 +70,15 @@
                                 href="{{ route('DangXuatUser') }}"
                                 style="text-decoration: none"
                             >
-                                <i
-                                    class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray"
-                                >
-                                </i>
+                                <img
+                                    src="{{ asset('frontend/img/logout.png') }}"
+                                    width="15px"
+                                    style="
+                                        margin-right: 4px;
+                                        width: 1.25em;
+                                        text-align: center;
+                                    "
+                                />
                                 Đăng xuất
                             </a>
                         </div>

@@ -50,6 +50,7 @@
                         name="ho_ten"
                         id="ho_ten"
                         value="{{ Auth::user()->ho_ten }}"
+                        placeholder="Nhập họ tên"
                         required
                     />
                 </div>
@@ -62,20 +63,54 @@
                         id="sdt"
                         maxlength="10"
                         value="{{ Auth::user()->sdt }}"
+                        placeholder="Nhập số điện thoại"
                         required
                     />
                 </div>
                 <div class="form-group">
-                    <label for="dia_chi">Địa chỉ giao hàng</label>
-                    <textarea
-                        class="form-control"
-                        name="dia_chi"
-                        id="dia_chi"
-                        required
-                    >
-                    {{ Auth::user()->dia_chi }} 
-                    </textarea>
+                    <label>Địa chỉ giao hàng</label>
+
+                    <div class="form-group col-md-12 col-sm-12 " style="padding-left: 10px;">
+                        <div class="col-md-4 col-sm-4" style="padding-left: 0;">
+                            <label for="opt_Tinh"> Chọn Tỉnh/Thành phố </label><br>
+                            <select class="opt_select opt_Tinh" name="opt_Tinh" id="opt_Tinh" style="min-width: 160px; " required  >
+                                <option value="">--Tỉnh/Thành phố--</option>
+                                @foreach($tinh_tp as $tinh)
+                                <option value="{{$tinh->id}}">{{$tinh->ten_tp}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-4" style="padding-left: 0;">
+                            <label for="opt_Huyen"> Chọn Quận/Huyện </label><br>
+                            
+                            <select class="opt_select opt_Huyen" name="opt_Huyen" id="opt_Huyen" style="min-width: 160px; " required>
+                                <option value="">--Quận/Huyện--</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-4" style="padding-left: 0;">
+                             <label for="opt_Xa"> Chọn Xã phường/Thị trấn </label><br>
+                            <select class="opt_Xa" name="opt_Xa" id="opt_Xa" style="min-width: 160px; " required>
+                                <option value="">--Xã phường/Thị trấn--</option>
+                            </select>
+                        </div> 
+                    </div>
+                    
+                    <div class="form-group" style="padding-left: 10px;">
+                        <label for="dia_chi">Số nhà, khóm/ấp</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            name="dia_chi"
+                            id="dia_chi"
+                            value="{{ Auth::user()->dia_chi }} "
+                            placeholder="Nhập số nhà, khóm/ấp"
+                            required
+                        >
+                        </input>
+    
+                    </div>
                 </div>
+                
                 <div class="form-group">
                     <label>Chọn hình thức thanh toán</label>
                     <div style="margin-top: 1em">
@@ -206,5 +241,28 @@
     src="{{ asset('frontend/assets_theme/plugins/carousel/carousel.js') }}"
     type="text/javascript"
 ></script>
+<script src="{{asset('frontend/js/jquery.min.js')}}"></script>
+<script>
+$(document).ready(function(){
+    $('.opt_select').on('change',function(){
+        var action = $(this).attr('id');
+        var id_diachi =$(this).val();
+        var _token = $('input[name="_token"]').val();
+        var kq='';
+        if(action=="opt_Tinh")
+            kq='opt_Huyen';
+        else
+            kq='opt_Xa';
+        $.ajax({
+            url:'{{route("diachi")}}',
+            method: 'POST',
+            data:{action:action,id_diachi:id_diachi,_token:_token},
+            success: function(data){
+                $('#'+kq).html(data);
+            }
+        })
+    })
+})
 
+</script>
 @endsection

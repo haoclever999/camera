@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\DanhMuc;
 use App\Models\DonHang;
+use App\Models\QuanHuyen;
 use App\Models\SanPham;
+use App\Models\TinhThanhPho;
+use App\Models\XaPhuong;
 use Illuminate\Http\Request;
 use Cart;
 use Illuminate\Contracts\Session\Session;
@@ -50,6 +53,7 @@ class GioHangController extends Controller
     public function update(Request $request)
     {
         Cart::update($request->rowId, $request->num_so_luong);
+        session()->flash('success_sl', 'Cập nhật số lượng thành công');
         return redirect()->route('giohang.show_giohang');
     }
 
@@ -59,7 +63,7 @@ class GioHangController extends Controller
         return redirect()->route('giohang.show_giohang');
     }
 
-    public function destroy(string $id)
+    public function destroy()
     {
         Cart::destroy();
         return redirect()->route('giohang.show_giohang');
@@ -67,6 +71,8 @@ class GioHangController extends Controller
 
     public function getThanhToan(Request $request)
     {
+        //địa chỉ
+        $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
 
         $url_canonical = $request->url();
         $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
@@ -84,7 +90,7 @@ class GioHangController extends Controller
                     return redirect()->route('giohang.show_giohang');
                 }
             }
-            return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical'));
+            return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical', 'tinh_tp'));
         }
     }
 
@@ -105,11 +111,17 @@ class GioHangController extends Controller
 
             if (!empty($request->ghi_chu)) $ghi_chu = $request->ghi_chu;
             else $ghi_chu = '';
+            $xa = XaPhuong::where('id', $request->opt_Xa)->first();
+            $huyen = QuanHuyen::where('id', $request->opt_Huyen)->first();
+            $tinh = TinhThanhPho::where('id', $request->opt_Tinh)->first();
+
+
+            $diachi = $request->dia_chi . ', ' . $xa->ten_xa . ', ' . $huyen->ten_qh . ', ' . $tinh->ten_tp;
             $dhang = $this->donhang->create([
                 'user_id' => auth()->id(),
                 'ten_kh' => $request->ho_ten,
                 'sdt_kh' => $request->sdt,
-                'dia_chi_kh' => $request->dia_chi,
+                'dia_chi_kh' => $diachi,
                 'tong_so_luong' => Cart::count(),
                 'tong_tien' => Cart::total(0, '', ''),
                 'hinh_thuc' => $request->thanh_toan,
@@ -147,5 +159,27 @@ class GioHangController extends Controller
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
             return redirect()->route('giohang.show_giohang');
         }
+    }
+
+    public function diachi(Request $request)
+    {
+        $action = $request->action;
+        $id_diachi = $request->id_diachi;
+
+        if ($action) {
+            $kq = '';
+            if ($action == 'opt_Tinh') {
+                $select_Huyen = QuanHuyen::where('id_tp', $id_diachi)->orderby('ten_qh')->get();
+                $kq = '<option value="">--Quận/Huyện--</option>';
+                foreach ($select_Huyen as $qh)
+                    $kq .= '<option value="' . $qh->id . '">' . $qh->ten_qh . '</option>';
+            } else {
+                $kq = '<option value="">--Xã phường/Thị trấn--</option>';
+                $select_Xa = XaPhuong::where('id_qh', $id_diachi)->orderby('ten_xa')->get();
+                foreach ($select_Xa as $xa)
+                    $kq .= '<option value="' . $xa->id . '">' . $xa->ten_xa . '</option>';
+            }
+        }
+        echo $kq;
     }
 }

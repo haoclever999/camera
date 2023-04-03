@@ -42,7 +42,6 @@ function Delete(even) {
 function Huy(even) {
     even.preventDefault();
     let urlRequest = $(this).data("url"); //lấy đường dẫn url
-    let that = $(this);
     Swal.fire({
         title: "Bạn có chắc chắn?",
         text: "Nó không thể khôi phục lại.",

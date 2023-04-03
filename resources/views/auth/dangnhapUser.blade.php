@@ -167,46 +167,41 @@
                                 </button>
                             </div>
                         </div>
-                        <br />
-                        <div class="login_message">
-                            <p style="text-align: center">
-                                Không có tài khoản?
-                                <a
-                                    href="{{ route('getDangKy') }}"
-                                    id="dangky"
-                                    style="
-                                        text-decoration: none;
-                                        color: #2713cf;
-                                    "
-                                >
-                                    Đăng ký</a
-                                >
-                            </p>
-                        </div>
-
-                        <h4 style="text-align: center">hoặc</h4>
-                        <div class="social">
-                            <a href="#" class="facebook">
-                                <img
-                                    src="{{
-                                        asset('frontend/img/facebook-logo.png')
-                                    }}"
-                                    width="40px"
-                                />
-                            </a>
-
-                            <a href="#" class="google">
-                                <img
-                                    src="{{
-                                        asset(
-                                            'frontend/img/google-plus-logo.png'
-                                        )
-                                    }}"
-                                    width="40px"
-                                />
-                            </a>
-                        </div>
                     </form>
+                    <br />
+                    <div class="login_message">
+                        <p style="text-align: center">
+                            Không có tài khoản?
+                            <a
+                                href="{{ route('getDangKy') }}"
+                                id="dangky"
+                                style="text-decoration: none; color: #2713cf"
+                            >
+                                Đăng ký</a
+                            >
+                        </p>
+                    </div>
+
+                    <h4 style="text-align: center">hoặc</h4>
+                    <div class="social">
+                        <a href="#" class="facebook">
+                            <img
+                                src="{{
+                                    asset('frontend/img/facebook-logo.png')
+                                }}"
+                                width="40px"
+                            />
+                        </a>
+
+                        <a href="#" class="google">
+                            <img
+                                src="{{
+                                    asset('frontend/img/google-plus-logo.png')
+                                }}"
+                                width="40px"
+                            />
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

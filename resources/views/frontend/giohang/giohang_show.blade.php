@@ -44,6 +44,14 @@
                         {{ Session::get('error')}}
                     </h3>
 
+                    @endif @if(Session::has('success_sl'))
+
+                    <h3
+                        style="color: green; font-size: 18px; font-weight: bold"
+                    >
+                        {{ Session::get('success_sl')}}
+                    </h3>
+
                     @endif
                     <table summary="Shopping cart">
                         <tr style="background-color: rgba(204, 204, 204, 0.8)">
@@ -64,17 +72,17 @@
                                     {{$nd->name}}
                                 </a>
                             </td>
-                            <td class="goods-page-image">
+                            <td
+                                class="goods-page-image"
+                                style="text-align: center"
+                            >
                                 <a
                                     href="{{route('sanpham.chitiet',[$nd->id])}}"
                                 >
                                     <img src="{{$nd->options->hinh_anh}}" />
                                 </a>
                             </td>
-                            <td
-                                class="goods-page-quantity"
-                                style="max-width: 100px"
-                            >
+                            <td class="goods-page-quantity">
                                 <form
                                     action="{{
                                         route('giohang.capnhat_soluong')
@@ -106,7 +114,8 @@
                                         style="
                                             display: none;
                                             float: none;
-                                            margin-left: auto;
+                                            margin-left: 80px;
+                                            margin-right: -50px;
                                             vertical-align: center;
                                             padding-top: 9px;
                                             padding-bottom: 9px;
@@ -141,6 +150,15 @@
                         </tr>
                         @endforeach
                     </table>
+                    <br />
+                    <a
+                        href="{{ route('giohang.destroy') }}"
+                        class="btn btn-default"
+                        type="button"
+                    >
+                        Xoá tất cả sản phẩm
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
                 </div>
                 <br />
                 <div class="shopping-total">

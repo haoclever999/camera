@@ -123,10 +123,15 @@ Route::post('/them-gio-hang', [GioHangController::class, 'create'])->name('gioha
 Route::get('/gio-hang', [GioHangController::class, 'show'])->name('giohang.show_giohang');
 Route::post('/gio-hang/cap-nhat-so-luong', [GioHangController::class, 'update'])->name('giohang.capnhat_soluong');
 Route::get('/gio-hang/xoa-san-pham/{rowId}', [GioHangController::class, 'remove'])->name('giohang.xoa_sp');
+Route::get('/gio-hang/xoa-san-pham', [GioHangController::class, 'destroy'])->name('giohang.destroy');
 
 //thanh toán
 Route::get('/thanh-toan', [GioHangController::class, 'getThanhToan'])->name('thanhtoan.getThanhToan')->middleware('CheckLogoutUser');
 Route::post('/thanh-toan', [GioHangController::class, 'postThanhToan'])->name('thanhtoan.postThanhToan')->middleware('CheckLogoutUser');
+Route::post('/dia-chi', [GioHangController::class, 'diachi'])->name('diachi');
 
 //tìm kiếm
 Route::get('/tim-kiem-san-pham', [SanPhamController::class, 'timKiemSanPham'])->name('sanpham.timkiem');
+
+//gửi mail
+Route::get('/gui-mail', [HomeController::class, 'guiMail'])->name('home.guimail');

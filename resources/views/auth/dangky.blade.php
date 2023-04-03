@@ -180,7 +180,15 @@
                             </span>
                             @endif
                         </div>
-
+                        <div
+                            class="g-recaptcha"
+                            data-sitekey="{{ env('RECAPTCHA_KEY') }}"
+                        ></div>
+                        @if($errors->has('g-recaptcha-response'))
+                        <span class="help-block" style="color: #ff3f3f">
+                            <b>{{ $errors->first('g-recaptcha-response') }}</b>
+                        </span>
+                        @endif
                         <div class="container-login100-form-btn">
                             <div class="wrap-login100-form-btn">
                                 <div class="login100-form-bgbtn"></div>
@@ -219,5 +227,11 @@
                 asset('frontend/vendor/countdowntime/countdowntime.js')
             }}"></script>
         <script src="{{ asset('frontend/js/dangnhap.js') }}"></script>
+        <!-- ReCaptcha  -->
+        <script
+            src="https://www.google.com/recaptcha/api.js"
+            async
+            defer
+        ></script>
     </body>
 </html>

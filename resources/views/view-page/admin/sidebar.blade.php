@@ -13,7 +13,11 @@
         class="sidebar-brand d-flex align-items-center justify-content-center"
         href="{{ route('admin.index') }}"
     >
-        <img src="{{ asset('frontend/img/logo.png') }}" width="60px" />
+        <img
+            src="{{ asset('frontend/img/Logo.jpg') }}"
+            width="60px"
+            style="border-radius: 50%"
+        />
     </a>
 
     <!-- Divider -->

@@ -6,8 +6,7 @@
 
 -- 
     điều chỉnh hrel header.blade.php
-    tổng tiền, tổng sp header.blade.php
-    đổi logo
+    chỉnh logo
 
 -- chức năng lọc và hiển thị số lượt xem
 -- chức năng cmt, review
@@ -19,6 +18,8 @@
 
 -- Chia sẻ fb, nút thích
 
---  icon người dùng trang home
-    check quyền người dùng
+--  check quyền người dùng
     Hình thức thanh toán
+
+-- select địa chỉ thanh toán
+    

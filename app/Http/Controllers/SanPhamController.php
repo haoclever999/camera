@@ -50,8 +50,8 @@ class SanPhamController extends Controller
 
     public function index()
     {
-        $page = 10;
-        $sp = $this->spham::orderBy('id', 'desc')->paginate($page);
+        $page = 5;
+        $sp = $this->spham::orderBy('ten_sp')->paginate($page);
         return view('backend.sanpham.home', compact('sp'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
@@ -240,6 +240,20 @@ class SanPhamController extends Controller
     {
         return $this->deleteModelTrait($id, $this->spham);
     }
+
+    public function timkiem(Request $request)
+    {
+        $th = $this->thuonghieu->where('ten_thuong_hieu ', 'LIKE', '%' . $request->timkiem_th . '%');
+        $dm = $this->dmuc->where('dm_id ', 'LIKE', '%' . $request->timkiem_th . '%');
+        $page = 5;
+        if ($request->san_pham == 'ten_sp')
+            $timkiem =  $this->spham->where('ten_sp', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_sp')->paginate($page);
+        elseif ($request->san_pham == 'danh_muc')
+            $timkiem =  $this->spham->where('dm_id ', $dm->id)->orderby('dm_id')->paginate($page);
+        else
+            $timkiem =  $this->spham->where('thuong_hieu_id', $th->id)->orderby('thuong_hieu_id')->paginate($page);
+        return view('backend.sanpham.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+    }
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
@@ -251,7 +265,7 @@ class SanPhamController extends Controller
         $l_xem->update(['luot_xem' => $xem + 1]);
 
         $url_canonical = $request->url();
-        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
+        $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $sp_chitiet = $this->spham->where('id', $id)->limit(1)->get();
         foreach ($sp_chitiet as $value) {
             $id_dm = $value->dm_id;
@@ -263,7 +277,7 @@ class SanPhamController extends Controller
     public function getAllSanPham(Request $request)
     {
         $url_canonical = $request->url();
-        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
+        $dm =  $this->dmuc->orderby('ten_dm')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
         $sp = $this->spham->orderBy('ten_sp')->paginate(12);
         return view('frontend.sanpham_all', compact('dm', 'sp', 'th', 'url_canonical'));
@@ -272,7 +286,7 @@ class SanPhamController extends Controller
     public function timKiemSanPham(Request $request)
     {
         $url_canonical = $request->url();
-        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
+        $dm =  $this->dmuc->orderby('ten_dm')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
         $timkiem =  $this->spham->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%')->paginate(12);;
         return view('frontend.sanpham_timkiem', compact('dm', 'th', 'timkiem', 'url_canonical'));

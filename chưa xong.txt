@@ -3,23 +3,24 @@
 --
     xong link user page
     
-
 -- 
     điều chỉnh hrel header.blade.php
     chỉnh logo
 
--- chức năng lọc và hiển thị số lượt xem
--- chức năng cmt, review
+-- chức năng lọc
 
 -- Tích hợp thanh toán
     + https://transmoni.io/blog/tich-hop-thanh-toan-chuyen-khoan-vao-website-su-dung-laravel
     + https://viblo.asia/p/tich-hop-cong-thanh-toan-vnpay-voi-laravel-Az45bGD6KxY
     + https://sandbox.vnpayment.vn/apis/docs/huong-dan-tich-hop/
 
--- Chia sẻ fb, nút thích
+-- Chia sẻ fb, nút thích trong chi tiết sp
+    đăng nhập fb,gg
+    chat zalo
 
 --  check quyền người dùng
     Hình thức thanh toán
 
--- select địa chỉ thanh toán
+-- Min giỏ hàng
+file hình
     

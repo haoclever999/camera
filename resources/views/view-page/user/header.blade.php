@@ -103,32 +103,20 @@
                         <b> Danh mục </b>
                     </a>
                     <ul class="dropdown-menu">
+                        @foreach($dm as $d)
                         <li>
-                            <div class="header-navigation-content">
-                                <div class="row">
-                                    @foreach($dm as $d)
-                                    <div class="col-md-3 header-navigation-col">
-                                        <h4>{{$d->ten_dm}}</h4>
-                                        <ul>
-                                            @foreach($d->DanhMucCon as $dmc)
-                                            <li>
-                                                <a
-                                                    href="{{route('danhmuc.sanpham',
-                                                    [
-                                                    'slug'=>$dmc->slug,'id'=>$dmc->id
-                                                    ]
-                                                    )}}"
-                                                >
-                                                    {{$dmc->ten_dm}}
-                                                </a>
-                                            </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                    @endforeach
-                                </div>
-                            </div>
+                            <a
+                                href="{{route('danhmuc.sanpham',
+                                    [
+                                    'slug'=>$d->slug,'id'=>$d->id
+                                    ]
+                                    )}}"
+                            >
+                                {{$d->ten_dm}}
+                            </a>
                         </li>
+
+                        @endforeach
                     </ul>
                 </li>
                 <li>

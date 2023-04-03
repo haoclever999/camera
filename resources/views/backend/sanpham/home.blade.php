@@ -9,21 +9,73 @@
     <h2 class="m-0"><b>Danh sách sản phẩm </b></h2>
 </div>
 <form
+    action="{{ route('sanpham.tim') }}"
     class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+    style="width: 35rem"
 >
+    @csrf
     <div class="input-group">
+        <input
+            type="radio"
+            id="ten_sp"
+            name="san_pham"
+            value="ten_sp"
+            checked
+            required
+        />
+        <label
+            for="ten_sp"
+            style="
+                font-weight: normal;
+                vertical-align: middle;
+                margin-right: 1em;
+            "
+        >
+            &nbsp; Tên
+        </label>
+        <input
+            type="radio"
+            id="danh_muc"
+            name="san_pham"
+            value="danh_muc"
+            required
+        />
+        <label
+            for="danh_muc"
+            style="
+                font-weight: normal;
+                vertical-align: middle;
+                margin-right: 1em;
+            "
+        >
+            &nbsp; Danh mục
+        </label>
+        <input
+            type="radio"
+            id="thuong_hieu"
+            name="san_pham"
+            value="thuong_hieu"
+            required
+        />
+        <label
+            for="thuong_hieu"
+            style="
+                font-weight: normal;
+                vertical-align: middle;
+                margin-right: 1em;
+            "
+        >
+            &nbsp; Thương hiệu
+        </label>
         <input
             type="text"
             class="form-control bg-light border-0 small"
-            placeholder="Search for..."
-            aria-label="Search"
-            aria-describedby="basic-addon2"
+            placeholder="Tìm kiếm..."
+            name="timkiem_th"
         />
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
-                <i class="fas fa-search fa-sm"></i>
-            </button>
-        </div>
+        <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+        </button>
     </div>
 </form>
 @endsection @section('content')
@@ -71,7 +123,7 @@
                             </tr>
                             @foreach($sp as $s)
                             <tr>
-                                <td>{{ +(+$i) }}</td>
+                                <td>{{ ++$i }}</td>
                                 <td>{{$s->ten_sp}}</td>
                                 <td>
                                     <img

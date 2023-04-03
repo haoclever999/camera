@@ -7,21 +7,20 @@
     <h2 class="m-0"><b>Danh sách thương hiệu </b></h2>
 </div>
 <form
+    action="{{ route('thuonghieu.timkiem') }}"
     class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 navbar-search"
 >
+    @csrf
     <div class="input-group">
         <input
             type="text"
             class="form-control bg-light border-0 small"
-            placeholder="Search for..."
-            aria-label="Search"
-            aria-describedby="basic-addon2"
+            placeholder="Tìm kiếm..."
+            name="timkiem_th"
         />
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
-                <i class="fas fa-search fa-sm"></i>
-            </button>
-        </div>
+        <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+        </button>
     </div>
 </form>
 @endsection @section('content')
@@ -44,7 +43,7 @@
                             </tr>
                             @foreach($th as $t)
                             <tr>
-                                <td>{{ +(+$i) }}</td>
+                                <td>{{ ++$i }}</td>
                                 <td>{{ $t->ten_thuong_hieu}}</td>
                                 <td>
                                     <img

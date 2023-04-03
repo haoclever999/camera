@@ -32,8 +32,8 @@ class ThuongHieuController extends Controller
     // Bat dau trang admin
     public function index()
     {
-        $page = 10;
-        $th = $this->thuonghieu::orderBy('id', 'desc')->paginate($page);
+        $page = 5;
+        $th = $this->thuonghieu::orderBy('ten_thuong_hieu')->paginate($page);
         return view('backend.thuonghieu.home', compact("th"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
@@ -118,6 +118,14 @@ class ThuongHieuController extends Controller
     {
         return $this->deleteModelTrait($id, $this->thuonghieu);
     }
+
+    public function timkiem(Request $request)
+    {
+
+        $page = 5;
+        $timkiem =  $this->thuonghieu->where('ten_thuong_hieu', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_thuong_hieu')->paginate($page);
+        return view('backend.thuonghieu.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+    }
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
@@ -126,7 +134,7 @@ class ThuongHieuController extends Controller
         $url_canonical = $request->url();
         $thongtin = $this->cauhinh->all(); //xem laij
         $sp = $this->sanpham->where('thuong_hieu_id', $id)->where('dm_id', $id_dm)->paginate(6);
-        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
+        $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
         $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
 
@@ -141,7 +149,7 @@ class ThuongHieuController extends Controller
     {
         $url_canonical = $request->url();
         $sp = $this->sanpham->where('thuong_hieu_id', $id)->paginate(6);
-        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
+        $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
 

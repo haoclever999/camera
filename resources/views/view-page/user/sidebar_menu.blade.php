@@ -1,31 +1,7 @@
 <div class="sidebar col-md-3 col-sm-4">
     <h4><b> Danh mục sản phẩm</b></h4>
     <ul class="list-group margin-bottom-25 sidebar-menu">
-        @foreach($dm as $d) @if($d->DanhMucCon->count())
-        <li class="list-group-item clearfix dropdown">
-            <a href="">
-                <i class="fa fa-angle-right"></i>
-                {{$d->ten_dm}}
-            </a>
-            <ul class="dropdown-menu" id="danhmuc_{{$d->id}}">
-                @foreach($d->DanhMucCon as $dmc)
-                <li class="list-group-item dropdown clearfix">
-                    <a
-                        href="{{route('danhmuc.sanpham',
-                    [
-                    'slug'=>$dmc->slug,'id'=>$dmc->id
-                    ]
-                    )}}"
-                    >
-                        @if($dmc->DanhMucCon->count())
-                        <i class="fa fa-angle-right"></i>
-                        @endif {{$dmc->ten_dm}}
-                    </a>
-                </li>
-                @endforeach
-            </ul>
-        </li>
-        @else
+        @foreach($dm as $d)
         <li class="list-group-item clearfix dropdown">
             <a
                 href="{{route('danhmuc.sanpham',
@@ -36,7 +12,6 @@
             >
                 {{$d->ten_dm}}
             </a>
-            @endif
         </li>
 
         @endforeach

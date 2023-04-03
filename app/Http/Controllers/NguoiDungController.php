@@ -24,8 +24,8 @@ class NguoiDungController extends Controller
     {
         $id_sua = '0';
         $capnhatquyen = '';
-        $page = 10;
-        $users = $this->user::orderBy('id', 'desc')->paginate($page);
+        $page = 5;
+        $users = $this->user::orderBy('ho_ten')->paginate($page);
         return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
@@ -198,8 +198,8 @@ class NguoiDungController extends Controller
     {
         $id_sua = $id;
         $capnhatquyen = 'capnhatquyen';
-        $page = 10;
-        $users = $this->user::orderBy('id', 'desc')->paginate($page);
+        $page = 5;
+        $users = $this->user::orderBy('ho_ten')->paginate($page);
         return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
@@ -244,6 +244,14 @@ class NguoiDungController extends Controller
     public function destroy($id)
     {
         return $this->deleteModelTrait($id, $this->user);
+    }
+    public function timkiem(Request $request)
+    {
+        $id_sua = '0';
+        $capnhatquyen = '';
+        $page = 5;
+        $timkiem =  $this->user->where('ho_ten', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ho_ten')->paginate($page);
+        return view('backend.nguoidung.timkiem', compact('timkiem', "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
     // Kết thúc trang admin 
 

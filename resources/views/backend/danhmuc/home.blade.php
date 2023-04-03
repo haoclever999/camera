@@ -7,21 +7,20 @@
     <h2 class="m-0"><b>Danh sách danh mục sản phẩm </b></h2>
 </div>
 <form
+    action="{{ route('danhmuc.timkiem') }}"
     class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 navbar-search"
 >
+    @csrf
     <div class="input-group">
         <input
             type="text"
             class="form-control bg-light border-0 small"
-            placeholder="Search for..."
-            aria-label="Search"
-            aria-describedby="basic-addon2"
+            placeholder="Tìm kiếm..."
+            name="timkiem_th"
         />
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
-                <i class="fas fa-search fa-sm"></i>
-            </button>
-        </div>
+        <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+        </button>
     </div>
 </form>
 @endsection @section('content')
@@ -43,7 +42,7 @@
                             </tr>
                             @foreach($dm as $d)
                             <tr>
-                                <td>{{ +(+$i) }}</td>
+                                <td>{{ ++$i }}</td>
                                 <td>{{ $d-> ten_dm }}</td>
                                 <td>
                                     {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $d->updated_at)->format('H:i:s d/m/Y') }}
@@ -106,19 +105,6 @@
                                     <b>{{ $errors->first('ten_dm') }}</b>
                                 </span>
                                 @endif
-                            </div>
-                            <div class="form-group">
-                                <label for="opt_dm">Chọn danh mục cha</label>
-                                <select
-                                    class="form-control"
-                                    id="opt_dm"
-                                    name="opt_dm"
-                                >
-                                    <option disabled selected value="0">
-                                        - Chọn danh mục cha -
-                                    </option>
-                                    {!! $DmOpt !!}
-                                </select>
                             </div>
 
                             <button type="submit" class="btn btn-primary">

@@ -11,18 +11,6 @@
             </div>
             <div class="col-md-5 col-sm-5">
                 <div class="pull-right">
-                    <label class="control-label">Hiển thị:</label>
-                    <select class="form-control input-sm">
-                        <option value="#?limit=24" selected="selected">
-                            24
-                        </option>
-                        <option value="#?limit=25">25</option>
-                        <option value="#?limit=50">50</option>
-                        <option value="#?limit=75">75</option>
-                        <option value="#?limit=100">100</option>
-                    </select>
-                </div>
-                <div class="pull-right">
                     <label class="control-label">Lọc:</label>
                     <select class="form-control input-sm">
                         <option
@@ -48,7 +36,7 @@
             </div>
         </div>
         <!-- BEGIN PRODUCT LIST -->
-        <div class="row product-list">
+        <div class="row product-list" style="min-height: 300px">
             <!-- PRODUCT ITEM START -->
 
             @if($sp->count()>0) @foreach($sp as $s)

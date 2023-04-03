@@ -11,6 +11,6 @@ class CauHinh extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'cau_hinhs';
     protected $fillable = [
-        'config_key', 'config_value',
+        'cau_hinh_key', 'cau_hinh_value',
     ];
 }

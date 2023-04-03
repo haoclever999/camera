@@ -7,21 +7,64 @@
     <h2 class="m-0"><b>Danh sách đơn hàng </b></h2>
 </div>
 <form
+    action="{{ route('donhang.timkiem') }}"
     class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+    style="width: 30rem"
 >
+    @csrf
     <div class="input-group">
+        <input
+            type="radio"
+            id="ten_kh"
+            name="don_hang"
+            value="ten_kh"
+            checked
+            required
+        />
+        <label
+            for="ten_kh"
+            style="
+                font-weight: normal;
+                vertical-align: middle;
+                margin-right: 1em;
+            "
+            >&nbsp; Tên
+        </label>
+        <input type="radio" id="sdt" name="don_hang" value="sdt" required />
+        <label
+            for="sdt"
+            style="
+                font-weight: normal;
+                vertical-align: middle;
+                margin-right: 1em;
+            "
+            >&nbsp; SĐT
+        </label>
+        <input
+            type="radio"
+            id="dia_chi"
+            name="don_hang"
+            value="dia_chi"
+            required
+        />
+        <label
+            for="dia_chi"
+            style="
+                font-weight: normal;
+                vertical-align: middle;
+                margin-right: 1em;
+            "
+            >&nbsp; Địa chỉ
+        </label>
         <input
             type="text"
             class="form-control bg-light border-0 small"
-            placeholder="Search for..."
-            aria-label="Search"
-            aria-describedby="basic-addon2"
+            placeholder="Tìm kiếm..."
+            name="timkiem_th"
         />
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
-                <i class="fas fa-search fa-sm"></i>
-            </button>
-        </div>
+        <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+        </button>
     </div>
 </form>
 @endsection @section('content')
@@ -50,7 +93,7 @@
                             </tr>
                             @foreach($dhang as $dh)
                             <tr>
-                                <td>{{ +(+$i) }}</td>
+                                <td>{{ ++$i }}</td>
                                 <td>{{$dh->ten_kh}}</td>
                                 <td>{{$dh->sdt_kh}}</td>
                                 <td>{{$dh->dia_chi_kh}}</td>

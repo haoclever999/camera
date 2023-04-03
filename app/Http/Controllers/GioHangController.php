@@ -45,7 +45,7 @@ class GioHangController extends Controller
     public function show(Request $request)
     {
         $url_canonical = $request->url();
-        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
+        $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         return view('frontend.giohang.giohang_show', compact('dm', 'url_canonical'));
     }
 
@@ -75,7 +75,7 @@ class GioHangController extends Controller
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
 
         $url_canonical = $request->url();
-        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm', 'asc')->get();
+        $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $tt_giohang = Cart::content();
         if (count($tt_giohang) > 0) {
             foreach ($tt_giohang as $key => $item) {
@@ -144,9 +144,10 @@ class GioHangController extends Controller
                     $lmua = $sanpham->luot_mua;
                     $sluong = $sanpham->so_luong;
 
+                    $ton = $sluong -  ($lmua + $item->qty);
                     $sanpham->update([
                         'luot_mua' => $lmua + $item->qty,
-                        'ton' =>  $sluong -  $lmua + $item->qty,
+                        'ton' =>  $ton,
                     ]);
                 }
             }

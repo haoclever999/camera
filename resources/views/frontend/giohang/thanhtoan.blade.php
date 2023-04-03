@@ -29,7 +29,7 @@
 <div class="row margin-bottom-40" style="margin-top: 40px">
     <div class="col-md-12 col-sm-12">
         <h3>Vui lòng nhập đầy đủ thông tin</h3>
-        <div class="col-sm-7">
+        <div class="col-sm-6">
             <form method="post" action="{{ route('thanhtoan.postThanhToan') }}">
                 @csrf
                 <div class="form-group">
@@ -83,11 +83,11 @@
                         <div class="col-md-4 col-sm-4" style="padding-left: 0;">
                             <label for="opt_Huyen"> Chọn Quận/Huyện </label><br>
                             
-                            <select class="opt_select opt_Huyen" name="opt_Huyen" id="opt_Huyen" style="min-width: 160px; " required>
+                            <select class="opt_select opt_Huyen" name="opt_Huyen" id="opt_Huyen" style="min-width: 160px; margin-left: 3px; " required>
                                 <option value="">--Quận/Huyện--</option>
                             </select>
                         </div>
-                        <div class="col-md-4 col-sm-4" style="padding-left: 0;">
+                        <div class="col-md-4 col-sm-4" style="padding-left: 0; padding-right: 0;">
                              <label for="opt_Xa"> Chọn Xã phường/Thị trấn </label><br>
                             <select class="opt_Xa" name="opt_Xa" id="opt_Xa" style="min-width: 160px; " required>
                                 <option value="">--Xã phường/Thị trấn--</option>
@@ -102,7 +102,6 @@
                             class="form-control"
                             name="dia_chi"
                             id="dia_chi"
-                            value="{{ Auth::user()->dia_chi }} "
                             placeholder="Nhập số nhà, khóm/ấp"
                             required
                         >
@@ -178,7 +177,7 @@
                 </div>
             </form>
         </div>
-        <div class="col-sm-5">
+        <div class="col-sm-6">
             <h4><b> Các sản phẩm đã chọn</b></h4>
             <table class="table table-bordered" style="vertical-align: middle">
                 <tr class="info">

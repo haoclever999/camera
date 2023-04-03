@@ -40,42 +40,42 @@
                     >
                         @csrf
                         <div class="form-group">
-                            <label for="config_key" class="form-label">
+                            <label for="cau_hinh_key" class="form-label">
                                 <b>Tên cấu hình</b>
                             </label>
                             <input
                                 type="text"
-                                class="form-control @error('config_key') is-invalid @enderror"
-                                id="config_key"
-                                name="config_key2"
-                                value="{{ $cauhinh->config_key}}"
+                                class="form-control @error('cau_hinh_key') is-invalid @enderror"
+                                id="cau_hinh_key"
+                                name="cau_hinh_key2"
+                                value="{{ $cauhinh->cau_hinh_key}}"
                                 onchange="changeName()"
                                 placeholder="Nhập tên cấu hình"
                                 required
                             />
-                            @if ($errors->has('config_key'))
+                            @if ($errors->has('cau_hinh_key'))
                             <span class="help-block" style="color: #ff3f3f">
-                                <b>{{ $errors->first('config_key') }}</b>
+                                <b>{{ $errors->first('cau_hinh_key') }}</b>
                             </span>
                             @endif
                         </div>
 
                         <div class="form-group">
-                            <label for="config_value" class="form-label">
+                            <label for="cau_hinh_value" class="form-label">
                                 <b>Giá trị của cấu hình</b>
                             </label>
                             <input
                                 type="text"
-                                class="form-control @error('config_value') is-invalid @enderror"
-                                id="config_value"
-                                name="config_value"
-                                value="{{ $cauhinh->config_value}}"
+                                class="form-control @error('cau_hinh_value') is-invalid @enderror"
+                                id="cau_hinh_value"
+                                name="cau_hinh_value"
+                                value="{{ $cauhinh->cau_hinh_value}}"
                                 placeholder="Nhập giá trị của cấu hình"
                                 required
                             />
-                            @if ($errors->has('config_value'))
+                            @if ($errors->has('cau_hinh_value'))
                             <span class="help-block" style="color: #ff3f3f">
-                                <b>{{ $errors->first('config_value') }}</b>
+                                <b>{{ $errors->first('cau_hinh_value') }}</b>
                             </span>
                             @endif
                         </div>
@@ -97,8 +97,8 @@
 <script>
     function changeName() {
         document
-            .getElementById("config_key")
-            .setAttribute("name", "config_key");
+            .getElementById("cau_hinh_key")
+            .setAttribute("name", "cau_hinh_key");
     }
 </script>
 @endsection

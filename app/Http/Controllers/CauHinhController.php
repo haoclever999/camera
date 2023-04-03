@@ -20,29 +20,29 @@ class CauHinhController extends Controller
 
     public function index()
     {
-        $page = 10;
-        $cauhinh = $this->cauhinh::orderBy('id', 'desc')->paginate($page);
+        $page = 5;
+        $cauhinh = $this->cauhinh::orderBy('cau_hinh_key')->paginate($page);
         return view('backend.cauhinh.home', compact("cauhinh"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'config_key' => 'required|max:191|unique:cau_hinhs',
-            'config_value' => 'required|max:191',
+            'cau_hinh_key' => 'required|max:191|unique:cau_hinhs',
+            'cau_hinh_value' => 'required|max:191',
         ], [
-            'config_key.required' => 'Hãy nhập tên cấu hình',
-            'config_key.max' => 'Tên cấu hình quá dài',
-            'config_key.unique' => 'Tên cấu hình đã tồn tại',
-            'config_value.required' => 'Hãy nhập giá trị của cấu hình',
-            'config_value.max' => 'Giá trị của cấu hình quá dài',
+            'cau_hinh_key.required' => 'Hãy nhập tên cấu hình',
+            'cau_hinh_key.max' => 'Tên cấu hình quá dài',
+            'cau_hinh_key.unique' => 'Tên cấu hình đã tồn tại',
+            'cau_hinh_value.required' => 'Hãy nhập giá trị của cấu hình',
+            'cau_hinh_value.max' => 'Giá trị của cấu hình quá dài',
 
         ]);
         try {
             DB::beginTransaction();
             $this->cauhinh->firstOrCreate([
-                'config_key' => trim($request->config_key),
-                'config_value' => trim($request->config_value),
+                'cau_hinh_key' => trim($request->cau_hinh_key),
+                'cau_hinh_value' => trim($request->cau_hinh_value),
             ]);
             DB::commit();
             Alert::success('Thành công', 'Thêm cấu hình thành công');
@@ -63,39 +63,39 @@ class CauHinhController extends Controller
 
     public function update(Request $request, $id)
     {
-        if ($request->has('config_key')) {
+        if ($request->has('cau_hinh_key')) {
             $request->validate([
-                'config_key' => 'required|max:191|unique:cau_hinhs',
-                'config_value' => 'required|max:191',
+                'cau_hinh_key' => 'required|max:191|unique:cau_hinhs',
+                'cau_hinh_value' => 'required|max:191',
             ], [
-                'config_key.required' => 'Hãy nhập tên cấu hình',
-                'config_key.max' => 'Tên cấu hình quá dài',
-                'config_key.unique' => 'Tên cấu hình đã tồn tại',
-                'config_value.required' => 'Hãy nhập giá trị của cấu hình',
-                'config_value.max' => 'Giá trị của cấu hình quá dài',
+                'cau_hinh_key.required' => 'Hãy nhập tên cấu hình',
+                'cau_hinh_key.max' => 'Tên cấu hình quá dài',
+                'cau_hinh_key.unique' => 'Tên cấu hình đã tồn tại',
+                'cau_hinh_value.required' => 'Hãy nhập giá trị của cấu hình',
+                'cau_hinh_value.max' => 'Giá trị của cấu hình quá dài',
 
             ]);
         } else {
             $request->validate([
-                'config_key' => 'required|max:191',
-                'config_value' => 'required|max:191',
+                'cau_hinh_key' => 'required|max:191',
+                'cau_hinh_value' => 'required|max:191',
             ], [
-                'config_key.required' => 'Hãy nhập tên cấu hình',
-                'config_key.max' => 'Tên cấu hình quá dài',
-                'config_value.required' => 'Hãy nhập giá trị của cấu hình',
-                'config_value.max' => 'Giá trị của cấu hình quá dài',
+                'cau_hinh_key.required' => 'Hãy nhập tên cấu hình',
+                'cau_hinh_key.max' => 'Tên cấu hình quá dài',
+                'cau_hinh_value.required' => 'Hãy nhập giá trị của cấu hình',
+                'cau_hinh_value.max' => 'Giá trị của cấu hình quá dài',
 
             ]);
         }
         try {
             DB::beginTransaction();
-            if ($request->has('config_key2')) $config_key = $request->config_key2;
-            else $config_key = $request->config_key;
+            if ($request->has('cau_hinh_key2')) $cau_hinh_key = $request->cau_hinh_key2;
+            else $cau_hinh_key = $request->cau_hinh_key;
 
             $ch = $this->cauhinh->find($id);
             $ch->id = $request->id;
-            $ch->config_key = trim($config_key);
-            $ch->config_value = trim($request->config_value);
+            $ch->cau_hinh_key = trim($cau_hinh_key);
+            $ch->cau_hinh_value = trim($request->cau_hinh_value);
             $ch->save();
             DB::commit();
             Alert::success('Thành công', 'Cập nhật cấu hình thành công');
@@ -111,5 +111,15 @@ class CauHinhController extends Controller
     public function destroy($id)
     {
         return $this->deleteModelTrait($id, $this->cauhinh);
+    }
+
+    public function timkiem(Request $request)
+    {
+        $page = 5;
+        if ($request->cau_hinh == 'cau_hinh_key')
+            $timkiem =  $this->cauhinh->where('cau_hinh_key', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('cau_hinh_key')->paginate($page);
+        else
+            $timkiem =  $this->cauhinh->where('cau_hinh_value', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('cau_hinh_key')->paginate($page);
+        return view('backend.cauhinh.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 }

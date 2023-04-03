@@ -25,7 +25,7 @@ class AuthController extends Controller
         );
 
         if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
-            if (auth()->user()->quyen != "khách hàng")
+            if (auth()->user()->quyen != "Khách hàng")
                 return redirect()->route('admin.index');
             else
                 return redirect()->route('home.index');

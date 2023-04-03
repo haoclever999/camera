@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Components\Traits\DeleteModelTrait;
+use Illuminate\Http\Request;
 
 class DonHangController extends Controller
 {
@@ -20,7 +21,7 @@ class DonHangController extends Controller
 
     public function index()
     {
-        $page = 10;
+        $page = 5;
         $dhang = $this->donhang::orderBy('created_at', 'desc')->paginate($page);
         return view('backend.donhang.home', compact("dhang"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
@@ -76,5 +77,18 @@ class DonHangController extends Controller
     public function destroy($id)
     {
         return $this->deleteModelTrait($id, $this->donhang);
+    }
+
+    public function timkiem(Request $request)
+    {
+
+        $page = 5;
+        if ($request->don_hang == 'ten_kh')
+            $timkiem =  $this->donhang->where('ten_kh', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_kh')->paginate($page);
+        elseif ($request->don_hang == 'sdt')
+            $timkiem =  $this->donhang->where('sdt_kh', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('sdt_kh')->paginate($page);
+        else
+            $timkiem =  $this->donhang->where('dia_chi_kh', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('dia_chi_kh')->paginate($page);
+        return view('backend.donhang.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 }

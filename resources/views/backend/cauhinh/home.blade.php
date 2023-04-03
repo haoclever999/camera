@@ -7,21 +7,57 @@
     <h2 class="m-0"><b>Danh sách cấu hình</b></h2>
 </div>
 <form
+    action="{{ route('cauhinh.timkiem') }}"
     class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 navbar-search"
+    style="width: 30rem"
 >
+    @csrf
+
     <div class="input-group">
+        <input
+            type="radio"
+            id="cau_hinh_key"
+            name="cau_hinh"
+            value="cau_hinh_key"
+            checked
+            required
+        />
+        <label
+            for="cau_hinh_key"
+            style="
+                font-weight: normal;
+                vertical-align: middle;
+                margin-right: 1em;
+            "
+            >&nbsp; Tên
+        </label>
+        <input
+            type="radio"
+            id="cau_hinh_value"
+            name="cau_hinh"
+            value="cau_hinh_value"
+            required
+        />
+        &nbsp;
+        <label
+            for="cau_hinh_value"
+            style="
+                font-weight: normal;
+                vertical-align: middle;
+                margin-right: 1em;
+            "
+        >
+            Giá trị
+        </label>
         <input
             type="text"
             class="form-control bg-light border-0 small"
-            placeholder="Search for..."
-            aria-label="Search"
-            aria-describedby="basic-addon2"
+            placeholder="Tìm kiếm..."
+            name="timkiem_th"
         />
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="button">
-                <i class="fas fa-search fa-sm"></i>
-            </button>
-        </div>
+        <button class="btn btn-primary" type="submit">
+            <i class="fas fa-search fa-sm"></i>
+        </button>
     </div>
 </form>
 @endsection @section('content')
@@ -36,16 +72,16 @@
                         <table class="table">
                             <tr>
                                 <th>STT</th>
-                                <th>Tên</th>
+                                <th>Tên cấu hình</th>
                                 <th>Giá trị</th>
                                 <th>Ngày cập nhật</th>
                                 <th>Hành động</th>
                             </tr>
                             @foreach($cauhinh as $ch)
                             <tr>
-                                <td>{{ +(+$i) }}</td>
-                                <td>{{ $ch-> config_key }}</td>
-                                <td>{{ $ch-> config_value }}</td>
+                                <td>{{ ++$i }}</td>
+                                <td>{{ $ch-> cau_hinh_key }}</td>
+                                <td>{{ $ch-> cau_hinh_value }}</td>
                                 <td>
                                     {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ch->updated_at)->format('H:i:s d/m/Y') }}
                                 </td>
@@ -90,41 +126,43 @@
                         >
                             @csrf
                             <div class="form-group">
-                                <label for="config_key" class="form-label">
+                                <label for="cau_hinh_key" class="form-label">
                                     <b>Tên cấu hình</b>
                                 </label>
                                 <input
                                     type="text"
-                                    class="form-control @error('config_key') is-invalid @enderror"
-                                    id="config_key"
-                                    name="config_key"
-                                    value="{{ old('config_key') }}"
+                                    class="form-control @error('cau_hinh_key') is-invalid @enderror"
+                                    id="cau_hinh_key"
+                                    name="cau_hinh_key"
+                                    value="{{ old('cau_hinh_key') }}"
                                     placeholder="Nhập tên cấu hình"
                                     required
                                 />
-                                @if ($errors->has('config_key'))
+                                @if ($errors->has('cau_hinh_key'))
                                 <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('config_key') }}</b>
+                                    <b>{{ $errors->first('cau_hinh_key') }}</b>
                                 </span>
                                 @endif
                             </div>
 
                             <div class="form-group">
-                                <label for="config_value" class="form-label">
+                                <label for="cau_hinh_value" class="form-label">
                                     <b>Giá trị của cấu hình</b>
                                 </label>
                                 <input
                                     type="text"
-                                    class="form-control @error('config_value') is-invalid @enderror"
-                                    id="config_value"
-                                    name="config_value"
-                                    value="{{ old('config_value') }}"
+                                    class="form-control @error('cau_hinh_value') is-invalid @enderror"
+                                    id="cau_hinh_value"
+                                    name="cau_hinh_value"
+                                    value="{{ old('cau_hinh_value') }}"
                                     placeholder="Nhập giá trị của cấu hình"
                                     required
                                 />
-                                @if ($errors->has('config_value'))
+                                @if ($errors->has('cau_hinh_value'))
                                 <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('config_value') }}</b>
+                                    <b
+                                        >{{ $errors->first('cau_hinh_value') }}</b
+                                    >
                                 </span>
                                 @endif
                             </div>

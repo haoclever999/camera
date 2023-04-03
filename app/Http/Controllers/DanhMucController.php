@@ -37,10 +37,9 @@ class DanhMucController extends Controller
 
     public function index()
     {
-        $page = 10;
-        $dm = $this->dmuc::orderBy('id', 'desc')->paginate($page);
-        $DmOpt = $this->getDanhMuc('');
-        return view('backend.danhmuc.home', compact('dm', 'DmOpt'))->with('i', (request()->input('page', 1) - 1) * $page);
+        $page = 5;
+        $dm = $this->dmuc::orderBy('ten_dm')->paginate($page);
+        return view('backend.danhmuc.home', compact('dm'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function store(Request $request)
@@ -59,7 +58,6 @@ class DanhMucController extends Controller
             $this->dmuc->firstOrCreate([
                 'ten_dm' => trim($request->ten_dm),
                 'slug' => Str::slug($request->ten_dm, '-'),
-                'parent_id' => $opt_dm,
             ]);
             DB::commit();
             Alert::success('Thành công', 'Thêm danh mục thành công');
@@ -75,8 +73,7 @@ class DanhMucController extends Controller
     public function edit($id)
     {
         $dm = $this->dmuc->find($id);
-        $DmOpt = $this->getDanhMuc($dm->parent_id);
-        return view('backend.danhmuc.sua', compact('dm', 'DmOpt'));
+        return view('backend.danhmuc.sua', compact('dm'));
     }
 
     public function update(Request $request, $id)
@@ -98,7 +95,6 @@ class DanhMucController extends Controller
             $dm->id = $request->id;
             $dm->ten_dm = $ten_dm;
             $dm->slug = Str::slug($request->ten_dm, '-');
-            $dm->parent_id = $request->opt_dm;
             $dm->save();
             DB::commit();
             Alert::success('Thành công', 'Cập nhật danh mục thành công');
@@ -116,6 +112,13 @@ class DanhMucController extends Controller
         return $this->deleteModelTrait($id, $this->dmuc);
     }
 
+    public function timkiem(Request $request)
+    {
+        $page = 5;
+        $timkiem =  $this->dmuc->where('ten_dm', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_dm')->paginate($page);
+        return view('backend.danhmuc.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+    }
+
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
@@ -123,7 +126,7 @@ class DanhMucController extends Controller
     {
         $url_canonical = $request->url();
         $sp = $this->sanpham->where('dm_id', $id_dm)->paginate(6);
-        $dm =  $this->dmuc->where('parent_id', 0)->orderby('ten_dm')->get();
+        $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
         if (count($sp) > 0) {
             foreach ($sp as $value)

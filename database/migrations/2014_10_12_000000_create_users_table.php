@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('sdt', 191)->nullable();
             $table->string('dia_chi', 191)->nullable();
             $table->integer('trang_thai')->default(1);
-            $table->string('quyen', 15)->default('khách hàng');
+            $table->string('quyen', 15)->default('Khách hàng');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

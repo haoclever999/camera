@@ -64,7 +64,7 @@
                         @foreach(Cart::content() as $nd)
 
                         <tr>
-                            <td class="goods-page-name">
+                            <td class="goods-page-name" style="width: 400px">
                                 <a
                                     href="{{route('sanpham.chitiet',[$nd->id])}}"
                                     style="font-size: 20px"
@@ -102,6 +102,7 @@
                                             type="text"
                                             value="{{$nd->qty}}"
                                             onchange="SoLuongMinMax('{{$nd->rowId}}')"
+                                            min="1"
                                             max="{{$nd->options->ton}}"
                                             readonly
                                             class="form-control input-sm"

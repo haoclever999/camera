@@ -59,20 +59,6 @@
                             @endif
                         </div>
 
-                        <div class="form-group">
-                            <label for="opt_dm">Chọn danh mục cha</label>
-                            <select
-                                class="form-control"
-                                id="opt_dm"
-                                name="opt_dm"
-                            >
-                                <option disabled value="">
-                                    - Chọn danh mục cha -
-                                </option>
-                                {!! $DmOpt !!}
-                            </select>
-                        </div>
-
                         <button type="submit" class="btn btn-primary">
                             Cập nhật danh mục
                         </button>

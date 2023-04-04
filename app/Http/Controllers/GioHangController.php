@@ -35,7 +35,6 @@ class GioHangController extends Controller
         $data['name'] = $giohang->ten_sp;
         $data['price'] = $gia;
         $data['qty'] = $request->num_so_luong;
-        $data['options']['ton'] = $giohang->ton;
         $data['options']['hinh_anh'] = $giohang->hinh_anh_chinh;
         Cart::add($data);
 
@@ -78,20 +77,9 @@ class GioHangController extends Controller
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $tt_giohang = Cart::content();
         if (count($tt_giohang) > 0) {
-            foreach ($tt_giohang as $key => $item) {
-                $sanpham = $this->spham->find($item->id);
-                $ton = $sanpham->ton;
-                if ($ton <= 0) {
-                    session()->flash('error', 'Sản phẩm ' . $sanpham->ten_sp . ' đã hết hàng.');
-                    return redirect()->route('giohang.show_giohang');
-                }
-                if ($ton > 0 && $ton < $item->qty) {
-                    session()->flash('error', 'Sản phẩm ' . $sanpham->ten_sp . ' không đủ.');
-                    return redirect()->route('giohang.show_giohang');
-                }
-            }
             return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical', 'tinh_tp'));
         }
+        return redirect()->route('giohang.show_giohang');
     }
 
     public function postThanhToan(Request $request)
@@ -142,12 +130,9 @@ class GioHangController extends Controller
                     ]);
                     $sanpham = $this->spham->find($item->id);
                     $lmua = $sanpham->luot_mua;
-                    $sluong = $sanpham->so_luong;
 
-                    $ton = $sluong -  ($lmua + $item->qty);
                     $sanpham->update([
                         'luot_mua' => $lmua + $item->qty,
-                        'ton' =>  $ton,
                     ]);
                 }
             }

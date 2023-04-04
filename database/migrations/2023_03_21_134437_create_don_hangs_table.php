@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('trang_thai', 191);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-            $table->softDeletes();
         });
     }
 

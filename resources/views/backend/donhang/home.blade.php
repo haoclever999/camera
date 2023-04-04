@@ -85,7 +85,6 @@
                                 <th>Tổng số lượng</th>
                                 <th>Tổng tiền</th>
                                 <th>Hình thức</th>
-                                <th>Ghi chú</th>
                                 <th>Trạng thái</th>
                                 <th>Ngày tạo</th>
                                 <th>Xác nhận / Hủy</th>
@@ -104,14 +103,7 @@
                                 <td>
                                     {{$dh->hinh_thuc}}
                                 </td>
-                                <td
-                                    style="
-                                        text-overflow: ellipsis;
-                                        width: 100px;
-                                    "
-                                >
-                                    {{$dh->ghi_chu}}
-                                </td>
+
                                 <td>{{$dh->trang_thai}}</td>
                                 <td>
                                     {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dh->created_at)->format('H:i:s d/m/Y')}}

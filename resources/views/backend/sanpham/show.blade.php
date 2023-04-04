@@ -71,12 +71,6 @@
 
                         <div class="form-group">
                             <label class="form-label">
-                                <b>Tồn kho: </b> <span>{{$sp->ton}}</span>
-                            </label>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">
                                 <b>Giá nhập: </b>
                                 <span
                                     >{{number_format($sp->gia_nhap,0,",",".")}}</span

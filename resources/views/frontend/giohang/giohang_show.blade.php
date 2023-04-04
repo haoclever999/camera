@@ -103,7 +103,6 @@
                                             value="{{$nd->qty}}"
                                             onchange="SoLuongMinMax('{{$nd->rowId}}')"
                                             min="1"
-                                            max="{{$nd->options->ton}}"
                                             readonly
                                             class="form-control input-sm"
                                         />

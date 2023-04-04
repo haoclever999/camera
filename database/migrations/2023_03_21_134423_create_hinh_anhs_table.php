@@ -16,7 +16,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('hinh_anh', 191);
             $table->integer('sp_id')->unsigned();
-            $table->foreign('sp_id')->references('id')->on('san_phams')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('sp_id')->references('id')->on('san_phams')->onDelete('cascade');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

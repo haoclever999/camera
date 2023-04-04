@@ -67,34 +67,40 @@
                                 <th>Ngày tạo</th>
                             </tr>
                             @php $count = 1; @endphp @foreach(
-                            $dhang->DonHangChiTiet as $dh)
+                            $dhang->DonHangChiTiet as $dhct)
                             <tr>
                                 <td>{{ $count++ }}</td>
                                 <td>
-                                    {{$dh->don_hang_id }}
+                                    {{$dhct->don_hang_id }}
                                 </td>
-                                <td>{{ optional($dh->SanPham)->ten_sp }}</td>
+                                <td>{{ optional($dhct->SanPham)->ten_sp }}</td>
                                 <td>
                                     <img
                                         class="list_sp_img_150"
-                                        src="{{ optional($dh->SanPham)->hinh_anh_chinh}}"
+                                        src="{{ optional($dhct->SanPham)->hinh_anh_chinh}}"
                                     />
                                 </td>
                                 <td>
-                                    {{$dh->so_luong_ban}}
+                                    {{$dhct->so_luong_ban}}
                                 </td>
-                                <td>{{number_format($dh->gia,0,",",".")}} đ</td>
                                 <td>
-                                    {{number_format($dh->thanh_tien,0,",",".")}}
+                                    {{number_format($dhct->gia,0,",",".")}} đ
+                                </td>
+                                <td>
+                                    {{number_format($dhct->thanh_tien,0,",",".")}}
                                     đ
                                 </td>
 
                                 <td>
-                                    {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dh->created_at)->format('H:i:s d/m/Y')}}
+                                    {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dhct->created_at)->format('H:i:s d/m/Y')}}
                                 </td>
                             </tr>
                             @endforeach
                         </table>
+                        <h5>Ghi chú:</h5>
+                        @foreach($dhang as $dh) @if(!empty($dh->ghi_chu))
+                        {{$dh->ghi_chu}}
+                        @endif @endforeach
                     </div>
                 </div>
             </div>

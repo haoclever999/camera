@@ -4,14 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class SanPham extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory;
     protected $table = 'san_phams';
     protected $fillable = [
-        'ten_sp', 'slug', 'hinh_anh_chinh', 'mo_ta', 'so_luong', 'ton', 'gia_nhap', 'gia_ban', 'giam_gia', 'bao_hanh', 'tinh_nang', 'luot_xem', 'luot_mua', 'dm_id', 'thuong_hieu_id',  'user_id',
+        'ten_sp', 'slug', 'hinh_anh_chinh', 'mo_ta', 'so_luong', 'gia_nhap', 'gia_ban', 'giam_gia', 'bao_hanh', 'tinh_nang', 'luot_xem', 'luot_mua', 'dm_id', 'thuong_hieu_id',  'user_id',
     ];
 
     public function DanhMuc()

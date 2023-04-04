@@ -39,7 +39,7 @@
 
                     }}
                 </div>
-                @if($sp_m->ton>0)
+
                 <form
                     action="{{ route('giohang.them_giohang') }}"
                     method="post"
@@ -62,7 +62,7 @@
                         Thêm vào giỏ
                     </button>
                 </form>
-                @endif @if($sp_m->giam_gia !=0)
+                @if($sp_m->giam_gia !=0)
                 <div class="sticker sticker-sale"></div>
                 @endif
             </div>
@@ -118,7 +118,7 @@
                     }}
                     đ
                 </div>
-                @if($sp_nb->ton>0)
+
                 <form
                     action="{{ route('giohang.them_giohang') }}"
                     method="post"
@@ -141,7 +141,7 @@
                         Thêm vào giỏ
                     </button>
                 </form>
-                @endif @if($sp_nb->giam_gia !=0)
+                @if($sp_nb->giam_gia !=0)
                 <div class="sticker sticker-sale"></div>
                 @endif
             </div>

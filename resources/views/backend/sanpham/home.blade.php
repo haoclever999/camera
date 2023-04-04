@@ -115,7 +115,7 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
                                 <th>Giá bán</th>
-                                <th>Tồn kho</th>
+
                                 <th>Danh mục</th>
                                 <th>Thương hiệu</th>
                                 <th>Ngày cập nhật</th>
@@ -123,7 +123,7 @@
                             </tr>
                             @foreach($sp as $s)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ +(+$i) }}</td>
                                 <td>{{$s->ten_sp}}</td>
                                 <td>
                                     <img
@@ -134,7 +134,6 @@
                                 <td>
                                     {{number_format($s->gia_ban,0,",",".")}} đ
                                 </td>
-                                <td>{{$s->ton}}</td>
 
                                 <td>{{optional($s->DanhMuc)->ten_dm}}</td>
                                 <td>

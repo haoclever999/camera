@@ -91,7 +91,6 @@ class SanPhamController extends Controller
                 'hinh_anh_chinh' => $hanh,
                 'mo_ta' => $request->txt_mo_ta,
                 'so_luong' => $request->num_so_luong,
-                'ton' => $request->num_so_luong,
                 'gia_nhap' => $request->num_gia_nhap,
                 'gia_ban' => $request->num_gia_ban,
                 'giam_gia' => $request->num_giam_gia,
@@ -183,7 +182,7 @@ class SanPhamController extends Controller
             if (!empty($request->num_so_luong)) $sluong = $sanpham->so_luong + $request->num_so_luong;
             else $sluong = $sanpham->so_luong;
 
-            $ton = $sluong - $sanpham->luot_mua;
+
 
             $sanpham->update([
                 'ten_sp' => trim($ten_sp),
@@ -191,7 +190,7 @@ class SanPhamController extends Controller
                 'hinh_anh_chinh' => $hanh,
                 'mo_ta' => $request->txt_mo_ta,
                 'so_luong' => $sluong,
-                'ton' =>  $ton,
+
                 'gia_nhap' => $request->num_gia_nhap,
                 'gia_ban' => $request->num_gia_ban,
                 'giam_gia' => $request->num_giam_gia,

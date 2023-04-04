@@ -94,7 +94,6 @@
                                             id="num_so_luong"
                                             name="num_so_luong"
                                             max="999999"
-                                            min="-{{$sp->ton}}"
                                             step="1"
                                             placeholder="Nhập số lượng thêm hoặc bớt"
                                         />

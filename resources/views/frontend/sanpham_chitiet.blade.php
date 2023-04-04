@@ -71,18 +71,7 @@
                             @endif
                         </div>
                     </div>
-                    <div
-                        class="availability"
-                        style="margin-bottom: 8px; font-size: 18px"
-                    >
-                        <b> Tình trạng:</b> @if($spct->ton>0)
-                        <strong style="color: rgb(41, 218, 100)">
-                            Còn hàng
-                        </strong>
-                        @else
-                        <strong style="color: red">Hết hàng</strong>
-                        @endif
-                    </div>
+
                     <div
                         class="description"
                         style="margin-bottom: 8px; font-size: 18px"
@@ -117,7 +106,7 @@
                         <b> Đã bán:</b>
                         <span> {{$spct->luot_mua}} sản phẩm </span>
                     </div>
-                    @if($spct->ton>0)
+
                     <div class="product-page-cart" style="margin-top: 30px">
                         <form
                             action="{{ route('giohang.them_giohang') }}"
@@ -142,7 +131,6 @@
                                     min="1"
                                     value="1"
                                     onchange="SoLuongMinMax(this)"
-                                    max="{{$spct->ton}}"
                                     readonly
                                     class="form-control input-sm"
                                 />
@@ -152,7 +140,6 @@
                             </button>
                         </form>
                     </div>
-                    @endif
 
                     <ul class="social-icons">
                         <li>

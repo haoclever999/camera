@@ -116,7 +116,7 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
                                 <th>Giá bán</th>
-                                <th>Tồn kho</th>
+
                                 <th>Danh mục</th>
                                 <th>Thương hiệu</th>
                                 <th>Ngày cập nhật</th>
@@ -124,7 +124,7 @@
                             </tr>
                             @foreach($timkiem as $tk)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ +(+$i) }}</td>
                                 <td>{{$tk->ten_sp}}</td>
                                 <td>
                                     <img
@@ -135,7 +135,6 @@
                                 <td>
                                     {{number_format($tk->gia_ban,0,",",".")}} đ
                                 </td>
-                                <td>{{$tk->ton}}</td>
 
                                 <td>{{optional($tk->DanhMuc)->ten_dm}}</td>
                                 <td>

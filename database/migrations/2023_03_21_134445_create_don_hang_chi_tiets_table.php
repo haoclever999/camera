@@ -15,9 +15,9 @@ return new class extends Migration
         Schema::create('don_hang_chi_tiets', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('don_hang_id')->unsigned();
-            $table->foreign('don_hang_id')->references('id')->on('don_hangs')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('don_hang_id')->references('id')->on('don_hangs')->onDelete('cascade');
             $table->integer('sp_id')->unsigned();
-            $table->foreign('sp_id')->references('id')->on('san_phams')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('sp_id')->references('id')->on('san_phams')->onDelete('cascade');
             $table->integer('so_luong_ban');
             $table->decimal('gia', 9, 0);
             $table->decimal('thanh_tien', 9, 0);

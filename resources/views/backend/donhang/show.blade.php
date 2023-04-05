@@ -29,17 +29,16 @@
             <div class="row mb-2">
                 <div class="col-sm-12" style="float: right">
                     <a
-                        class="btn btn-primary float-right m-2"
-                        href="{{ route('donhang.xacnhan', ['id' => $dhang->id]) }}"
-                    >
-                        Xác nhận
-                    </a>
-
-                    <a
                         class="btn btn-danger action_huy float-right m-2"
                         data-url="{{ route('donhang.huy', ['id' => $dhang->id]) }}"
                     >
                         Huỷ đơn
+                    </a>
+                    <a
+                        class="btn btn-primary float-right m-2"
+                        href="{{ route('donhang.xacnhan', ['id' => $dhang->id]) }}"
+                    >
+                        Xác nhận
                     </a>
                 </div>
             </div>
@@ -97,14 +96,15 @@
                             </tr>
                             @endforeach
                         </table>
-                        <h5>Ghi chú:</h5>
-                        @foreach($dhang as $dh) @if(!empty($dh->ghi_chu))
-                        {{$dh->ghi_chu}}
-                        @endif @endforeach
                     </div>
                 </div>
             </div>
             <!-- /.row -->
+            <br />
+            <h5>Ghi chú:</h5>
+            @foreach($dhang as $dh) @if(!empty($dh->ghi_chu))
+            {{$dh->ghi_chu}}
+            @endif @endforeach
         </div>
         <!-- /.container-fluid -->
     </div>

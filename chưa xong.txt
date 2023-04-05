@@ -12,9 +12,8 @@
     + momo
 
 --- ko khôi phục dữ liệu đã xoá
-    thêm đk đã xoá sẽ ẩn
-    ẩn dữ liệu liên quan đã xoá
-    bỏ tồn kho 
+    
+   
 
 -- Chia sẻ fb, nút thích trong chi tiết sp
     đăng nhập fb, gg
@@ -24,6 +23,6 @@
 --  check quyền người dùng
     Hình thức thanh toán
 
--- Min giỏ hàng
-file hình
+-- file hình
     
+--chỉnh sang tiếng việt: quản lý người dùng(68)

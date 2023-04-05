@@ -31,7 +31,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <a
-                        href="{{ route('nguoidung.create') }}"
+                        href="{{ route('nguoidung.getThem') }}"
                         class="btn btn-primary float-right m-2"
                     > 
                     Thêm người dùng 
@@ -88,7 +88,7 @@
 
                                     @if($id_sua==$tk->id && $capnhatquyen=='capnhatquyen')
                                         <td>
-                                            <form action="{{ route('nguoidung.updatequyen', ['id' => $id_sua]) }}" method="post">
+                                            <form action="{{ route('nguoidung.postcapnhatquyen', ['id' => $id_sua]) }}" method="post">
                                                 @csrf
                                                 <select
                                                     id="opt_quyen"
@@ -142,7 +142,7 @@
                                                     margin: 3px;
                                                 "
                                             href="" 
-                                            data-url="{{ route('nguoidung.destroy', ['id' => $tk->id]) }}" 
+                                            data-url="{{ route('nguoidung.xoa', ['id' => $tk->id]) }}" 
                                             >
                                                 Xóa
                                         </a>

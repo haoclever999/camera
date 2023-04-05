@@ -9,7 +9,7 @@
     <h2 class="m-0"><b>Danh sách sản phẩm </b></h2>
 </div>
 <form
-    action="{{ route('sanpham.tim') }}"
+    action="{{ route('sanpham.timkiem') }}"
     class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 navbar-search"
     style="width: 35rem"
 >
@@ -89,7 +89,7 @@
                 <div class="col-sm-12" style="float: right">
                     <!-- Topbar Search -->
                     <a
-                        href="{{ route('sanpham.create') }}"
+                        href="{{ route('sanpham.getThem') }}"
                         class="btn btn-primary float-right m-2"
                     >
                         Thêm sản phẩm
@@ -153,7 +153,7 @@
                                             margin: 3px;
                                         "
                                         class="btn btn-success"
-                                        href="{{ route('sanpham.show', ['id' => $tk->id]) }}"
+                                        href="{{ route('sanpham.chitiet', ['id' => $tk->id]) }}"
                                     >
                                         Chi tiết
                                     </a>
@@ -165,7 +165,7 @@
                                             margin: 3px;
                                         "
                                         class="btn btn-warning"
-                                        href="{{ route('sanpham.edit', ['id' => $tk->id]) }}"
+                                        href="{{ route('sanpham.getSua', ['id' => $tk->id]) }}"
                                     >
                                         Cập nhật
                                     </a>
@@ -180,7 +180,7 @@
                                         "
                                         class="btn btn-danger action_del"
                                         href=""
-                                        data-url="{{ route('sanpham.destroy', ['id' => $tk->id]) }}"
+                                        data-url="{{ route('sanpham.xoa', ['id' => $tk->id]) }}"
                                     >
                                         Xóa
                                     </a>

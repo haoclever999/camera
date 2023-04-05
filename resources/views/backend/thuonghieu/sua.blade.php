@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <form
-                        action="{{ route('thuonghieu.update', ['id' => $th->id] ) }}"
+                        action="{{ route('thuonghieu.postSua', ['id' => $th->id] ) }}"
                         method="post"
                         enctype="multipart/form-data"
                     >

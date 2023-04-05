@@ -7,9 +7,12 @@
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
+        <!-- Bắt đầu SEO  -->
         <meta name="description" content="" />
-        <meta name="author" content="" />
+        <meta name="keywords" content="" />
+        <meta name="robots" content="" />
         <link rel="canonical" href="{{ $url_canonical }}" />
+        <meta name="author" content="" />
 
         <meta property="og:site_name" content="http://127.0.0.1:8000/" />
         <meta property="og:title" content="-CUSTOMER VALUE-" />
@@ -18,6 +21,7 @@
         <meta property="og:image" content="-CUSTOMER VALUE-" />
         <!-- link to image for socio -->
         <meta property="og:url" content="-CUSTOMER VALUE-" />
+        <!-- Kết thúc SEO -->
         @yield('title')
         <!-- Fonts START -->
         <link
@@ -228,12 +232,14 @@
         </script>
 
         <div id="fb-root"></div>
+        <div id="fb-root"></div>
+        <div id="fb-root"></div>
         <script
             async
             defer
             crossorigin="anonymous"
             src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0"
-            nonce="BmLIUxuZ"
+            nonce="WbtABH9B"
         ></script>
     </body>
 </html>

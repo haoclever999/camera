@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <form
-                        action="{{ route('sanpham.update', ['id' => $sp->id]) }}"
+                        action="{{ route('sanpham.postSua', ['id' => $sp->id]) }}"
                         method="post"
                         enctype="multipart/form-data"
                     >

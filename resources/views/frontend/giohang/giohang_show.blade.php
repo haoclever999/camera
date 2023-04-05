@@ -66,7 +66,7 @@
                         <tr>
                             <td class="goods-page-name" style="width: 400px">
                                 <a
-                                    href="{{route('sanpham.chitiet',[$nd->id])}}"
+                                    href="{{route('sanpham.chitiet_sp',[$nd->id])}}"
                                     style="font-size: 20px"
                                 >
                                     {{$nd->name}}
@@ -77,7 +77,7 @@
                                 style="text-align: center"
                             >
                                 <a
-                                    href="{{route('sanpham.chitiet',[$nd->id])}}"
+                                    href="{{route('sanpham.chitiet_sp',[$nd->id])}}"
                                 >
                                     <img src="{{$nd->options->hinh_anh}}" />
                                 </a>
@@ -152,7 +152,7 @@
                     </table>
                     <br />
                     <a
-                        href="{{ route('giohang.destroy') }}"
+                        href="{{ route('giohang.xoatatca') }}"
                         class="btn btn-default"
                         type="button"
                     >

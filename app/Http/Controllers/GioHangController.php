@@ -26,7 +26,7 @@ class GioHangController extends Controller
         $this->donhang = $donhang;
     }
 
-    public function create(Request $request)
+    public function them_giohang(Request $request)
     {
         $giohang = $this->spham->where('id', $request->id_sp)->first();
         $gia = $giohang->gia_ban - ($giohang->gia_ban * $giohang->giam_gia / 100);
@@ -38,10 +38,10 @@ class GioHangController extends Controller
         $data['options']['hinh_anh'] = $giohang->hinh_anh_chinh;
         Cart::add($data);
 
-        return redirect()->route('giohang.show_giohang');
+        return redirect()->route('giohang.chitiet_giohang');
     }
 
-    public function show(Request $request)
+    public function chitiet(Request $request)
     {
         $url_canonical = $request->url();
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
@@ -49,23 +49,23 @@ class GioHangController extends Controller
     }
 
 
-    public function update(Request $request)
+    public function capnhat_soluong(Request $request)
     {
         Cart::update($request->rowId, $request->num_so_luong);
         session()->flash('success_sl', 'Cập nhật số lượng thành công');
-        return redirect()->route('giohang.show_giohang');
+        return redirect()->route('giohang.chitiet_giohang');
     }
 
-    public function remove($rowId)
+    public function xoa_sp($rowId)
     {
         Cart::remove($rowId);
-        return redirect()->route('giohang.show_giohang');
+        return redirect()->route('giohang.chitiet_giohang');
     }
 
-    public function destroy()
+    public function xoatatca()
     {
         Cart::destroy();
-        return redirect()->route('giohang.show_giohang');
+        return redirect()->route('giohang.chitiet_giohang');
     }
 
     public function getThanhToan(Request $request)
@@ -79,7 +79,7 @@ class GioHangController extends Controller
         if (count($tt_giohang) > 0) {
             return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical', 'tinh_tp'));
         }
-        return redirect()->route('giohang.show_giohang');
+        return redirect()->route('giohang.chitiet_giohang');
     }
 
     public function postThanhToan(Request $request)
@@ -139,11 +139,11 @@ class GioHangController extends Controller
             DB::commit();
             Cart::destroy();
             session()->flash('success', 'Cảm ơn bạn đã đặt hàng. Đơn hàng đang chờ xử lý. Vui lòng chờ!');
-            return redirect()->route('giohang.show_giohang');
+            return redirect()->route('giohang.chitiet_giohang');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            return redirect()->route('giohang.show_giohang');
+            return redirect()->route('giohang.chitiet_giohang');
         }
     }
 

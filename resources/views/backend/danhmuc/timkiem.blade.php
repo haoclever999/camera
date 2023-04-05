@@ -43,7 +43,7 @@
                             </tr>
                             @foreach($timkiem as $tk)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ +(+$i) }}</td>
                                 <td>{{ $tk-> ten_dm }}</td>
                                 <td>
                                     {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $tk->updated_at)->format('H:i:s d/m/Y') }}
@@ -56,7 +56,7 @@
                                             margin: 3px;
                                         "
                                         class="btn btn-warning"
-                                        href="{{ route('danhmuc.edit', ['id' => $tk->id]) }}"
+                                        href="{{ route('danhmuc.getSua', ['id' => $tk->id]) }}"
                                     >
                                         Cập nhật
                                     </a>
@@ -70,7 +70,7 @@
                                         "
                                         class="btn btn-danger action_del"
                                         href=""
-                                        data-url="{{ route('danhmuc.destroy', ['id' => $tk->id]) }}"
+                                        data-url="{{ route('danhmuc.xoa', ['id' => $tk->id]) }}"
                                     >
                                         Xóa
                                     </a>
@@ -87,7 +87,7 @@
                         <h2 class="m-0"><b>Thêm danh mục </b></h2>
                         <br />
                         <form
-                            action="{{ route('danhmuc.store') }}"
+                            action="{{ route('danhmuc.postThem') }}"
                             method="post"
                         >
                             @csrf

@@ -25,7 +25,7 @@ class CauHinhController extends Controller
         return view('backend.cauhinh.home', compact("cauhinh"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    public function store(Request $request)
+    public function postThem(Request $request)
     {
         $request->validate([
             'cau_hinh_key' => 'required|max:191|unique:cau_hinhs',
@@ -55,13 +55,13 @@ class CauHinhController extends Controller
         }
     }
 
-    public function edit($id)
+    public function getSua($id)
     {
         $cauhinh = $this->cauhinh->find($id);
         return view('backend.cauhinh.sua', compact('cauhinh'));
     }
 
-    public function update(Request $request, $id)
+    public function postSua(Request $request, $id)
     {
         if ($request->has('cau_hinh_key')) {
             $request->validate([
@@ -104,11 +104,11 @@ class CauHinhController extends Controller
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
             Alert::error('Thất bại', 'Cập nhật cấu hình thất bại');
-            return redirect()->route('cauhinh.edit', ['id' => $id]);
+            return redirect()->route('cauhinh.getSua', ['id' => $id]);
         }
     }
 
-    public function destroy($id)
+    public function xoa($id)
     {
         return $this->deleteModelTrait($id, $this->cauhinh);
     }

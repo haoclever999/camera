@@ -141,17 +141,24 @@
                         </form>
                     </div>
 
-                    <ul class="social-icons">
-                        <li>
-                            <a
-                                class="facebook"
-                                data-original-title="facebook"
-                                href="javascript:;"
-                            ></a>
-                        </li>
-                    </ul>
+                    <div
+                        class="fb-share-button"
+                        data-href="{{ $url_canonical }}"
+                        data-layout="button"
+                        data-size="large"
+                    >
+                        <a
+                            target="_blank"
+                            href="https://www.facebook.com/sharer/sharer.php?u={{
+                                $url_canonical
+                            }}&src=sdkpreparse"
+                            class="fb-xfbml-parse-ignore"
+                        >
+                            Chia sẻ
+                        </a>
+                    </div>
                 </div>
-
+                <!-- Mô tả tính  năng sp -->
                 <div class="product-page-content" style="font-size: 18px">
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="active">
@@ -207,7 +214,7 @@
                                                             Phóng to
                                                         </a>
                                                         <a
-                                                            href="{{route('sanpham.chitiet',[$lienquan->id])}}"
+                                                            href="{{route('sanpham.chitiet_sp',[$lienquan->id])}}"
                                                             class="btn btn-default fancybox-fast-view"
                                                         >
                                                             Chi tiết
@@ -216,7 +223,7 @@
                                                 </div>
                                                 <h3>
                                                     <a
-                                                        href="{{route('sanpham.chitiet',[$lienquan->id])}}"
+                                                        href="{{route('sanpham.chitiet_sp',[$lienquan->id])}}"
                                                     >
                                                         <b>
                                                             {{$lienquan->ten_sp}}
@@ -228,63 +235,74 @@
                                                     }}
                                                     đ
                                                 </div>
-                                                <a
-                                                    href="javascript:;"
-                                                    class="btn add2cart"
-                                                    style="
-                                                        background-color: rgba(
-                                                            204,
-                                                            204,
-                                                            204,
-                                                            0.5
-                                                        );
-                                                    "
+                                                <form
+                                                    action="{{
+                                                        route(
+                                                            'giohang.them_giohang'
+                                                        )
+                                                    }}"
+                                                    method="post"
                                                 >
-                                                    Thêm vào giỏ
-                                                </a>
-
+                                                    @csrf
+                                                    <input
+                                                        type="hidden"
+                                                        name="id_sp"
+                                                        value="{{$lienquan->id}}"
+                                                    />
+                                                    <input
+                                                        type="hidden"
+                                                        name="gia"
+                                                        value="{{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')}}"
+                                                    />
+                                                    <div
+                                                        class="product-quantity"
+                                                    >
+                                                        <input
+                                                            name="num_so_luong"
+                                                            type="hidden"
+                                                            value="1"
+                                                        />
+                                                    </div>
+                                                    <button
+                                                        class="btn add2cart"
+                                                        type="submit"
+                                                        style="
+                                                            background-color: rgba(
+                                                                204,
+                                                                204,
+                                                                204,
+                                                                0.5
+                                                            );
+                                                        "
+                                                    >
+                                                        Thêm vào giỏ
+                                                    </button>
+                                                </form>
                                                 @if($lienquan->giam_gia !=0)
-                                                <div
-                                                    class="sticker sticker-sale"
-                                                ></div>
+                                                <div class="giamgia">
+                                                    <span
+                                                        class="chu"
+                                                        style="top: -2px"
+                                                    >
+                                                        GIẢM
+                                                    </span>
+                                                    <span
+                                                        class="phantram"
+                                                        style="top: -11px"
+                                                    >
+                                                        {{$lienquan->giam_gia}}%
+                                                    </span>
+                                                </div>
                                                 @endif
                                             </div>
                                         </div>
                                     </div>
-                                    @endforeach
+                                    @endforeach @endforeach
                                 </div>
-                                <a
-                                    class="carousel-control-prev"
-                                    href="#carouselExampleControls"
-                                    role="button"
-                                    data-slide="prev"
-                                >
-                                    <span
-                                        class="carousel-control-prev-icon"
-                                        aria-hidden="true"
-                                    ></span>
-                                    <span class="sr-only"> Previous </span>
-                                </a>
-                                <a
-                                    class="carousel-control-next"
-                                    href="#carouselExampleControls"
-                                    role="button"
-                                    data-slide="next"
-                                >
-                                    <span
-                                        class="carousel-control-next-icon"
-                                        aria-hidden="true"
-                                    ></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                @if($spct->giam_gia !=0)
-                <div class="sticker sticker-sale"></div>
-                @endif @endforeach
             </div>
         </div>
     </div>

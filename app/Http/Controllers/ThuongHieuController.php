@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Components\LaySP;
 use App\Models\ThuongHieu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -37,7 +38,7 @@ class ThuongHieuController extends Controller
         return view('backend.thuonghieu.home', compact("th"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    public function store(Request $request)
+    public function postThem(Request $request)
     {
         $request->validate(
             [
@@ -68,13 +69,13 @@ class ThuongHieuController extends Controller
         }
     }
 
-    public function edit($id)
+    public function getSua($id)
     {
         $th = $this->thuonghieu->find($id);
         return view('backend.thuonghieu.sua', compact('th'));
     }
 
-    public function update(Request $request, $id)
+    public function postSua(Request $request, $id)
     {
         if ($request->has('ten_thuong_hieu')) {
             $request->validate(
@@ -110,18 +111,17 @@ class ThuongHieuController extends Controller
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
             Alert::error('Thất bại', 'Cập nhật thương hiệu thất bại');
-            return redirect()->route('thuonghieu.edit', ['id' => $id]);
+            return redirect()->route('thuonghieu.getSua', ['id' => $id]);
         }
     }
 
-    public function destroy($id)
+    public function xoa($id)
     {
         return $this->deleteModelTrait($id, $this->thuonghieu);
     }
 
     public function timkiem(Request $request)
     {
-
         $page = 5;
         $timkiem =  $this->thuonghieu->where('ten_thuong_hieu', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_thuong_hieu')->paginate($page);
         return view('backend.thuonghieu.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
@@ -132,13 +132,13 @@ class ThuongHieuController extends Controller
     public function getThuongHieuDanhMuc(Request $request, $id_dm, $slug, $id)
     {
         $url_canonical = $request->url();
-        $thongtin = $this->cauhinh->all(); //xem laij
-        $sp = $this->sanpham->where('thuong_hieu_id', $id)->where('dm_id', $id_dm)->paginate(6);
+
+        $sp = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id)->where('dm_id', $id_dm)->paginate(6);
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
         $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
 
-        $spham = $this->sanpham->where('dm_id', $id_dm)->paginate(6);
+        $spham = (new LaySP)->getSanPham()->where('dm_id', $id_dm)->paginate(6);
         foreach ($spham as $value)
             $id_th[] = $value->thuong_hieu_id;
         $th_sp = $this->thuonghieu->whereIn('id', $id_th)->distinct()->get();
@@ -148,7 +148,7 @@ class ThuongHieuController extends Controller
     public function getThuongHieuSanPham(Request $request, $slug, $id)
     {
         $url_canonical = $request->url();
-        $sp = $this->sanpham->where('thuong_hieu_id', $id)->paginate(6);
+        $sp = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id)->paginate(6);
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();

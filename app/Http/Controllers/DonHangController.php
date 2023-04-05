@@ -26,7 +26,7 @@ class DonHangController extends Controller
         return view('backend.donhang.home', compact("dhang"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    public function show($id)
+    public function chitiet($id)
     {
         $dhang = $this->donhang->find($id);
         return view('backend.donhang.show', compact('dhang'));
@@ -74,14 +74,31 @@ class DonHangController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function xoa($id)
     {
-        return $this->deleteModelTrait($id, $this->donhang);
+        try {
+            DB::beginTransaction();
+            $dhang = $this->donhang->find($id);
+            $dhang->id = $id;
+            $dhang->trang_thai = 'Đã xoá';
+            $dhang->save();
+            DB::commit();
+            return response()->json([
+                'code' => 200,
+                'message' => 'success'
+            ], 200);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            return response()->json([
+                'code' => 500,
+                'message' => 'fail'
+            ], 500);
+        }
     }
 
     public function timkiem(Request $request)
     {
-
         $page = 5;
         if ($request->don_hang == 'ten_kh')
             $timkiem =  $this->donhang->where('ten_kh', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_kh')->paginate($page);

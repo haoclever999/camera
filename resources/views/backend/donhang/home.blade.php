@@ -87,12 +87,11 @@
                                 <th>Hình thức</th>
                                 <th>Trạng thái</th>
                                 <th>Ngày tạo</th>
-                                <th>Xác nhận / Hủy</th>
                                 <th>Hành động</th>
                             </tr>
                             @foreach($dhang as $dh)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ +(+$i) }}</td>
                                 <td>{{$dh->ten_kh}}</td>
                                 <td>{{$dh->sdt_kh}}</td>
                                 <td>{{$dh->dia_chi_kh}}</td>
@@ -108,34 +107,7 @@
                                 <td>
                                     {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dh->created_at)->format('H:i:s d/m/Y')}}
                                 </td>
-                                <td>
-                                    @if($dh->trang_thai=='Đang chờ xử lý')
-                                    <a
-                                        style="
-                                            min-width: 110px;
-                                            padding: 3px 12px;
-                                            margin: 3px;
-                                        "
-                                        class="btn btn-primary"
-                                        href="{{ route('donhang.xacnhan', ['id' => $dh->id]) }}"
-                                    >
-                                        Xác nhận
-                                    </a>
-                                    <br />
-                                    <a
-                                        style="
-                                            min-width: 110px;
-                                            padding: 3px 12px;
-                                            margin: 3px;
-                                        "
-                                        class="btn btn-danger action_huy"
-                                        data-url="{{ route('donhang.huy', ['id' => $dh->id]) }}"
-                                    >
-                                        Huỷ đơn
-                                    </a>
-                                    <br />
-                                    @endif
-                                </td>
+
                                 <td>
                                     <a
                                         style="
@@ -144,13 +116,14 @@
                                             margin: 3px;
                                         "
                                         class="btn btn-success"
-                                        href="{{ route('donhang.show', ['id' => $dh->id]) }}"
+                                        href="{{ route('donhang.chitiet', ['id' => $dh->id]) }}"
                                     >
                                         Chi tiết
                                     </a>
                                     <br />
                                     @if(auth()->check() &&
-                                    auth()->user()->quyen=='Quản trị')
+                                    auth()->user()->quyen=='Quản trị' &&
+                                    $dh->trang_thai!='Đã xoá')
                                     <a
                                         style="
                                             min-width: 110px;
@@ -159,7 +132,7 @@
                                         "
                                         class="btn btn-danger action_del"
                                         href=""
-                                        data-url="{{ route('donhang.destroy', ['id' => $dh->id]) }}"
+                                        data-url="{{ route('donhang.xoa', ['id' => $dh->id]) }}"
                                     >
                                         Xóa
                                     </a>

@@ -79,7 +79,7 @@
                             </tr>
                             @foreach($cauhinh as $ch)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ +(+$i) }}</td>
                                 <td>{{ $ch-> cau_hinh_key }}</td>
                                 <td>{{ $ch-> cau_hinh_value }}</td>
                                 <td>
@@ -93,7 +93,7 @@
                                             margin: 3px;
                                         "
                                         class="btn btn-warning"
-                                        href="{{ route('cauhinh.edit', ['id' => $ch->id]) }}"
+                                        href="{{ route('cauhinh.getSua', ['id' => $ch->id]) }}"
                                     >
                                         Cập nhật
                                     </a>
@@ -107,7 +107,7 @@
                                         "
                                         class="btn btn-danger action_del"
                                         href=""
-                                        data-url="{{ route('cauhinh.destroy', ['id' => $ch->id]) }}"
+                                        data-url="{{ route('cauhinh.xoa', ['id' => $ch->id]) }}"
                                     >
                                         Xóa
                                     </a>
@@ -121,7 +121,7 @@
                         <h2 class="m-0"><b>Thêm cấu hình </b></h2>
                         <br />
                         <form
-                            action="{{ route('cauhinh.store') }}"
+                            action="{{ route('cauhinh.postThem') }}"
                             method="post"
                         >
                             @csrf

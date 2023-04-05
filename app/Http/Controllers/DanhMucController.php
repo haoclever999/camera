@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Components\GetOption;
 use App\Models\SanPham;
 use App\Models\ThuongHieu;
+use App\Components\LaySP;
 
 class DanhMucController extends Controller
 {
@@ -28,13 +28,6 @@ class DanhMucController extends Controller
 
     // Bắt đầu trang admin
 
-    public function getDanhMuc($id)
-    {
-        $option = new GetOption($this->dmuc::all());
-        $DmOpt = $option->OptionDanhMuc($id);
-        return $DmOpt;
-    }
-
     public function index()
     {
         $page = 5;
@@ -42,7 +35,7 @@ class DanhMucController extends Controller
         return view('backend.danhmuc.home', compact('dm'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    public function store(Request $request)
+    public function postThem(Request $request)
     {
         $request->validate([
             'ten_dm' => 'required|max:191|unique:danh_mucs',
@@ -52,8 +45,7 @@ class DanhMucController extends Controller
             'ten_dm.unique' => 'Danh mục đã tồn tại',
         ]);
         try {
-            if (!empty($request->opt_dm)) $opt_dm = $request->opt_dm;
-            else $opt_dm = '0';
+
             DB::beginTransaction();
             $this->dmuc->firstOrCreate([
                 'ten_dm' => trim($request->ten_dm),
@@ -70,13 +62,13 @@ class DanhMucController extends Controller
         }
     }
 
-    public function edit($id)
+    public function getSua($id)
     {
         $dm = $this->dmuc->find($id);
         return view('backend.danhmuc.sua', compact('dm'));
     }
 
-    public function update(Request $request, $id)
+    public function postSua(Request $request, $id)
     {
         if ($request->has('ten_dm')) {
             $request->validate([
@@ -103,11 +95,11 @@ class DanhMucController extends Controller
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
             Alert::error('Thất bại', 'Cập nhật danh mục thất bại');
-            return redirect()->route('danhmuc.edit', ['id' => $id]);
+            return redirect()->route('danhmuc.getSua', ['id' => $id]);
         }
     }
 
-    public function destroy($id)
+    public function xoa($id)
     {
         return $this->deleteModelTrait($id, $this->dmuc);
     }
@@ -122,10 +114,14 @@ class DanhMucController extends Controller
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
+
+
     public function getDanhMucSanPham(Request $request, $slug, $id_dm)
     {
         $url_canonical = $request->url();
-        $sp = $this->sanpham->where('dm_id', $id_dm)->paginate(6);
+
+        $sp = (new LaySP)->getSanPham()->where('dm_id', $id_dm)->paginate(6);
+
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
         if (count($sp) > 0) {

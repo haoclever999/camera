@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Components\GetOption;
+use App\Components\LaySP;
 use App\Models\DanhMuc;
 use App\Models\HinhAnh;
 use App\Models\SanPham;
@@ -51,24 +52,24 @@ class SanPhamController extends Controller
     public function index()
     {
         $page = 5;
-        $sp = $this->spham::orderBy('ten_sp')->paginate($page);
+        $sp = (new LaySP)->getSanPham()->orderBy('ten_sp')->paginate($page);
         return view('backend.sanpham.home', compact('sp'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    public function show($id)
+    public function chitiet($id)
     {
         $sp = $this->spham->find($id);
         return view('backend.sanpham.show', compact('sp'));
     }
 
-    public function create()
+    public function getThem()
     {
         $DmOpt = $this->getDanhMuc('0');
         $ThOpt = $this->getThuongHieu('0');
         return view('backend.sanpham.them', compact('DmOpt', 'ThOpt'));
     }
 
-    public function store(Request $request)
+    public function postThem(Request $request)
     {
         $request->validate(
             [
@@ -127,11 +128,11 @@ class SanPhamController extends Controller
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
             Alert::error('Thất bại', 'Thêm sản phẩm thất bại');
-            return redirect()->route('sanpham.create');
+            return redirect()->route('sanpham.getThem');
         }
     }
 
-    public function edit($id)
+    public function getSua($id)
     {
         $sp = $this->spham->find($id);
         $DmOpt = $this->getDanhMuc($sp->dm_id);
@@ -140,7 +141,7 @@ class SanPhamController extends Controller
         return view('backend.sanpham.sua', compact('sp', 'DmOpt', 'ThOpt'));
     }
 
-    public function update(Request $request, $id)
+    public function postSua(Request $request, $id)
     {
         if ($request->has('ten_sp')) {
             $request->validate(
@@ -231,11 +232,11 @@ class SanPhamController extends Controller
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
             Alert::error('Thất bại', 'Cập nhật sản phẩm thất bại');
-            return redirect()->route('sanpham.edit', ['id' => $id]);
+            return redirect()->route('sanpham.getSua', ['id' => $id]);
         }
     }
 
-    public function destroy($id)
+    public function xoa($id)
     {
         return $this->deleteModelTrait($id, $this->spham);
     }
@@ -246,11 +247,11 @@ class SanPhamController extends Controller
         $dm = $this->dmuc->where('dm_id ', 'LIKE', '%' . $request->timkiem_th . '%');
         $page = 5;
         if ($request->san_pham == 'ten_sp')
-            $timkiem =  $this->spham->where('ten_sp', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_sp')->paginate($page);
+            $timkiem =  (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_sp')->paginate($page);
         elseif ($request->san_pham == 'danh_muc')
-            $timkiem =  $this->spham->where('dm_id ', $dm->id)->orderby('dm_id')->paginate($page);
+            $timkiem =  (new LaySP)->getSanPham()->where('dm_id ', $dm->id)->orderby('dm_id')->paginate($page);
         else
-            $timkiem =  $this->spham->where('thuong_hieu_id', $th->id)->orderby('thuong_hieu_id')->paginate($page);
+            $timkiem =  (new LaySP)->getSanPham()->where('thuong_hieu_id', $th->id)->orderby('thuong_hieu_id')->paginate($page);
         return view('backend.sanpham.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
     // Kết thúc trang admin
@@ -269,7 +270,7 @@ class SanPhamController extends Controller
         foreach ($sp_chitiet as $value) {
             $id_dm = $value->dm_id;
         }
-        $sp_lienquan = $this->spham->where('dm_id', $id_dm)->whereNotIn('id', [$id])->get();
+        $sp_lienquan = (new LaySP)->getSanPham()->where('dm_id', $id_dm)->whereNotIn('id', [$id])->get();
         return view('frontend.sanpham_chitiet', compact('dm', 'sp_chitiet', 'sp_lienquan', 'url_canonical'));
     }
 
@@ -278,7 +279,7 @@ class SanPhamController extends Controller
         $url_canonical = $request->url();
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
-        $sp = $this->spham->orderBy('ten_sp')->paginate(12);
+        $sp = (new LaySP)->getSanPham()->orderBy('ten_sp')->paginate(12);
         return view('frontend.sanpham_all', compact('dm', 'sp', 'th', 'url_canonical'));
     }
 
@@ -287,7 +288,7 @@ class SanPhamController extends Controller
         $url_canonical = $request->url();
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
-        $timkiem =  $this->spham->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%')->paginate(12);;
+        $timkiem = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%')->paginate(12);;
         return view('frontend.sanpham_timkiem', compact('dm', 'th', 'timkiem', 'url_canonical'));
     }
     // Kết thúc trang người dùng

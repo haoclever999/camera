@@ -30,7 +30,7 @@
                 <div class="col-sm-12" style="float: right">
                     <!-- Topbar Search -->
                     <a
-                        href="{{ route('sanpham.edit', ['id' => $sp->id]) }}"
+                        href="{{ route('sanpham.getSua', ['id' => $sp->id]) }}"
                         class="btn btn-warning float-right m-2"
                     >
                         Cập nhật sản phẩm
@@ -189,18 +189,21 @@
 
                         <div class="form-group">
                             <label class="form-label">
-                                <b>Mô tả: </b>
+                                <b> Mô tả: </b>
                             </label>
-                            <br />
-                            {!!$sp->mo_ta!!}
+
+                            <p style="border: 1px solid #ccc">
+                                {!!$sp->mo_ta!!}
+                            </p>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">
                                 <b>Tính năng: </b>
                             </label>
-                            <br />
-                            {!!$sp->tinh_nang!!}
+                            <p style="border: 1px solid #ccc">
+                                {!!$sp->tinh_nang!!}
+                            </p>
                         </div>
                     </div>
                 </div>

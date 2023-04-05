@@ -34,7 +34,7 @@
             <div class="row">
                 <div class="col-md-5">
                     <form
-                        action="{{ route('danhmuc.update', ['id' => $dm->id] ) }}"
+                        action="{{ route('danhmuc.postSua', ['id' => $dm->id] ) }}"
                         method="post"
                     >
                         @csrf

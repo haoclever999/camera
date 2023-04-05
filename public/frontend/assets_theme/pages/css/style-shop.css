@@ -426,6 +426,7 @@ Header and header elements
     font: 300 14px "Open Sans", sans-serif;
     padding-top: 10px;
     padding-bottom: 4px;
+    height: 38px;
 }
 .product-item h3 a {
     color: #000;

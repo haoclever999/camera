@@ -34,7 +34,10 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-6">
-                    <form action="{{ route('nguoidung.store') }}" method="post">
+                    <form
+                        action="{{ route('nguoidung.postThem') }}"
+                        method="post"
+                    >
                         @csrf
                         <div class="form-group">
                             <label for="ho_ten" class="form-label">

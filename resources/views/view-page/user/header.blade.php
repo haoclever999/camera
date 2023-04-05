@@ -30,7 +30,7 @@
                     >
                         @foreach(Cart::content() as $nd)
                         <li>
-                            <a href="route('sanpham.chitiet',[$nd->id])">
+                            <a href="route('sanpham.chitiet_sp',[$nd->id])">
                                 <img
                                     src="{{$nd->options->hinh_anh}}"
                                     width="43"
@@ -41,7 +41,7 @@
                                 x {{$nd->qty}}
                             </span>
                             <strong>
-                                <a href="route('sanpham.chitiet',[$nd->id])">
+                                <a href="route('sanpham.chitiet_sp',[$nd->id])">
                                     {{$nd->name}}
                                 </a>
                             </strong>
@@ -63,7 +63,7 @@
                     </ul>
                     <div class="text-right">
                         <a
-                            href="{{ route('giohang.show_giohang') }}"
+                            href="{{ route('giohang.chitiet_giohang') }}"
                             class="btn btn-default"
                         >
                             Xem giỏ hàng

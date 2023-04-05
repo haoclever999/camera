@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col-md-5">
                     <form
-                        action="{{ route('cauhinh.update', ['id' => $cauhinh->id] ) }}"
+                        action="{{ route('cauhinh.postSua', ['id' => $cauhinh->id] ) }}"
                         method="post"
                     >
                         @csrf

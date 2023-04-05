@@ -91,12 +91,12 @@
                                 <th>Hình thức</th>
                                 <th>Trạng thái</th>
                                 <th>Ngày tạo</th>
-                                <th>Xác nhận / Hủy</th>
+
                                 <th>Hành động</th>
                             </tr>
                             @foreach($timkiem as $tk)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ +(+$i) }}</td>
                                 <td>{{$tk->ten_kh}}</td>
                                 <td>{{$tk->sdt_kh}}</td>
                                 <td>{{$tk->dia_chi_kh}}</td>
@@ -112,34 +112,7 @@
                                 <td>
                                     {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $tk->created_at)->format('H:i:s d/m/Y')}}
                                 </td>
-                                <td>
-                                    @if($tk->trang_thai=='Đang chờ xử lý')
-                                    <a
-                                        style="
-                                            min-width: 110px;
-                                            padding: 3px 12px;
-                                            margin: 3px;
-                                        "
-                                        class="btn btn-primary"
-                                        href="{{ route('donhang.xacnhan', ['id' => $tk->id]) }}"
-                                    >
-                                        Xác nhận
-                                    </a>
-                                    <br />
-                                    <a
-                                        style="
-                                            min-width: 110px;
-                                            padding: 3px 12px;
-                                            margin: 3px;
-                                        "
-                                        class="btn btn-danger action_huy"
-                                        data-url="{{ route('donhang.huy', ['id' => $tk->id]) }}"
-                                    >
-                                        Huỷ đơn
-                                    </a>
-                                    <br />
-                                    @endif
-                                </td>
+
                                 <td>
                                     <a
                                         style="
@@ -148,7 +121,7 @@
                                             margin: 3px;
                                         "
                                         class="btn btn-success"
-                                        href="{{ route('donhang.show', ['id' => $tk->id]) }}"
+                                        href="{{ route('donhang.chitiet', ['id' => $tk->id]) }}"
                                     >
                                         Chi tiết
                                     </a>
@@ -163,7 +136,7 @@
                                         "
                                         class="btn btn-danger action_del"
                                         href=""
-                                        data-url="{{ route('donhang.destroy', ['id' => $tk->id]) }}"
+                                        data-url="{{ route('donhang.xoa', ['id' => $tk->id]) }}"
                                     >
                                         Xóa
                                     </a>

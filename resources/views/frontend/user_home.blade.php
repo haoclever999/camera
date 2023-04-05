@@ -22,7 +22,7 @@
                             Phóng to
                         </a>
                         <a
-                            href="{{route('sanpham.chitiet',[$sp_m->id])}}"
+                            href="{{route('sanpham.chitiet_sp',[$sp_m->id])}}"
                             class="btn btn-default fancybox-fast-view"
                         >
                             Chi tiết
@@ -30,14 +30,24 @@
                     </div>
                 </div>
                 <h3>
-                    <a href="{{route('sanpham.chitiet',[$sp_m->id])}}">
+                    <a
+                        href="{{route('sanpham.chitiet_sp',[$sp_m->id])}}"
+                        style="text-decoration: none"
+                    >
                         <b> {{$sp_m->ten_sp}} </b>
                     </a>
                 </h3>
                 <div class="pi-price">
                     {{number_format(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),0,',','.')
 
-                    }}
+
+
+
+
+
+
+
+                    }}đ
                 </div>
 
                 <form
@@ -63,7 +73,10 @@
                     </button>
                 </form>
                 @if($sp_m->giam_gia !=0)
-                <div class="sticker sticker-sale"></div>
+                <div class="giamgia">
+                    <span class="chu">GIẢM</span>
+                    <span class="phantram">{{$sp_m->giam_gia}}%</span>
+                </div>
                 @endif
             </div>
         </div>
@@ -100,7 +113,7 @@
                             Phóng to
                         </a>
                         <a
-                            href="{{route('sanpham.chitiet',[$sp_nb->id])}}"
+                            href="{{route('sanpham.chitiet_sp',[$sp_nb->id])}}"
                             class="btn btn-default fancybox-fast-view"
                         >
                             Chi tiết
@@ -108,7 +121,7 @@
                     </div>
                 </div>
                 <h3>
-                    <a href="{{route('sanpham.chitiet',[$sp_nb->id])}}">
+                    <a href="{{route('sanpham.chitiet_sp',[$sp_nb->id])}}">
                         <b> {{$sp_nb->ten_sp}} </b>
                     </a>
                 </h3>
@@ -142,7 +155,10 @@
                     </button>
                 </form>
                 @if($sp_nb->giam_gia !=0)
-                <div class="sticker sticker-sale"></div>
+                <div class="giamgia">
+                    <span class="chu">GIẢM</span>
+                    <span class="phantram">{{$sp_nb->giam_gia}}%</span>
+                </div>
                 @endif
             </div>
         </div>

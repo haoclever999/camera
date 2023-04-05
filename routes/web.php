@@ -35,68 +35,68 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
     // Quản lý thương hiệu
     Route::prefix('thuong-hieu')->group(function () {
         Route::get('/', [ThuongHieuController::class, 'index'])->name('thuonghieu.index');
-        Route::post('them-thuong-hieu', [ThuongHieuController::class, 'store'])->name('thuonghieu.store');
-        Route::get('cap-nhat-thuong-hieu/{id}', [ThuongHieuController::class, 'edit'])->name('thuonghieu.edit');
-        Route::post('cap-nhat-thuong-hieu/{id}', [ThuongHieuController::class, 'update'])->name('thuonghieu.update');
-        Route::get('xoa-thuong-hieu/{id}', [ThuongHieuController::class, 'destroy'])->name('thuonghieu.destroy');
+        Route::post('them-thuong-hieu', [ThuongHieuController::class, 'postThem'])->name('thuonghieu.postthem');
+        Route::get('cap-nhat-thuong-hieu/{id}', [ThuongHieuController::class, 'getSua'])->name('thuonghieu.getSua');
+        Route::post('cap-nhat-thuong-hieu/{id}', [ThuongHieuController::class, 'postSua'])->name('thuonghieu.postSua');
+        Route::get('xoa-thuong-hieu/{id}', [ThuongHieuController::class, 'xoa'])->name('thuonghieu.xoa');
         Route::get('tim-kiem', [ThuongHieuController::class, 'timkiem'])->name('thuonghieu.timkiem');
     });
 
     // Quản lý danh mục
     Route::prefix('danh-muc')->group(function () {
         Route::get('/', [DanhMucController::class, 'index'])->name('danhmuc.index');
-        Route::post('them-danh-muc', [DanhMucController::class, 'store'])->name('danhmuc.store');
-        Route::get('cap-nhat-danh-muc/{id}', [DanhMucController::class, 'edit'])->name('danhmuc.edit');
-        Route::post('cap-nhat-danh-muc/{id}', [DanhMucController::class, 'update'])->name('danhmuc.update');
-        Route::get('xoa-danh-muc/{id}', [DanhMucController::class, 'destroy'])->name('danhmuc.destroy');
+        Route::post('them-danh-muc', [DanhMucController::class, 'postThem'])->name('danhmuc.postThem');
+        Route::get('cap-nhat-danh-muc/{id}', [DanhMucController::class, 'getSua'])->name('danhmuc.getSua');
+        Route::post('cap-nhat-danh-muc/{id}', [DanhMucController::class, 'postSua'])->name('danhmuc.postSua');
+        Route::get('xoa-danh-muc/{id}', [DanhMucController::class, 'xoa'])->name('danhmuc.xoa');
         Route::get('tim-kiem', [DanhMucController::class, 'timkiem'])->name('danhmuc.timkiem');
     });
 
     // Quản lý sản phẩm
     Route::prefix('san-pham')->group(function () {
         Route::get('/', [SanPhamController::class, 'index'])->name('sanpham.index');
-        Route::get('san-pham-chi-tiet/{id}', [SanPhamController::class, 'show'])->name('sanpham.show');
-        Route::get('them-san-pham', [SanPhamController::class, 'create'])->name('sanpham.create');
-        Route::post('them-san-pham', [SanPhamController::class, 'store'])->name('sanpham.store');
-        Route::get('cap-nhat-san-pham/{id}', [SanPhamController::class, 'edit'])->name('sanpham.edit');
-        Route::post('cap-nhat-san-pham/{id}', [SanPhamController::class, 'update'])->name('sanpham.update');
-        Route::get('xoa-san-pham/{id}', [SanPhamController::class, 'destroy'])->name('sanpham.destroy');
-        Route::get('tim-kiem', [SanPhamController::class, 'timkiem'])->name('sanpham.tim');
+        Route::get('san-pham-chi-tiet/{id}', [SanPhamController::class, 'chitiet'])->name('sanpham.chitiet');
+        Route::get('them-san-pham', [SanPhamController::class, 'getThem'])->name('sanpham.getThem');
+        Route::post('them-san-pham', [SanPhamController::class, 'postThem'])->name('sanpham.postThem');
+        Route::get('cap-nhat-san-pham/{id}', [SanPhamController::class, 'getSua'])->name('sanpham.getSua');
+        Route::post('cap-nhat-san-pham/{id}', [SanPhamController::class, 'postSua'])->name('sanpham.postSua');
+        Route::get('xoa-san-pham/{id}', [SanPhamController::class, 'xoa'])->name('sanpham.xoa');
+        Route::get('tim-kiem', [SanPhamController::class, 'timkiem'])->name('sanpham.timkiem');
     });
 
     // Quản lý người dùng
     Route::prefix('nguoi-dung')->group(function () {
         Route::get('/', [NguoiDungController::class, 'index'])->name('nguoidung.index');
-        Route::get('/them-nguoi-dung', [NguoiDungController::class, 'create'])->name('nguoidung.create');
-        Route::post('/them-nguoi-dung', [NguoiDungController::class, 'store'])->name('nguoidung.store');
+        Route::get('/them-nguoi-dung', [NguoiDungController::class, 'getThem'])->name('nguoidung.getThem');
+        Route::post('/them-nguoi-dung', [NguoiDungController::class, 'postThem'])->name('nguoidung.postThem');
         Route::get('/ho-so-nguoi-dung/{id}', [NguoiDungController::class, 'gethoso'])->name('nguoidung.gethoso');
         Route::post('/ho-so-nguoi-dung/{id}', [NguoiDungController::class, 'posthoso'])->name('nguoidung.posthoso');
         Route::get('/doi-mat-khau/{id}', [NguoiDungController::class, 'getdoimatkhau'])->name('nguoidung.getdoimatkhau');
         Route::post('/doi-mat-khau/{id}', [NguoiDungController::class, 'postdoimatkhau'])->name('nguoidung.postdoimatkhau');
         Route::get('/cap-nhat-quyen/{id}', [NguoiDungController::class, 'getcapnhatquyen'])->name('nguoidung.getcapnhatquyen');
-        Route::post('/cap-nhat-quyen/{id}', [NguoiDungController::class, 'capnhatquyen'])->name('nguoidung.updatequyen');
+        Route::post('/cap-nhat-quyen/{id}', [NguoiDungController::class, 'postcapnhatquyen'])->name('nguoidung.postcapnhatquyen');
         Route::post('/cap-nhat-trang-thai/{id}', [NguoiDungController::class, 'trangthai'])->name('nguoidung.trangthai');
-        Route::get('/xoa-nguoi-dung/{id}', [NguoiDungController::class, 'destroy'])->name('nguoidung.destroy');
+        Route::get('/xoa-nguoi-dung/{id}', [NguoiDungController::class, 'xoa'])->name('nguoidung.xoa');
         Route::get('tim-kiem', [NguoiDungController::class, 'timkiem'])->name('nguoidung.timkiem');
     });
 
     // Quản lý đơn hàng
     Route::prefix('don-hang')->group(function () {
         Route::get('/', [DonHangController::class, 'index'])->name('donhang.index');
-        Route::get('xem-don-hang/{id}', [DonHangController::class, 'show'])->name('donhang.show');
+        Route::get('xem-don-hang/{id}', [DonHangController::class, 'chitiet'])->name('donhang.chitiet');
         Route::get('xac-nhan-don-hang/{id}', [DonHangController::class, 'xacnhan'])->name('donhang.xacnhan');
         Route::get('huy-don-hang/{id}', [DonHangController::class, 'huy'])->name('donhang.huy');
-        Route::get('xoa-don-hang/{id}', [DonHangController::class, 'destroy'])->name('donhang.destroy');
+        Route::get('xoa-don-hang/{id}', [DonHangController::class, 'xoa'])->name('donhang.xoa');
         Route::get('tim-kiem', [DonHangController::class, 'timkiem'])->name('donhang.timkiem');
     });
 
     // Quản lý cấu hình
     Route::prefix('cau-hinh')->group(function () {
         Route::get('/', [CauHinhController::class, 'index'])->name('cauhinh.index');
-        Route::post('them-cau-hinh', [CauHinhController::class, 'store'])->name('cauhinh.store');
-        Route::get('cap-nhat-cau-hinh/{id}', [CauHinhController::class, 'edit'])->name('cauhinh.edit');
-        Route::post('cap-nhat-cau-hinh/{id}', [CauHinhController::class, 'update'])->name('cauhinh.update');
-        Route::get('xoa-cau-hinh/{id}', [CauHinhController::class, 'destroy'])->name('cauhinh.destroy');
+        Route::post('them-cau-hinh', [CauHinhController::class, 'postThem'])->name('cauhinh.postThem');
+        Route::get('cap-nhat-cau-hinh/{id}', [CauHinhController::class, 'getSua'])->name('cauhinh.getSua');
+        Route::post('cap-nhat-cau-hinh/{id}', [CauHinhController::class, 'postSua'])->name('cauhinh.postSua');
+        Route::get('xoa-cau-hinh/{id}', [CauHinhController::class, 'xoa'])->name('cauhinh.xoa');
         Route::get('tim-kiem', [CauHinhController::class, 'timkiem'])->name('cauhinh.timkiem');
     });
 });
@@ -121,15 +121,15 @@ Route::post('/doi-mat-khau/{id}', [NguoiDungController::class, 'postdoimatkhauUs
 Route::get('/danh-muc/{slug}/{id}', [DanhMucController::class, 'getDanhMucSanPham'])->name('danhmuc.sanpham');
 Route::get('/danh-muc/{id_dm}/thuong-hieu/{slug}/{id}', [ThuongHieuController::class, 'getThuongHieuDanhMuc'])->name('thuonghieu.sanpham');
 Route::get('/thuong-hieu/{slug}/{id}', [ThuongHieuController::class, 'getThuongHieuSanPham'])->name('thuonghieu.sanpham_all');
-Route::get('/chi-tiet-san-pham/{id}', [SanPhamController::class, 'getChiTietSanPham'])->name('sanpham.chitiet');
+Route::get('/chi-tiet-san-pham/{id}', [SanPhamController::class, 'getChiTietSanPham'])->name('sanpham.chitiet_sp');
 Route::get('/san-pham', [SanPhamController::class, 'getAllSanPham'])->name('sanpham.all');
 
 //giỏ hàng
-Route::post('/them-gio-hang', [GioHangController::class, 'create'])->name('giohang.them_giohang');
-Route::get('/gio-hang', [GioHangController::class, 'show'])->name('giohang.show_giohang');
-Route::post('/gio-hang/cap-nhat-so-luong', [GioHangController::class, 'update'])->name('giohang.capnhat_soluong');
-Route::get('/gio-hang/xoa-san-pham/{rowId}', [GioHangController::class, 'remove'])->name('giohang.xoa_sp');
-Route::get('/gio-hang/xoa-san-pham', [GioHangController::class, 'destroy'])->name('giohang.destroy');
+Route::post('/them-gio-hang', [GioHangController::class, 'them_giohang'])->name('giohang.them_giohang');
+Route::get('/gio-hang', [GioHangController::class, 'chitiet'])->name('giohang.chitiet_giohang');
+Route::post('/gio-hang/cap-nhat-so-luong', [GioHangController::class, 'capnhat_soluong'])->name('giohang.capnhat_soluong');
+Route::get('/gio-hang/xoa-san-pham/{rowId}', [GioHangController::class, 'xoa_sp'])->name('giohang.xoa_sp');
+Route::get('/gio-hang/xoa-san-pham', [GioHangController::class, 'xoatatca'])->name('giohang.xoatatca');
 
 //thanh toán
 Route::get('/thanh-toan', [GioHangController::class, 'getThanhToan'])->name('thanhtoan.getThanhToan')->middleware('CheckLogoutUser');

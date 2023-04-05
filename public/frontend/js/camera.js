@@ -15,7 +15,7 @@ function Delete(even) {
     let that = $(this);
     Swal.fire({
         title: "Bạn có chắc chắn?",
-        text: "Nó có thể ảnh hưởng đến dữ liệu khác",
+        text: "Dữ liệu khác có thể bị xoá theo",
         type: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -29,8 +29,13 @@ function Delete(even) {
                 url: urlRequest,
                 success: function (data) {
                     if (data.code == 200) {
-                        that.parent().parent().remove();
-                        Swal.fire("Đã xóa!", "Dữ liệu đã được xóa.", "success");
+                        Swal.fire(
+                            "Đã xóa!",
+                            "Dữ liệu đã được xóa.",
+                            "success"
+                        ).then(function () {
+                            location.reload();
+                        });
                     }
                 },
                 error: function () {},

@@ -47,7 +47,7 @@
                             </tr>
                             @foreach($timkiem as $tk)
                             <tr>
-                                <td>{{ ++$i }}</td>
+                                <td>{{ +(+$i) }}</td>
                                 <td>{{ $tk->ten_thuong_hieu}}</td>
                                 <td>
                                     <img
@@ -67,7 +67,7 @@
                                             margin: 3px;
                                         "
                                         class="btn btn-warning"
-                                        href="{{ route('thuonghieu.edit', ['id' => $tk->id]) }}"
+                                        href="{{ route('thuonghieu.getSua', ['id' => $tk->id]) }}"
                                     >
                                         Cập nhật
                                     </a>
@@ -81,7 +81,7 @@
                                         "
                                         class="btn btn-danger action_del"
                                         href=""
-                                        data-url="{{ route('thuonghieu.destroy', ['id' => $tk->id]) }}"
+                                        data-url="{{ route('thuonghieu.xoa', ['id' => $tk->id]) }}"
                                     >
                                         Xóa
                                     </a>
@@ -100,7 +100,7 @@
                         <br />
 
                         <form
-                            action="{{ route('thuonghieu.store') }}"
+                            action="{{ route('thuonghieu.postthem') }}"
                             method="post"
                             enctype="multipart/form-data"
                         >

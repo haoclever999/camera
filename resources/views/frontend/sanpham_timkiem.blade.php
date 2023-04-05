@@ -55,7 +55,7 @@
                                 Phóng to
                             </a>
                             <a
-                                href="{{route('sanpham.chitiet',[$tk->id])}}"
+                                href="{{route('sanpham.chitiet_sp',[$tk->id])}}"
                                 class="btn btn-default fancybox-fast-view"
                             >
                                 Chi tiết
@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <h3>
-                        <a href="{{route('sanpham.chitiet',[$tk->id])}}">
+                        <a href="{{route('sanpham.chitiet_sp',[$tk->id])}}">
                             <b> {{$tk->ten_sp}} </b>
                         </a>
                     </h3>
@@ -100,7 +100,10 @@
                         </button>
                     </form>
                     @if($tk->giam_gia !=0)
-                    <div class="sticker sticker-sale"></div>
+                    <div class="giamgia">
+                        <span class="chu">GIẢM</span>
+                        <span class="phantram">{{$tk->giam_gia}}%</span>
+                    </div>
                     @endif
                 </div>
             </div>

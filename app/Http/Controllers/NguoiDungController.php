@@ -30,13 +30,13 @@ class NguoiDungController extends Controller
     }
 
 
-    public function create()
+    public function getThem()
     {
         return view('backend.nguoidung.them');
     }
 
 
-    public function store(Request $request)
+    public function postThem(Request $request)
     {
         $request->validate([
             'ho_ten' => 'required|max:191|unique:users',
@@ -69,7 +69,7 @@ class NguoiDungController extends Controller
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
             Alert::error('Thất bại', 'Thêm người dùng thất bại');
-            return redirect()->route('nguoidung.create');
+            return redirect()->route('nguoidung.getThem');
         }
     }
 
@@ -203,7 +203,7 @@ class NguoiDungController extends Controller
         return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-    public function capnhatquyen(Request $request,  $id)
+    public function postcapnhatquyen(Request $request,  $id)
     {
         try {
             DB::beginTransaction();
@@ -241,7 +241,7 @@ class NguoiDungController extends Controller
         }
     }
 
-    public function destroy($id)
+    public function xoa($id)
     {
         return $this->deleteModelTrait($id, $this->user);
     }

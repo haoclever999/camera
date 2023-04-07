@@ -88,6 +88,7 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
         Route::get('huy-don-hang/{id}', [DonHangController::class, 'huy'])->name('donhang.huy');
         Route::get('xoa-don-hang/{id}', [DonHangController::class, 'xoa'])->name('donhang.xoa');
         Route::get('tim-kiem', [DonHangController::class, 'timkiem'])->name('donhang.timkiem');
+        Route::get('in-don-hang/{id}', [DonHangController::class, 'indonhang'])->name('donhang.indonhang');
     });
 
     // Quản lý cấu hình

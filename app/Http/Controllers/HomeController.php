@@ -21,7 +21,6 @@ class HomeController extends Controller
 
     public function home(Request $request)
     {
-
         $url_canonical = $request->url();
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $sp_moi = (new LaySP)->getSanPham()->orderBy('created_at', 'desc')->take(8)->get();

@@ -25,4 +25,4 @@
 
 -- file hình
     
---chỉnh sang tiếng việt: quản lý người dùng(68)
+--file pdf

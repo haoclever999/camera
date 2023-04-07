@@ -7,10 +7,10 @@ use App\Models\DonHang;
 use App\Models\QuanHuyen;
 use App\Models\SanPham;
 use App\Models\TinhThanhPho;
+use App\Models\User;
 use App\Models\XaPhuong;
 use Illuminate\Http\Request;
 use Cart;
-use Illuminate\Contracts\Session\Session;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -72,12 +72,18 @@ class GioHangController extends Controller
     {
         //địa chỉ
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
+        $huyen = QuanHuyen::orderby('ten_qh')->get();
+        $xa = XaPhuong::orderby('ten_xa')->get();
+        $u = User::where('id', Auth()->user()->id)->get();
+        foreach ($u as $value)
+            $d_c = $value->dia_chi;
+        $dc = explode(', ', $d_c);
 
         $url_canonical = $request->url();
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $tt_giohang = Cart::content();
         if (count($tt_giohang) > 0) {
-            return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical', 'tinh_tp'));
+            return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical', 'tinh_tp', 'huyen', 'xa', 'dc'));
         }
         return redirect()->route('giohang.chitiet_giohang');
     }
@@ -86,10 +92,12 @@ class GioHangController extends Controller
     {
         $request->validate(
             [
+                'ho_ten' => 'required',
                 'sdt' => 'required',
                 'dia_chi' => 'required',
             ],
             [
+                'ho_ten.required' => 'Hãy nhập họ tên',
                 'sdt.required' => 'Hãy nhập số điện thoại',
                 'dia_chi.required' => 'Hãy nhập địa chỉ giao hàng',
             ]
@@ -102,7 +110,6 @@ class GioHangController extends Controller
             $xa = XaPhuong::where('id', $request->opt_Xa)->first();
             $huyen = QuanHuyen::where('id', $request->opt_Huyen)->first();
             $tinh = TinhThanhPho::where('id', $request->opt_Tinh)->first();
-
 
             $diachi = $request->dia_chi . ', ' . $xa->ten_xa . ', ' . $huyen->ten_qh . ', ' . $tinh->ten_tp;
             $dhang = $this->donhang->create([

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Components\Traits\DeleteModelTrait;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use PDF;
 
 class DonHangController extends Controller
 {
@@ -107,5 +109,17 @@ class DonHangController extends Controller
         else
             $timkiem =  $this->donhang->where('dia_chi_kh', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('dia_chi_kh')->paginate($page);
         return view('backend.donhang.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+    }
+
+    // in đơn hàng
+    public function indonhang($id)
+    {
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML($this->donhang($id));
+        return $pdf->stream();
+    }
+    public function donhang($id)
+    {
+        return $id;
     }
 }

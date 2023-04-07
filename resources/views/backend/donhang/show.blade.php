@@ -25,9 +25,9 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
-            @if($dhang->trang_thai=='Đang chờ xử lý')
             <div class="row mb-2">
                 <div class="col-sm-12" style="float: right">
+                    @if($dhang->trang_thai=='Đang chờ xử lý')
                     <a
                         class="btn btn-danger action_huy float-right m-2"
                         data-url="{{ route('donhang.huy', ['id' => $dhang->id]) }}"
@@ -40,10 +40,18 @@
                     >
                         Xác nhận
                     </a>
+                    @else
+                    <a
+                        target="_blank"
+                        class="btn btn-primary float-right m-2"
+                        href="{{ route('donhang.indonhang', ['id' => $dhang->id]) }}"
+                    >
+                        In đơn hàng
+                    </a>
+                    @endif
                 </div>
             </div>
             <!-- /.row -->
-            @endif
         </div>
         <!-- /.container-fluid -->
     </div>

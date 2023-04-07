@@ -107,7 +107,7 @@ class DanhMucController extends Controller
     public function timkiem(Request $request)
     {
         $page = 5;
-        $timkiem =  $this->dmuc->where('ten_dm', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_dm')->paginate($page);
+        $timkiem =  $this->dmuc->where('ten_dm', 'LIKE', '%' . $request->timkiem_dm . '%')->orderby('ten_dm')->paginate($page);
         return view('backend.danhmuc.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 

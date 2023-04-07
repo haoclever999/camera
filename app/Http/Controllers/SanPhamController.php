@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
 use RealRashid\SweetAlert\Facades\Alert;
-
+use App\Exports\XuatSanPham;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SanPhamController extends Controller
 {
@@ -243,16 +244,24 @@ class SanPhamController extends Controller
 
     public function timkiem(Request $request)
     {
-        $th = $this->thuonghieu->where('ten_thuong_hieu ', 'LIKE', '%' . $request->timkiem_th . '%');
-        $dm = $this->dmuc->where('dm_id ', 'LIKE', '%' . $request->timkiem_th . '%');
+        $th = $this->thuonghieu->where('ten_thuong_hieu ', 'LIKE', '%' . $request->timkiem_sp . '%');
+        $dm = $this->dmuc->where('dm_id ', 'LIKE', '%' . $request->timkiem_sp . '%');
         $page = 5;
         if ($request->san_pham == 'ten_sp')
-            $timkiem =  (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_sp')->paginate($page);
+            $timkiem =  (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_sp . '%')->orderby('ten_sp')->paginate($page);
         elseif ($request->san_pham == 'danh_muc')
             $timkiem =  (new LaySP)->getSanPham()->where('dm_id ', $dm->id)->orderby('dm_id')->paginate($page);
         else
             $timkiem =  (new LaySP)->getSanPham()->where('thuong_hieu_id', $th->id)->orderby('thuong_hieu_id')->paginate($page);
         return view('backend.sanpham.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+    }
+
+    public function nhap_excel()
+    {
+    }
+    public function xuat_excel()
+    {
+        return Excel::download(new XuatSanPham, 'sanpham.xlsx');
     }
     // Kết thúc trang admin
 

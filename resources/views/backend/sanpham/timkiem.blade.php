@@ -6,7 +6,7 @@
 <link rel="stylesheet" href="{{ asset('frontend/css/camera.css') }}" />
 @endsection @section('title-action')
 <div class="title-action">
-    <h2 class="m-0"><b>Danh sách sản phẩm </b></h2>
+    <h2 class="m-0"><b>Kết quả tìm kiếm </b></h2>
 </div>
 <form
     action="{{ route('sanpham.timkiem') }}"
@@ -68,10 +68,10 @@
             &nbsp; Thương hiệu
         </label>
         <input
-            type="text"
+            type="search"
             class="form-control bg-light border-0 small"
             placeholder="Tìm kiếm..."
-            name="timkiem_th"
+            name="timkiem_sp"
         />
         <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>
@@ -88,6 +88,29 @@
                 <!-- /.col -->
                 <div class="col-sm-12" style="float: right">
                     <!-- Topbar Search -->
+                    <a
+                        href="{{ route('sanpham.xuatsp') }}"
+                        class="btn btn-success float-right m-2"
+                    >
+                        Xuất excel danh sách
+                    </a>
+                    <form
+                        action="{{ route('sanpham.nhapsp') }}"
+                        method="post"
+                        id="fnhapexcel"
+                        class="float-right m-2"
+                    >
+                        @csrf
+                        <input type="file" accept=".xlsx" />
+                        <button type="submit" class="btn btn-info">Nhập</button>
+                    </form>
+                    <a
+                        onclick="HienFormNhap()"
+                        id="nhapexcel"
+                        class="btn btn-info float-right m-2"
+                    >
+                        Nhập excel sản phẩm
+                    </a>
                     <a
                         href="{{ route('sanpham.getThem') }}"
                         class="btn btn-primary float-right m-2"
@@ -203,4 +226,14 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+@endsection @section('js')
+<script>
+    $(document).ready(function () {
+        document.getElementById("fnhapexcel").style.display = "none";
+    });
+    function HienFormNhap() {
+        document.getElementById("fnhapexcel").style.display = "block";
+        document.getElementById("nhapexcel").style.display = "none";
+    }
+</script>
 @endsection

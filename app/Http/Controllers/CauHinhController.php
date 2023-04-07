@@ -117,9 +117,9 @@ class CauHinhController extends Controller
     {
         $page = 5;
         if ($request->cau_hinh == 'cau_hinh_key')
-            $timkiem =  $this->cauhinh->where('cau_hinh_key', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('cau_hinh_key')->paginate($page);
+            $timkiem =  $this->cauhinh->where('cau_hinh_key', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orderby('cau_hinh_key')->paginate($page);
         else
-            $timkiem =  $this->cauhinh->where('cau_hinh_value', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('cau_hinh_key')->paginate($page);
+            $timkiem =  $this->cauhinh->where('cau_hinh_value', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orderby('cau_hinh_key')->paginate($page);
         return view('backend.cauhinh.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 }

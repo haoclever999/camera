@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Components\Traits\DeleteModelTrait;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use PDF;
 
 class DonHangController extends Controller
 {
@@ -103,11 +103,11 @@ class DonHangController extends Controller
     {
         $page = 5;
         if ($request->don_hang == 'ten_kh')
-            $timkiem =  $this->donhang->where('ten_kh', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_kh')->paginate($page);
+            $timkiem =  $this->donhang->where('ten_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('ten_kh')->paginate($page);
         elseif ($request->don_hang == 'sdt')
-            $timkiem =  $this->donhang->where('sdt_kh', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('sdt_kh')->paginate($page);
+            $timkiem =  $this->donhang->where('sdt_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('sdt_kh')->paginate($page);
         else
-            $timkiem =  $this->donhang->where('dia_chi_kh', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('dia_chi_kh')->paginate($page);
+            $timkiem =  $this->donhang->where('dia_chi_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('dia_chi_kh')->paginate($page);
         return view('backend.donhang.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
@@ -115,11 +115,16 @@ class DonHangController extends Controller
     public function indonhang($id)
     {
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadHTML($this->donhang($id));
-        return $pdf->stream();
-    }
-    public function donhang($id)
-    {
-        return $id;
+        // $pdf->loadHTML($this->donhang($id));
+        // return $pdf->stream();
+
+        $data = [
+            'logo' => '{{asset("frontend/img/Logo.jpg")}}',
+            'diachi_web' => 'haongan.com',
+            'donhang' => $this->donhang->where('id', $id)->first(),
+        ];
+
+        $pdf = PDF::loadView('backend.donhang.inpdf', $data);
+        return $pdf->download('itsolutionstuff.pdf');
     }
 }

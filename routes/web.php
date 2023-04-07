@@ -62,6 +62,8 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
         Route::post('cap-nhat-san-pham/{id}', [SanPhamController::class, 'postSua'])->name('sanpham.postSua');
         Route::get('xoa-san-pham/{id}', [SanPhamController::class, 'xoa'])->name('sanpham.xoa');
         Route::get('tim-kiem', [SanPhamController::class, 'timkiem'])->name('sanpham.timkiem');
+        Route::post('nhap-san-pham', [SanPhamController::class, 'nhap_excel'])->name('sanpham.nhapsp');
+        Route::get('xuat-san-pham', [SanPhamController::class, 'xuat_excel'])->name('sanpham.xuatsp');
     });
 
     // Quản lý người dùng
@@ -138,7 +140,7 @@ Route::post('/thanh-toan', [GioHangController::class, 'postThanhToan'])->name('t
 Route::post('/dia-chi', [GioHangController::class, 'diachi'])->name('diachi');
 
 //tìm kiếm
-Route::get('/tim-kiem-san-pham', [SanPhamController::class, 'timKiemSanPham'])->name('sanpham.timkiem');
+Route::get('/tim-kiem-san-pham', [SanPhamController::class, 'timKiemSanPham'])->name('sanpham.timkiemsp');
 
 //gửi mail
 Route::get('/gui-mail', [HomeController::class, 'guiMail'])->name('home.guimail');

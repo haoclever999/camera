@@ -50,10 +50,10 @@
             Giá trị
         </label>
         <input
-            type="text"
+            type="search"
             class="form-control bg-light border-0 small"
             placeholder="Tìm kiếm..."
-            name="timkiem_th"
+            name="timkiem_cauhinh"
         />
         <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>

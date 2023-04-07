@@ -2,7 +2,7 @@
 <title>Quản lý người dùng</title>
 @endsection @section('title-action')
 <div class="title-action">
-    <h2 class="m-0"><b>Danh sách người dùng </b></h2>
+    <h2 class="m-0"><b>Kết quả tìm kiếm </b></h2>
 </div>
 <form
     action="{{ route('nguoidung.timkiem') }}"
@@ -11,10 +11,10 @@
     @csrf
     <div class="input-group">
         <input
-            type="text"
+            type="search"
             class="form-control bg-light border-0 small"
             placeholder="Tìm kiếm..."
-            name="timkiem_th"
+            name="timkiem_nd"
         />
         <button class="btn btn-primary" type="submit">
             <i class="fas fa-search fa-sm"></i>

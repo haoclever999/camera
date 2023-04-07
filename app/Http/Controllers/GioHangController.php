@@ -9,8 +9,8 @@ use App\Models\SanPham;
 use App\Models\TinhThanhPho;
 use App\Models\User;
 use App\Models\XaPhuong;
+use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
-use Cart;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 

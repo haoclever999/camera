@@ -99,7 +99,9 @@
                                 <td>{{ +(+$i) }}</td>
                                 <td>{{$tk->ten_kh}}</td>
                                 <td>{{$tk->sdt_kh}}</td>
-                                <td>{{$tk->dia_chi_kh}}</td>
+                                <td style="text-align: left">
+                                    {{$tk->dia_chi_kh}}
+                                </td>
                                 <td>{{$tk->tong_so_luong}}</td>
                                 <td>
                                     {{number_format($tk->tong_tien,0,",",".")}}

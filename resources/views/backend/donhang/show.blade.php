@@ -44,7 +44,7 @@
                     <a
                         target="_blank"
                         class="btn btn-primary float-right m-2"
-                        href="{{ route('donhang.indonhang', ['id' => $dhang->id]) }}"
+                        href="{{ route('donhang.inDonHang', ['id' => $dhang->id]) }}"
                     >
                         In đơn hàng
                     </a>

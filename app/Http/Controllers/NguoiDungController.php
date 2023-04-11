@@ -3,20 +3,29 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\CauHinh;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use App\Components\Traits\DeleteModelTrait;
+use App\Models\DanhMuc;
+use App\Models\QuanHuyen;
+use App\Models\ThuongHieu;
+use App\Models\TinhThanhPho;
+use App\Models\XaPhuong;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class NguoiDungController extends Controller
 {
     use DeleteModelTrait;
-    private $user;
-    public function __construct(User $user)
+    private $user, $cauhinh, $dmuc, $thuonghieu;
+    public function __construct(User $user, CauHinh $cauhinh, DanhMuc $dmuc, ThuongHieu $thuonghieu)
     {
         $this->user = $user;
+        $this->cauhinh = $cauhinh;
+        $this->dmuc = $dmuc;
+        $this->thuonghieu = $thuonghieu;
     }
 
     //Bắt đầu trang admin
@@ -29,12 +38,10 @@ class NguoiDungController extends Controller
         return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
-
     public function getThem()
     {
         return view('backend.nguoidung.them');
     }
-
 
     public function postThem(Request $request)
     {
@@ -257,4 +264,157 @@ class NguoiDungController extends Controller
 
     //Bắt đầu trang user
 
+    public function gethosoUser(Request $request, $id)
+    {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
+        //SEO
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
+        $url_canonical = $request->url();
+
+        $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
+        $huyen = QuanHuyen::orderby('ten_qh')->get();
+        $xa = XaPhuong::orderby('ten_xa')->get();
+        $u = User::where('id', Auth()->user()->id)->get();
+        foreach ($u as $value)
+            $d_c = $value->dia_chi;
+        $dc = explode(', ', $d_c);
+
+        $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
+        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
+        $user = $this->user->find($id);
+        return view('auth.hosonguoidung', compact('user', 'dc', 'tinh_tp', 'huyen', 'xa', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+    }
+
+    public function posthosoUser(Request $request, $id)
+    {
+        if ($request->has('ho_ten') && $request->has('sdt')) {
+            $request->validate([
+                'ho_ten' => 'required|max:191|unique:users',
+                'sdt' => 'required|unique:users',
+                'dia_chi' => 'required',
+            ], [
+                'ho_ten.required' => 'Hãy nhập tên người dùng',
+                'ho_ten.max' => 'Tên người dùng quá dài',
+                'ho_ten.unique' => 'Tên người dùng đã được sử dụng',
+                'sdt.required' => 'Hãy nhập số điện thoại',
+                'sdt.unique' => 'Số điện thoại đã được sử dụng',
+                'dia_chi.required' => 'Hãy nhập địa chỉ',
+
+            ]);
+        } elseif ($request->has('ho_ten')) {
+            $request->validate([
+                'ho_ten' => 'required|max:191|unique:users',
+                'dia_chi' => 'required',
+            ], [
+                'ho_ten.required' => 'Hãy nhập tên người dùng',
+                'ho_ten.max' => 'Tên người dùng quá dài',
+                'ho_ten.unique' => 'Tên người dùng đã được sử dụng',
+                'dia_chi.required' => 'Hãy nhập địa chỉ',
+
+            ]);
+        } elseif ($request->has('sdt')) {
+            $request->validate([
+                'ho_ten' => 'max:191',
+                'sdt' => 'required|unique:users',
+                'dia_chi' => 'required|max:191',
+            ], [
+                'ho_ten.max' => 'Tên người dùng quá dài',
+                'sdt.required' => 'Hãy nhập số điện thoại',
+                'sdt.unique' => 'Số điện thoại đã được sử dụng',
+                'dia_chi.required' => 'Hãy nhập địa chỉ',
+
+            ]);
+        } else {
+            $request->validate([
+                'ten_nd' => 'max:191',
+                'dia_chi' => 'required|max:191',
+            ], [
+                'ten_nd.max' => 'Tên người dùng quá dài',
+                'dia_chi.required' => 'Hãy nhập địa chỉ',
+            ]);
+        }
+
+        try {
+            DB::beginTransaction();
+            if ($request->has('ten_nd')) $ten = $request->ten_nd;
+            else $ten = $request->ho_ten;
+
+            if ($request->has('sodt')) $sdt = $request->sodt;
+            else $sdt = $request->sdt;
+
+            $user = $this->user->find($id);
+            $user->id = $request->id;
+            $user->ho_ten = trim($ten);
+            $user->sdt = trim($sdt);
+            $user->dia_chi = trim($request->dia_chi);
+            $user->save();
+            DB::commit();
+            Alert::success('Thành công', 'Cập nhật hồ sơ thành công');
+            return redirect()->route('admin.index');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Cập nhật hồ sơ thất bại');
+            return redirect()->route('nguoidung.gethoso', ['id' => $id]);
+        }
+    }
+
+    public function getdoimatkhauUser(Request $request, $id)
+    {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
+        //SEO
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
+        $url_canonical = $request->url();
+
+        $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
+        $user = $this->user->find($id);
+        return view('auth.doimatkhaunguoidung', compact('user', 'dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+    }
+
+    public function postdoimatkhauUser(Request $request,  $id)
+    {
+        $request->validate([
+            'password' => 'required',
+            'password_new' => 'required|different:password',
+            'password_confirm' => 'required|same:password_new',
+        ], [
+            'password.required' => 'Hãy nhập mật khẩu cũ',
+            'password_new.required' => 'Hãy nhập mật khẩu mới',
+            'password_new.different' => 'Mật khẩu mới phải khác mật khẩu cũ',
+            'password_confirm.required' => 'Hãy nhập lại mật khẩu mới',
+            'password_confirm.same' => 'Nhập lại mật khẩu và mật khẩu mới phải giống nhau',
+        ]);
+        try {
+            DB::beginTransaction();
+            $u = $this->user->find($id);
+            if (Hash::check($request->password, $u->password)) {
+                $u->update([
+                    'password' => Hash::make($request->password_new)
+                ]);
+                DB::commit();
+                Alert::success('Thành công', 'Mật khẩu đã được thay đổi');
+                return redirect()->route('nguoidung.index');
+            } else {
+                Alert::error('Thất bại', 'Mật khẩu cũ không đúng');
+                return redirect()->route('nguoidung.getdoimatkhau', ['id' => $id]);
+            }
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Đổi mật khẩu thất bại');
+            return redirect()->route('nguoidung.getdoimatkhau', ['id' => $id]);
+        }
+    }
 }

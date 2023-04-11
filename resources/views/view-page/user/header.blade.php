@@ -15,7 +15,7 @@
                     {{Cart::count()}} sản phẩm
                 </span>
                 <span class="top-cart-info-value">
-                    {{Cart::total(0,',','.')}} đ
+                    {{Cart::subtotal(0,',','.')}} đ
                 </span>
             </div>
             <i class="fa fa-shopping-cart"></i>

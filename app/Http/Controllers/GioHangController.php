@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CauHinh;
 use App\Models\DanhMuc;
 use App\Models\DonHang;
 use App\Models\QuanHuyen;
@@ -11,19 +12,21 @@ use App\Models\User;
 use App\Models\XaPhuong;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Mail;
 
 class GioHangController extends Controller
 {
-    private $spham;
-    private $dmuc;
-    private $donhang;
-    public function __construct(DonHang $donhang, SanPham $spham, DanhMuc $dmuc)
+    private $spham, $dmuc, $donhang, $cauhinh, $u;
+    public function __construct(DonHang $donhang, SanPham $spham, DanhMuc $dmuc, CauHinh $cauhinh, User $u)
     {
         $this->spham = $spham;
         $this->dmuc = $dmuc;
         $this->donhang = $donhang;
+        $this->cauhinh = $cauhinh;
+        $this->u = $u;
     }
 
     public function them_giohang(Request $request)
@@ -43,9 +46,19 @@ class GioHangController extends Controller
 
     public function chitiet(Request $request)
     {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
+        //SEO
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
         $url_canonical = $request->url();
+
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
-        return view('frontend.giohang.giohang_show', compact('dm', 'url_canonical'));
+        return view('frontend.giohang.giohang_show', compact('dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
 
@@ -70,6 +83,10 @@ class GioHangController extends Controller
 
     public function getThanhToan(Request $request)
     {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
         //địa chỉ
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
         $huyen = QuanHuyen::orderby('ten_qh')->get();
@@ -78,12 +95,17 @@ class GioHangController extends Controller
         foreach ($u as $value)
             $d_c = $value->dia_chi;
         $dc = explode(', ', $d_c);
-
+        //SEO
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
         $url_canonical = $request->url();
+
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $tt_giohang = Cart::content();
         if (count($tt_giohang) > 0) {
-            return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical', 'tinh_tp', 'huyen', 'xa', 'dc'));
+            return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'tinh_tp', 'huyen', 'xa', 'dc', 'dt', 'fb', 'email'));
         }
         return redirect()->route('giohang.chitiet_giohang');
     }
@@ -112,23 +134,30 @@ class GioHangController extends Controller
             $tinh = TinhThanhPho::where('id', $request->opt_Tinh)->first();
 
             $diachi = $request->dia_chi . ', ' . $xa->ten_xa . ', ' . $huyen->ten_qh . ', ' . $tinh->ten_tp;
+            $dc = $this->u->where('email', Auth::user()->email)->first();
+            $user = $this->u->find($dc->id);
+            if ($dc->dia_chi == '')
+                $user->update(['dia_chi' =>  $diachi]);
+            if ($dc->sdt == '')
+                $user->update(['sdt' =>  $request->sdt]);
+
             $dhang = $this->donhang->create([
                 'user_id' => auth()->id(),
                 'ten_kh' => $request->ho_ten,
                 'sdt_kh' => $request->sdt,
                 'dia_chi_kh' => $diachi,
                 'tong_so_luong' => Cart::count(),
+                'thue' => Cart::tax(0, '', ''),
                 'tong_tien' => Cart::total(0, '', ''),
                 'hinh_thuc' => $request->thanh_toan,
                 'ghi_chu' => $ghi_chu,
                 'trang_thai' => 'Đang chờ xử lý',
             ]);
 
-
             //thêm đơn hàng chi tiết
             $tt_giohang = Cart::content();
             if (count($tt_giohang) > 0) {
-                foreach ($tt_giohang as $key => $item) {
+                foreach ($tt_giohang as $item) {
                     $dhang->DonHangChiTiet()->create([
                         'sp_id' => $item->id,
                         'so_luong_ban' => $item->qty,

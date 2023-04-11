@@ -70,6 +70,25 @@
 @endsection @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <!-- /.col -->
+                <div class="col-sm-12" style="float: right">
+                    <a
+                        href="{{ route('donhang.xuatdonhnag') }}"
+                        class="btn btn-success float-right m-2"
+                    >
+                        Xuất excel
+                    </a>
+                </div>
+                <!-- /.col -->
+            </div>
+            <!-- /.row -->
+        </div>
+    </div>
+    <!-- /.content-header -->
     <!-- Main content -->
     <div class="content">
         <div class="container-fluid">
@@ -94,7 +113,9 @@
                                 <td>{{ +(+$i) }}</td>
                                 <td>{{$dh->ten_kh}}</td>
                                 <td>{{$dh->sdt_kh}}</td>
-                                <td>{{$dh->dia_chi_kh}}</td>
+                                <td style="text-align: left">
+                                    {{$dh->dia_chi_kh}}
+                                </td>
                                 <td>{{$dh->tong_so_luong}}</td>
                                 <td>
                                     {{number_format($dh->tong_tien,0,",",".")}}

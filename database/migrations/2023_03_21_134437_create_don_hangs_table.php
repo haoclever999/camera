@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('sdt_kh', 191);
             $table->string('dia_chi_kh', 191);
             $table->integer('tong_so_luong');
+            $table->decimal('thue', 9, 0);
             $table->decimal('tong_tien', 9, 0);
             $table->string('hinh_thuc', 191);
             $table->text('ghi_chu')->nullable();

@@ -2,14 +2,40 @@
     <div class="container">
         <div class="row">
             <!-- BEGIN TOP BAR LEFT PART -->
-            <div class="col-md-6 col-sm-6 additional-shop-info">
+            <div class="col-md-9 col-sm-9 additional-shop-info">
                 <ul class="list-unstyled list-inline">
-                    <li><i class="fa fa-phone"></i><span>0766917312</span></li>
+                    <li>
+                        <a
+                            href="tel:{{$dt->cau_hinh_value}}"
+                            style="text-decoration: none"
+                        >
+                            <i class="fa fa-phone"></i>
+                            <!-- <span>{{$dt->cau_hinh_value}}</span> -->
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="mailto:{{$email->cau_hinh_value}}"
+                            style="text-decoration: none"
+                        >
+                            <i class="fa fa-envelope"></i>
+                            <!-- <span>{{$email->cau_hinh_value}}</span> -->
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            target="_blank"
+                            href="{{$fb->cau_hinh_value}}"
+                            style="text-decoration: none"
+                        >
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- END TOP BAR LEFT PART -->
             <!-- BEGIN TOP BAR MENU -->
-            <div class="col-md-6 col-sm-6 additional-nav">
+            <div class="col-md-3 col-sm-3 additional-nav">
                 <ul class="list-unstyled list-inline pull-right">
                     @if(Auth::check())
                     <li class="nav-item dropdown no-arrow">
@@ -85,7 +111,12 @@
                     </li>
                     @else
                     <li>
-                        <a href="{{ route('getDangNhapUser') }}">Đăng nhập</a>
+                        <a
+                            href="{{ route('getDangNhapUser') }}"
+                            style="text-decoration: none"
+                        >
+                            Đăng nhập
+                        </a>
                     </li>
                     @endif
                 </ul>

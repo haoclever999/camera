@@ -12,29 +12,25 @@
                 @endforeach
             </div>
             <div class="col-md-5 col-sm-5">
-                <div class="pull-right">
-                    <label class="control-label">Lọc:</label>
-                    <select class="form-control input-sm">
-                        <option
-                            value="#?sort=p.sort_order&amp;order=ASC"
-                            selected="selected"
-                        >
-                            Default
-                        </option>
-                        <option value="#?sort=pd.name&amp;order=ASC">
-                            Tên (A - Z)
-                        </option>
-                        <option value="#?sort=pd.name&amp;order=DESC">
-                            Tên (Z - A)
-                        </option>
-                        <option value="#?sort=p.price&amp;order=ASC">
-                            Giá (Thấp &gt; Cao)
-                        </option>
-                        <option value="#?sort=p.price&amp;order=DESC">
-                            Giá (Cao &gt; Thấp)
-                        </option>
-                    </select>
-                </div>
+                <form action="{{danhmuc.sanpham_loc}}" method="get">
+                    @crsf
+                    <div class="pull-right">
+                        <label class="control-label">Lọc:</label>
+                        <select class="form-control input-sm" name="loc">
+                            <option {{Request::get('loc')=="mac_dinh" || !Request::get('loc')?"'selected'":""}} value="mac_dinh" selected="selected">
+                                Mặc định
+                            </option>
+                            <option {{Request::get('loc')=="a_z"?"'selected'":""}} value="a_z">Tên (A - Z)</option>
+                            <option {{Request::get('loc')=="z_a"?"'selected'":""}} value="z_a">Tên (Z - A)</option>
+                            <option {{Request::get('loc')=="thap_cao"?"'selected'":""}} value="thap_cao">
+                                Giá (Thấp &gt; Cao)
+                            </option>
+                            <option {{Request::get('loc')==""?"'selected'":""}} value="cao_thap">
+                                Giá (Cao &gt; Thấp)
+                            </option>
+                        </select>
+                    </div>
+                </form>
             </div>
         </div>
         <!-- BEGIN PRODUCT LIST -->

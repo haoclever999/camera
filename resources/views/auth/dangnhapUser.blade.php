@@ -95,6 +95,12 @@
                         </span>
                         <br />
                         <br />
+                        @endif @if(Session::has('mgs-success'))
+                        <span class="help-block" style="color: #3fff5f">
+                            {{Session::get('mgs-success')}}
+                        </span>
+                        <br />
+                        <br />
                         @endif
 
                         <div
@@ -148,7 +154,7 @@
                                 "
                             >
                                 Ghi nhớ
-                                <input type="checkbox" />
+                                <input name="ghi_nho" type="checkbox" />
                                 <span class="control__indicator"></span>
                             </label>
                             <a

@@ -12,18 +12,18 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\SanPham;
 use App\Models\ThuongHieu;
 use App\Components\LaySP;
+use App\Models\CauHinh;
 
 class DanhMucController extends Controller
 {
     use DeleteModelTrait;
-    private $dmuc;
-    private $sanpham;
-    private $thuonghieu;
-    public function __construct(DanhMuc $dmuc, SanPham $sanpham, ThuongHieu $thuonghieu)
+    private $dmuc, $sanpham, $thuonghieu, $cauhinh;
+    public function __construct(DanhMuc $dmuc, SanPham $sanpham, ThuongHieu $thuonghieu, CauHinh $cauhinh)
     {
         $this->dmuc = $dmuc;
         $this->sanpham = $sanpham;
         $this->thuonghieu = $thuonghieu;
+        $this->cauhinh = $cauhinh;
     }
 
     // Bắt đầu trang admin
@@ -110,7 +110,6 @@ class DanhMucController extends Controller
         $timkiem =  $this->dmuc->where('ten_dm', 'LIKE', '%' . $request->timkiem_dm . '%')->orderby('ten_dm')->paginate($page);
         return view('backend.danhmuc.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
-
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
@@ -118,6 +117,15 @@ class DanhMucController extends Controller
 
     public function getDanhMucSanPham(Request $request, $slug, $id_dm)
     {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
+        //SEO
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
         $url_canonical = $request->url();
 
         $sp = (new LaySP)->getSanPham()->where('dm_id', $id_dm)->paginate(6);
@@ -132,7 +140,7 @@ class DanhMucController extends Controller
             $th_sp = [];
         }
 
-        return view('frontend.danhmuc_sanpham', compact('dm', 'sp', 'ten_dm', 'th_sp', 'url_canonical'));
+        return view('frontend.danhmuc_sanpham', compact('dm', 'sp', 'ten_dm', 'th_sp', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
     // Kết thúc trang người dùng
 }

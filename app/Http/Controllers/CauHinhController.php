@@ -65,7 +65,7 @@ class CauHinhController extends Controller
     {
         if ($request->has('cau_hinh_key')) {
             $request->validate([
-                'cau_hinh_key' => 'required|max:191|unique:cau_hinhs',
+                'cau_hinh_key' => 'required||unique:cau_hinhs',
                 'cau_hinh_value' => 'required|max:191',
             ], [
                 'cau_hinh_key.required' => 'Hãy nhập tên cấu hình',

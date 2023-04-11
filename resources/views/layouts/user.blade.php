@@ -8,19 +8,18 @@
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
         <!-- Bắt đầu SEO  -->
-        <meta name="description" content="" />
-        <meta name="keywords" content="" />
+        <meta name="description" content="{{ $meta_description }}" />
+        <meta name="keywords" content="{{ $meta_keyword }}" />
         <meta name="robots" content="" />
         <link rel="canonical" href="{{ $url_canonical }}" />
         <meta name="author" content="" />
 
-        <meta property="og:site_name" content="http://127.0.0.1:8000/" />
-        <meta property="og:title" content="-CUSTOMER VALUE-" />
-        <meta property="og:description" content="-CUSTOMER VALUE-" />
+        <meta property="og:site_name" content="{{ $url_canonical }}" />
+        <meta property="og:image" content="{{ $meta_image }}" />
+        <meta property="og:title" content="{{ $meta_title }}" />
+        <meta property="og:description" content="{{ $meta_description }}" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="-CUSTOMER VALUE-" />
-        <!-- link to image for socio -->
-        <meta property="og:url" content="-CUSTOMER VALUE-" />
+        <meta property="og:url" content="{{ $url_canonical }}" />
         <!-- Kết thúc SEO -->
         @yield('title')
         <!-- Fonts START -->
@@ -111,6 +110,10 @@
             rel="stylesheet"
         />
         <!-- Theme styles END -->
+        <link
+            rel="stylesheet"
+            href="{{ asset('frontend/css/dienthoai.css') }}"
+        />
 
         @yield('css')
     </head>
@@ -124,6 +127,26 @@
         @yield('slider')
         <div class="main">
             <div class="container">@yield('content')</div>
+        </div>
+        <div class="hotline-phone-ring-wrap">
+            <div class="hotline-phone-ring">
+                <div class="hotline-phone-ring-circle"></div>
+                <div class="hotline-phone-ring-circle-fill"></div>
+                <div class="hotline-phone-ring-img-circle">
+                    <a href="tel:0766917312" class="pps-btn-img">
+                        <img
+                            src="{{ asset('frontend/img/icon-call.png') }}"
+                            alt="Gọi điện thoại"
+                            width="50"
+                        />
+                    </a>
+                </div>
+            </div>
+            <div class="hotline-bar" style="width: 135px">
+                <a href="tel:0766917312" style="text-indent: 40px">
+                    <span class="text-hotline">Gọi ngay</span>
+                </a>
+            </div>
         </div>
 
         @include('view-page.user.footer')
@@ -230,16 +253,5 @@
                 Layout.initNavScrolling();
             });
         </script>
-
-        <div id="fb-root"></div>
-        <div id="fb-root"></div>
-        <div id="fb-root"></div>
-        <script
-            async
-            defer
-            crossorigin="anonymous"
-            src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0"
-            nonce="WbtABH9B"
-        ></script>
     </body>
 </html>

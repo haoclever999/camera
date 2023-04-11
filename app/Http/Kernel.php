@@ -57,6 +57,7 @@ class Kernel extends HttpKernel
         'CheckLogout' => \App\Http\Middleware\CheckLogout::class,
         'CheckLogoutUser' => \App\Http\Middleware\CheckLogoutUser::class,
         'CheckLogin' => \App\Http\Middleware\CheckLogin::class,
+        'CheckLoginUser' => \App\Http\Middleware\CheckLoginUser::class,
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'auth.session' => \Illuminate\Session\Middleware\AuthenticateSession::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,

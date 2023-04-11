@@ -83,14 +83,17 @@
                 <div class="wrap-login100" style="padding-top: 55px">
                     <form
                         class="login100-form validate-form was-validated"
-                        action="{{ route('postDangNhapUser') }}"
+                        action="{{ route('postDangKy') }}"
                         method="post"
                     >
                         @csrf
-                        <h1 style="text-align: center"><b>Đăng nhập</b></h1>
+                        <h1 style="text-align: center"><b>Đăng ký</b></h1>
                         <br />
                         @if(Session::has('mgs'))
-                        <span class="help-block" style="color: #ff3f3f">
+                        <span
+                            class="help-block"
+                            style="color: #ff3f3f; font-size: 14px"
+                        >
                             {{Session::get('mgs')}}
                         </span>
                         <br />
@@ -99,7 +102,7 @@
 
                         <div
                             class="wrap-input100 validate-input"
-                            data-validate="Nhập họ tên"
+                            data-validate="{{ $errors->first('ho_ten') }}"
                         >
                             <input class="input100" type="text" name="ho_ten" />
                             <span
@@ -107,12 +110,17 @@
                                 data-placeholder="Họ tên"
                             >
                             </span>
-                            @if ($errors->has('ho_ten'))
-                            <span class="help-block" style="color: #ff3f3f">
+                        </div>
+                        @if ($errors->has('ho_ten'))
+                        <div style="margin-top: -30px; margin-bottom: 15px">
+                            <span
+                                class="help-block focus-input100"
+                                style="color: #ff3f3f; font-size: 14px"
+                            >
                                 <b>{{ $errors->first('ho_ten') }}</b>
                             </span>
-                            @endif
                         </div>
+                        @endif
 
                         <div
                             class="wrap-input100 validate-input"
@@ -124,17 +132,19 @@
                                 data-placeholder="Email"
                             >
                             </span>
-                            @if ($errors->has('email'))
-                            <span class="help-block" style="color: #ff3f3f">
+                        </div>
+                        @if ($errors->has('email'))
+                        <div style="margin-top: -30px; margin-bottom: 15px">
+                            <span
+                                class="help-block"
+                                style="color: #ff3f3f; font-size: 14px"
+                            >
                                 <b>{{ $errors->first('email') }}</b>
                             </span>
-                            @endif
                         </div>
+                        @endif
 
-                        <div
-                            class="wrap-input100 validate-input"
-                            data-validate="Nhập mật khẩu"
-                        >
+                        <div class="wrap-input100 validate-input">
                             <span class="btn-show-pass">
                                 <i class="zmdi zmdi-eye"></i>
                             </span>
@@ -149,12 +159,17 @@
                                 data-placeholder="Mật khẩu"
                             >
                             </span>
-                            @if ($errors->has('password'))
-                            <span class="help-block" style="color: #ff3f3f">
+                        </div>
+                        @if ($errors->has('password'))
+                        <div style="margin-top: -30px; margin-bottom: 15px">
+                            <span
+                                class="help-block"
+                                style="color: #ff3f3f; font-size: 14px"
+                            >
                                 <b>{{ $errors->first('password') }}</b>
                             </span>
-                            @endif
                         </div>
+                        @endif
 
                         <div
                             class="wrap-input100 validate-input"
@@ -174,20 +189,30 @@
                                 data-placeholder="Nhập lại mật khẩu"
                             >
                             </span>
-                            @if ($errors->has('password'))
-                            <span class="help-block" style="color: #ff3f3f">
+                        </div>
+                        @if ($errors->has('password'))
+                        <div style="margin-top: -30px; margin-bottom: 15px">
+                            <span
+                                class="help-block"
+                                style="color: #ff3f3f; font-size: 14px"
+                            >
                                 <b>{{ $errors->first('password') }}</b>
                             </span>
-                            @endif
                         </div>
+                        @endif
                         <div
                             class="g-recaptcha"
                             data-sitekey="{{ env('RECAPTCHA_KEY') }}"
                         ></div>
                         @if($errors->has('g-recaptcha-response'))
-                        <span class="help-block" style="color: #ff3f3f">
-                            <b>{{ $errors->first('g-recaptcha-response') }}</b>
+
+                        <span
+                            class="help-block"
+                            style="color: #ff3f3f; font-size: 14px"
+                        >
+                            <b> {{ $errors->first('g-recaptcha-response') }}</b>
                         </span>
+
                         @endif
                         <div class="container-login100-form-btn">
                             <div class="wrap-login100-form-btn">

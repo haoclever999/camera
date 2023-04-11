@@ -11,7 +11,7 @@
     + https://sandbox.vnpayment.vn/apis/docs/huong-dan-tich-hop/
     + momo
 
---- ko khôi phục dữ liệu đã xoá
+-- Trang liên hệ: https://nentang.vn/app/edu/khoa-hoc/thiet-ke-lap-trinh-web-backend/khoa-hoc-backend-thiet-ke-web-voi-laravel/lessons/tao-giao-dien-trang-lien-he-contact
     
    
 
@@ -23,7 +23,5 @@
 --  check quyền người dùng
     Hình thức thanh toán
 
--- file hình
-    
--- loadview pdf
--- nhập excel
+-- Gửi mail khi thanh toán thành công: https://www.youtube.com/watch?v=zHHyyJ-duhM
+-- import excel 

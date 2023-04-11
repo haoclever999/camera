@@ -15,8 +15,10 @@
         "hardevine/shoppingcart": "^3.2",
         "laravel/framework": "^10.0",
         "laravel/sanctum": "^3.2",
+        "laravel/socialite": "^5.6",
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1",
+        "phpoffice/phpspreadsheet": "^1.28",
         "psr/simple-cache": "1.0",
         "realrashid/sweet-alert": "^6.0"
     },

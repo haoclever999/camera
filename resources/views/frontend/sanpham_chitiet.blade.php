@@ -25,6 +25,12 @@
     rel="stylesheet"
     type="text/css"
 />
+
+<style>
+    .Tag > a:hover {
+        color: #26a5f0 !important;
+    }
+</style>
 @endsection @section('content')
 <div class="row margin-bottom-40" style="margin-top: 40px">
     <div class="col-md-12 col-sm-7">
@@ -107,6 +113,29 @@
                         <span> {{$spct->luot_mua}} sản phẩm </span>
                     </div>
 
+                    <div
+                        class="Tag"
+                        style="margin-bottom: 8px; font-size: 18px"
+                    >
+                        <b> Tag:</b>
+                        @foreach($spct->SanPhamTag as $t)
+
+                        <a
+                            class="tagsp"
+                            href="{{route('tagsp',[$t->ten_tag])}}"
+                            style="
+                                text-decoration: none;
+                                color: black;
+                                background-color: rgba(209, 209, 209, 0.5);
+                                border: 1px solid rgba(209, 209, 209, 0.9);
+                                margin-right: 2px;
+                            "
+                        >
+                            {{$t->ten_tag}}
+                        </a>
+                        @endforeach
+                    </div>
+
                     <div class="product-page-cart" style="margin-top: 30px">
                         <form
                             action="{{ route('giohang.them_giohang') }}"
@@ -141,17 +170,27 @@
                         </form>
                     </div>
 
+                    <!-- Share facebook  -->
+                    <div id="fb-root"></div>
+                    <script
+                        async
+                        defer
+                        crossorigin="anonymous"
+                        src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0&appId=553658326637566&autoLogAppEvents=1"
+                        nonce="QXUjLlwS"
+                    ></script>
                     <div
                         class="fb-share-button"
                         data-href="{{ $url_canonical }}"
                         data-layout="button"
                         data-size="large"
+                        data-lazy="true"
                     >
                         <a
                             target="_blank"
                             href="https://www.facebook.com/sharer/sharer.php?u={{
                                 $url_canonical
-                            }}&src=sdkpreparse"
+                            }}"
                             class="fb-xfbml-parse-ignore"
                         >
                             Chia sẻ

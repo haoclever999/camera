@@ -131,6 +131,15 @@ class ThuongHieuController extends Controller
     // Bắt đầu trang người dùng
     public function getThuongHieuDanhMuc(Request $request, $id_dm, $slug, $id)
     {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
+        //SEO
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
         $url_canonical = $request->url();
 
         $sp = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id)->where('dm_id', $id_dm)->paginate(6);
@@ -142,17 +151,27 @@ class ThuongHieuController extends Controller
         foreach ($spham as $value)
             $id_th[] = $value->thuong_hieu_id;
         $th_sp = $this->thuonghieu->whereIn('id', $id_th)->distinct()->get();
-        return view('frontend.thuonghieu_danhmuc', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp', 'url_canonical'));
+        return view('frontend.thuonghieu_danhmuc', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
     public function getThuongHieuSanPham(Request $request, $slug, $id)
     {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
+        //SEO
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
         $url_canonical = $request->url();
+
         $sp = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id)->paginate(6);
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
 
-        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'th', 'ten_th', 'url_canonical'));
+        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'th', 'ten_th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 }

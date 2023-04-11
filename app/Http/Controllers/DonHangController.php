@@ -7,9 +7,12 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Components\Traits\DeleteModelTrait;
-use Barryvdh\DomPDF\PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
+use Carbon\Carbon;
+use App\Exports\XuatDonHang;
+use App\Models\DonHangChiTiet;
+use Maatwebsite\Excel\Facades\Excel;
 
 class DonHangController extends Controller
 {
@@ -44,12 +47,12 @@ class DonHangController extends Controller
             $dhang->save();
             DB::commit();
             Alert::success('Thành công', 'Xác nhận đơn hàng thành công');
-            return redirect()->route('donhang.index');
+            return redirect()->route('donhang.chitiet', ['id' => $id]);
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
             Alert::error('Thất bại', 'Xác nhận đơn hàng thất bại');
-            return redirect()->route('donhang.index');
+            return redirect()->route('donhang.chitiet', ['id' => $id]);
         }
     }
 
@@ -112,19 +115,16 @@ class DonHangController extends Controller
     }
 
     // in đơn hàng
-    public function indonhang($id)
+    public function inDonHang($id)
     {
-        $pdf = App::make('dompdf.wrapper');
-        // $pdf->loadHTML($this->donhang($id));
-        // return $pdf->stream();
+        $dhang = $this->donhang->where('id', $id)->first();
+        $pdf = PDF::loadView('backend.donhang.indonhang',  ['dhang' => $dhang]);
+        return $pdf->stream('donhang-' . Carbon::now()->format("d-m-Y") . '.pdf');
+    }
 
-        $data = [
-            'logo' => '{{asset("frontend/img/Logo.jpg")}}',
-            'diachi_web' => 'haongan.com',
-            'donhang' => $this->donhang->where('id', $id)->first(),
-        ];
-
-        $pdf = PDF::loadView('backend.donhang.inpdf', $data);
-        return $pdf->download('itsolutionstuff.pdf');
+    public function xuat_excel()
+    {
+        $dhang = DonHangChiTiet::all()->makeHidden(['id', 'updated_at']);
+        return Excel::download(new XuatDonHang($dhang), 'danhsachdonhang-' . Carbon::now()->format("His-dmY") . '.xlsx');
     }
 }

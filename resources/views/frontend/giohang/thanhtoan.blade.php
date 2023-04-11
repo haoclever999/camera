@@ -69,14 +69,14 @@
                 </div>
                 <div class="form-group">
                     <label>Địa chỉ giao hàng</label>
-
+                    @if($dc[0]!="")
                     <div class="form-group col-md-12 col-sm-12 " style="padding-left: 10px;">
                         <div class="col-md-4 col-sm-4" style="padding-left: 0;">
                             <label for="opt_Tinh"> Chọn Tỉnh/Thành phố </label><br>
                             <select class="opt_select opt_Tinh" name="opt_Tinh" id="opt_Tinh" style="width: 160px; " required  >
                                 <option value="">--Tỉnh/Thành phố--</option>
                                 @foreach($tinh_tp as $tinh)
-                                <option value="{{$tinh->id}}" {{$tinh->ten_tp==$dc[3]?'selected':''}}>{{$tinh->ten_tp}}</option>
+                                <option value="{{$tinh->id}}" {{$tinh->ten_tp==$dc[3] ?'selected':''}}>{{$tinh->ten_tp}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -98,6 +98,31 @@
                             </select>
                         </div> 
                     </div>
+                    @else
+                    <div class="form-group col-md-12 col-sm-12 " style="padding-left: 10px;">
+                        <div class="col-md-4 col-sm-4" style="padding-left: 0;">
+                            <label for="opt_Tinh"> Chọn Tỉnh/Thành phố </label><br>
+                            <select class="opt_select opt_Tinh" name="opt_Tinh" id="opt_Tinh" style="width: 160px; " required  >
+                                <option value="">--Tỉnh/Thành phố--</option>
+                                @foreach($tinh_tp as $tinh)
+                                <option value="{{$tinh->id}}" >{{$tinh->ten_tp}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-4" style="padding-left: 0;">
+                            <label for="opt_Huyen"> Chọn Quận/Huyện </label><br>
+                            <select class="opt_select opt_Huyen" name="opt_Huyen" id="opt_Huyen" style="width: 160px; margin-left: 0; " required>                    
+                                <option value="">--Quận/Huyện--</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4 col-sm-4" style="padding-left: 0; padding-right: 0;">
+                            <label for="opt_Xa"> Chọn Xã phường/Thị trấn </label><br>
+                            <select class="opt_Xa" name="opt_Xa" id="opt_Xa" style="width: 160px; " required>
+                                <option value="">--Xã phường/Thị trấn--</option>
+                            </select>
+                        </div> 
+                    </div>
+                    @endif
                     
                     <div class="form-group" style="padding-left: 10px;">
                         <label for="dia_chi">Số nhà, khóm/ấp</label>

@@ -11,7 +11,7 @@ class DonHang extends Model
     use HasFactory;
     protected $table = 'don_hangs';
     protected $fillable = [
-        'user_id', 'ten_kh', 'sdt_kh', 'dia_chi_kh', 'tong_so_luong', 'tong_tien', 'hinh_thuc', 'ghi_chu', 'trang_thai',
+        'user_id', 'ten_kh', 'sdt_kh', 'dia_chi_kh', 'tong_so_luong', 'thue', 'tong_tien', 'hinh_thuc', 'ghi_chu', 'trang_thai',
     ];
 
     public function DonHangChiTiet()

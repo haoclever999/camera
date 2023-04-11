@@ -88,26 +88,25 @@
                 <!-- /.col -->
                 <div class="col-sm-12" style="float: right">
                     <!-- Topbar Search -->
-                    <a
-                        href="{{ route('sanpham.xuatsp') }}"
-                        class="btn btn-success float-right m-2"
-                    >
-                        Xuất excel danh sách
-                    </a>
+
                     <form
                         action="{{ route('sanpham.nhapsp') }}"
+                        enctype="multipart/form-data"
                         method="post"
                         id="fnhapexcel"
                         class="float-right m-2"
+                        style="display: none"
                     >
                         @csrf
                         <input type="file" accept=".xlsx" />
-                        <button type="submit" class="btn btn-info">Nhập</button>
+                        <button type="submit" class="btn btn-success">
+                            Nhập
+                        </button>
                     </form>
                     <a
                         onclick="HienFormNhap()"
                         id="nhapexcel"
-                        class="btn btn-info float-right m-2"
+                        class="btn btn-success float-right m-2"
                     >
                         Nhập excel sản phẩm
                     </a>
@@ -228,9 +227,6 @@
 <!-- /.content-wrapper -->
 @endsection @section('js')
 <script>
-    $(document).ready(function () {
-        document.getElementById("fnhapexcel").style.display = "none";
-    });
     function HienFormNhap() {
         document.getElementById("fnhapexcel").style.display = "block";
         document.getElementById("nhapexcel").style.display = "none";

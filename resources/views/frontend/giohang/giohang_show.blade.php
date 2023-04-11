@@ -155,6 +155,7 @@
                         href="{{ route('giohang.xoatatca') }}"
                         class="btn btn-default"
                         type="button"
+                        style="background-color: #ff4646"
                     >
                         Xoá tất cả sản phẩm
                         <i class="fa fa-trash" aria-hidden="true"></i>
@@ -175,10 +176,6 @@
                             <strong class="price">
                                 {{Cart::tax(0,',','.')}} đ</strong
                             >
-                        </li>
-                        <li>
-                            <em>Phí vận chuyển</em>
-                            <strong class="price">Free</strong>
                         </li>
                         <li class="shopping-total-price">
                             <em>Thành tiền</em>

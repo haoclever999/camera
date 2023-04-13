@@ -30,7 +30,7 @@
     <div class="col-md-12 col-sm-12">
         <h3>Vui lòng nhập đầy đủ thông tin</h3>
         <div class="col-sm-6">
-            <form method="post" action="{{ route('thanhtoan.postThanhToan') }}">
+            <form method="post" action="{{ route('thanhtoan.postThanhToan') }}" id="myform">
                 @csrf
                 <div class="form-group">
                     <label>Email</label>
@@ -82,7 +82,6 @@
                         </div>
                         <div class="col-md-4 col-sm-4" style="padding-left: 0;">
                             <label for="opt_Huyen"> Chọn Quận/Huyện </label><br>
-                            
                             <select class="opt_select opt_Huyen" name="opt_Huyen" id="opt_Huyen" style="width: 160px; margin-left: 0; " required>
                                 @foreach($huyen as $h)
                                 <option value="{{$h->id}}"{{$h->ten_qh==$dc[2]?'selected':''}}>{{$h->ten_qh}}</option>
@@ -289,8 +288,37 @@ $(document).ready(function(){
                 $('#'+kq).html(data);
             }
         })
-    })
+    });
+   
+    document.getElementById('myform').addEventListener('submit', kiemTraSDT(event));
+
 })
 
+    function kiemTraSDT(even) {
+
+        var dt=document.getElementById("sdt").value;
+        var dt2=document.getElementById("sdt");
+        var kt= /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(dt);
+
+        if (isNaN(dt)) 
+        {
+            event.preventDefault()
+            dt2.setCustomValidity('Giá trị phải là số');
+            dt2.reportValidity();
+        }else if(dt.length!='10'){
+            event.preventDefault()
+            dt2.setCustomValidity('Phải nhập đủ 10 số');
+            dt2.reportValidity();
+        }
+        else if (kt==false){
+            event.preventDefault()
+            dt2.setCustomValidity('Định dạng số điện thoại không đúng');
+            dt2.reportValidity();
+        }
+        else{
+            dt2.setCustomValidity('');
+            dt2.reportValidity();
+        }
+    }
 </script>
 @endsection

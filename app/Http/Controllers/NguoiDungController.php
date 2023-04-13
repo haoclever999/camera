@@ -15,6 +15,7 @@ use App\Models\ThuongHieu;
 use App\Models\TinhThanhPho;
 use App\Models\XaPhuong;
 use RealRashid\SweetAlert\Facades\Alert;
+use Carbon\Carbon;
 
 class NguoiDungController extends Controller
 {
@@ -82,8 +83,13 @@ class NguoiDungController extends Controller
 
     public function gethoso($id)
     {
+        $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
+        $huyen = QuanHuyen::orderby('ten_qh')->get();
+        $xa = XaPhuong::orderby('ten_xa')->get();
+
         $user = $this->user->find($id);
-        return view('backend.nguoidung.capnhathoso', compact('user'));
+        $dc = explode(', ', $user->dia_chi);
+        return view('backend.nguoidung.capnhathoso', compact('user', 'dc', 'tinh_tp', 'huyen', 'xa'));
     }
 
     public function posthoso(Request $request, $id)
@@ -143,11 +149,17 @@ class NguoiDungController extends Controller
             if ($request->has('sodt')) $sdt = $request->sodt;
             else $sdt = $request->sdt;
 
+            $xa = XaPhuong::where('id', $request->opt_Xa)->first();
+            $huyen = QuanHuyen::where('id', $request->opt_Huyen)->first();
+            $tinh = TinhThanhPho::where('id', $request->opt_Tinh)->first();
+
+            $diachi = $request->dia_chi . ', ' . $xa->ten_xa . ', ' . $huyen->ten_qh . ', ' . $tinh->ten_tp;
+
             $user = $this->user->find($id);
             $user->id = $request->id;
             $user->ho_ten = trim($ten);
             $user->sdt = trim($sdt);
-            $user->dia_chi = trim($request->dia_chi);
+            $user->dia_chi = trim($diachi);
             $user->save();
             DB::commit();
             Alert::success('Thành công', 'Cập nhật hồ sơ thành công');
@@ -252,18 +264,120 @@ class NguoiDungController extends Controller
     {
         return $this->deleteModelTrait($id, $this->user);
     }
+
     public function timkiem(Request $request)
     {
-        $id_sua = '0';
-        $capnhatquyen = '';
-        $page = 5;
-        $timkiem =  $this->user->where('ho_ten', 'LIKE', '%' . $request->timkiem_nd . '%')->orderby('ho_ten')->paginate($page);
-        return view('backend.nguoidung.timkiem', compact('timkiem', "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
+        if ($request->ajax()) {
+            $id_sua = '0';
+            $capnhatquyen = '';
+            $page = 5;
+            $timkiem =  $this->user->where('ho_ten', 'LIKE', '%' . $request->timkiem_nd . '%')->orderby('ho_ten')->paginate($page);
+            if ($timkiem->count() > 0) {
+                $kq = '';
+                $i = (request()->input('page', 1) - 1) * $page;
+                foreach ($timkiem as $u) {
+                    $kq .= '<tr>
+                        <td>' . ++$i . '</td>
+                        <td >' . $u->ho_ten . '</td>
+                        <td >' . $u->email . '</td>
+                        <td >' . $u->quyen . '</td>
+                        <td>' . Carbon::createFromFormat("Y-m-d H:i:s", $u->updated_at)->format("H:i:s d/m/Y") . '</td>';
+                    if ($u->trang_thai == 1)
+                        $kq .= '<td> Kích hoạt </td>';
+                    else
+                        $kq .= '<td> Khóa </td>';
+                    if ($u->quyen != "Quản trị") {
+                        if ($u->trang_thai == 1) {
+                            $kq .= '<td> 
+                                    <form action="' . route("nguoidung.trangthai", ["id" => $u->id]) . '" method="post">
+                                        @csrf
+                                        <input type="hidden" name = "khoa" value="0">
+                                        <button type="submit" class="btn btn-danger action_edit" >Khóa</button>
+                                    </form>
+                                </td>';
+                        } else {
+                            $kq .= '
+                                    <td>
+                                        <form action="' . route("nguoidung.trangthai", ["id" => $u->id]) . '" method="post">
+                                        @csrf
+                                            <input type="hidden" name = "khoa" value="1">
+                                            <button type="submit" class="btn btn-primary">Kích hoạt</button>
+                                        </form>
+                                    </td>';
+                        }
+                    } else
+                        $kq .= '<td></td>';
+
+                    if ($id_sua == $u->id && $capnhatquyen == "capnhatquyen") {
+                        $kq .= '<td>
+                            <form action="' . route("nguoidung.postcapnhatquyen", ["id" => $id_sua]) . '" method="post">
+                                @csrf
+                                <select
+                                    id="opt_quyen"
+                                    name="opt_quyen"
+                                >
+                                    <option';
+                        if ($u->quyen == "Quản trị") $kq .= '" selected"';
+                        else $kq .= '" "';
+                        $kq .= 'value="Quản trị">Quản trị</option>
+                                    <option';
+                        if ($u->quyen == "Nhân viên") $kq .= '" selected"';
+                        else $kq .= '" "';
+                        $kq .= 'value="Nhân viên">Nhân viên</option>
+                                    <option';
+                        if ($u->quyen == "Khách hàng") $kq .= '" selected"';
+                        else $kq .= '" "';
+                        $kq .= ' value="Khách hàng">Khách hàng</option>
+                                </select>
+                                <button style="
+                                    min-width: max-content;
+                                    padding: 3px 12px;
+                                    margin: 3px;" 
+                                    type="submit" class="btn btn-warning"> Cập nhật
+                                </button>
+                            </form>                              
+                        </td>';
+                    } else {
+                        $kq .= '<td>
+                                <a                                         
+                                    style="
+                                        min-width: max-content;
+                                        padding: 3px 12px;
+                                        margin: 3px;
+                                    "
+                                    class="btn btn-warning"
+                                    href="' . route("nguoidung.getcapnhatquyen", ["id" => $u->id]) . '"
+                                >
+                                    
+                                    Cập nhật 
+                                </a>                       
+                            </td>';
+                    }
+                    $kq .= '
+                        <td>
+                           <a
+                                style="
+                                    min-width: 110px;
+                                    padding: 3px 12px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-danger action_del"
+                                href=""
+                                data-url="' . route("nguoidung.xoa", ["id" => $u->id]) . '"
+                                    >
+                                        Xóa
+                            </a>
+                        </td>
+                    </tr>';
+                }
+                return Response($kq);
+            } else
+                return response()->json(['status' => 'Không tìm thấy',]);
+        }
     }
     // Kết thúc trang admin 
 
     //Bắt đầu trang user
-
     public function gethosoUser(Request $request, $id)
     {
         $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
@@ -280,14 +394,12 @@ class NguoiDungController extends Controller
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
         $huyen = QuanHuyen::orderby('ten_qh')->get();
         $xa = XaPhuong::orderby('ten_xa')->get();
-        $u = User::where('id', Auth()->user()->id)->get();
-        foreach ($u as $value)
-            $d_c = $value->dia_chi;
-        $dc = explode(', ', $d_c);
+
+        $user = $this->user->find($id);
+        $dc = explode(', ', $user->dia_chi);
 
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
-        $user = $this->user->find($id);
         return view('auth.hosonguoidung', compact('user', 'dc', 'tinh_tp', 'huyen', 'xa', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
@@ -348,20 +460,26 @@ class NguoiDungController extends Controller
             if ($request->has('sodt')) $sdt = $request->sodt;
             else $sdt = $request->sdt;
 
+            $xa = XaPhuong::where('id', $request->opt_Xa)->first();
+            $huyen = QuanHuyen::where('id', $request->opt_Huyen)->first();
+            $tinh = TinhThanhPho::where('id', $request->opt_Tinh)->first();
+
+            $diachi = $request->dia_chi . ', ' . $xa->ten_xa . ', ' . $huyen->ten_qh . ', ' . $tinh->ten_tp;
+
             $user = $this->user->find($id);
             $user->id = $request->id;
             $user->ho_ten = trim($ten);
             $user->sdt = trim($sdt);
-            $user->dia_chi = trim($request->dia_chi);
+            $user->dia_chi = trim($diachi);
             $user->save();
             DB::commit();
-            Alert::success('Thành công', 'Cập nhật hồ sơ thành công');
-            return redirect()->route('admin.index');
+            session()->flash('success', 'Cập nhật hồ sơ thành công');
+            return redirect()->route('nguoidung.posthosoUser', ['id' => $id]);
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            Alert::error('Thất bại', 'Cập nhật hồ sơ thất bại');
-            return redirect()->route('nguoidung.gethoso', ['id' => $id]);
+            session()->flash('err', 'Cập nhật hồ sơ thất bại');
+            return redirect()->route('nguoidung.posthosoUser', ['id' => $id]);
         }
     }
 
@@ -379,20 +497,22 @@ class NguoiDungController extends Controller
         $url_canonical = $request->url();
 
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
+        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
         $user = $this->user->find($id);
-        return view('auth.doimatkhaunguoidung', compact('user', 'dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('auth.doimatkhaunguoidung', compact('user', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
     public function postdoimatkhauUser(Request $request,  $id)
     {
         $request->validate([
             'password' => 'required',
-            'password_new' => 'required|different:password',
+            'password_new' => 'required|different:password|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'password_confirm' => 'required|same:password_new',
         ], [
             'password.required' => 'Hãy nhập mật khẩu cũ',
             'password_new.required' => 'Hãy nhập mật khẩu mới',
             'password_new.different' => 'Mật khẩu mới phải khác mật khẩu cũ',
+            'password_new.regex' => 'Mật khẩu có ít nhất 1 số, 1 chữ hoa, 1 chữ thường và 1 ký tự đặc biệt',
             'password_confirm.required' => 'Hãy nhập lại mật khẩu mới',
             'password_confirm.same' => 'Nhập lại mật khẩu và mật khẩu mới phải giống nhau',
         ]);
@@ -404,17 +524,17 @@ class NguoiDungController extends Controller
                     'password' => Hash::make($request->password_new)
                 ]);
                 DB::commit();
-                Alert::success('Thành công', 'Mật khẩu đã được thay đổi');
-                return redirect()->route('nguoidung.index');
+                session()->flash('success', 'Mật khẩu đã được thay đổi');
+                return redirect()->route('nguoidung.getdoimatkhauUser', ['id' => $id]);
             } else {
-                Alert::error('Thất bại', 'Mật khẩu cũ không đúng');
-                return redirect()->route('nguoidung.getdoimatkhau', ['id' => $id]);
+                session()->flash('err_pw_cu', 'Mật khẩu cũ không đúng');
+                return redirect()->route('nguoidung.getdoimatkhauUser', ['id' => $id]);
             }
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            Alert::error('Thất bại', 'Đổi mật khẩu thất bại');
-            return redirect()->route('nguoidung.getdoimatkhau', ['id' => $id]);
+            session()->flash('err', 'Đổi mật khẩu thất bại');
+            return redirect()->route('nguoidung.getdoimatkhauUser', ['id' => $id]);
         }
     }
 }

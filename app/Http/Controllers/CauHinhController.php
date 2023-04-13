@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
 use RealRashid\SweetAlert\Facades\Alert;
+use Carbon\Carbon;
 
 class CauHinhController extends Controller
 {
@@ -115,11 +116,51 @@ class CauHinhController extends Controller
 
     public function timkiem(Request $request)
     {
-        $page = 5;
-        if ($request->cau_hinh == 'cau_hinh_key')
-            $timkiem =  $this->cauhinh->where('cau_hinh_key', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orderby('cau_hinh_key')->paginate($page);
-        else
-            $timkiem =  $this->cauhinh->where('cau_hinh_value', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orderby('cau_hinh_key')->paginate($page);
-        return view('backend.cauhinh.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+        if ($request->ajax()) {
+            $page = 5;
+            $timkiem = $this->cauhinh->where('cau_hinh_key', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orwhere('cau_hinh_value', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orderby('cau_hinh_key')->paginate($page);
+            if ($timkiem->count() > 0) {
+                $kq = '';
+                $i = (request()->input('page', 1) - 1) * $page;
+                foreach ($timkiem as $ch) {
+                    $kq .= '<tr>
+                        <td>' . ++$i . '</td>
+                        <td style="text-align: left">' . $ch->cau_hinh_key . '</td>
+                        <td style="text-align: left">' . $ch->cau_hinh_value . '</td>
+                        <td>' . Carbon::createFromFormat("Y-m-d H:i:s", $ch->updated_at)->format("H:i:s d/m/Y") . '</td>
+                        <td>
+                            <a
+                                style="
+                                    width: 88px;
+                                    padding: 3px 10px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-warning"
+                                href="' . route("cauhinh.getSua", ["id" => $ch->id]) . '"
+                            >
+                                Cập nhật
+                            </a>';
+                    if (auth()->check() && auth()->user()->quyen == "Quản trị") {
+                        $kq .= '<a
+                                style="
+                                    width: 88px;
+                                    padding: 3px 10px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-danger action_del"
+                                href=""
+                                data-url="' . route("cauhinh.xoa", ["id" => $ch->id]) . '"
+                            >
+                                Xóa
+                            </a>';
+                    }
+                    $kq .= '
+                        </td>
+                    </tr>';
+                }
+                return Response($kq);
+            } else
+                return response()->json(['status' => 'Không tìm thấy',]);
+        }
     }
 }

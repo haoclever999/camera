@@ -104,14 +104,60 @@ class DonHangController extends Controller
 
     public function timkiem(Request $request)
     {
-        $page = 5;
-        if ($request->don_hang == 'ten_kh')
-            $timkiem =  $this->donhang->where('ten_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('ten_kh')->paginate($page);
-        elseif ($request->don_hang == 'sdt')
-            $timkiem =  $this->donhang->where('sdt_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('sdt_kh')->paginate($page);
-        else
-            $timkiem =  $this->donhang->where('dia_chi_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('dia_chi_kh')->paginate($page);
-        return view('backend.donhang.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+        if ($request->ajax()) {
+            $page = 5;
+            $timkiem =  $this->donhang->where('ten_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orwhere('sdt_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orwhere('dia_chi_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('ten_kh')->paginate($page);
+            if ($timkiem->count() > 0) {
+                $kq = '';
+                $i = (request()->input('page', 1) - 1) * $page;
+                foreach ($timkiem as $dh) {
+                    $kq .= '<tr>
+                        <td>' . ++$i . '</td>
+                        <td >' . $dh->ten_kh . '</td>
+                        <td >' . $dh->sdt_kh . '</td>
+                        <td style="text-align: left">' . $dh->dia_chi_kh . '</td>
+                        <td >' . $dh->tong_so_luong . '</td>
+                        <td >' . number_format($dh->tong_tien, 0, ",", ".") . '</td>
+                        <td >' . $dh->hinh_thuc . '</td>
+                        <td >' . $dh->trang_thai . '</td>
+                        <td>' . Carbon::createFromFormat("Y-m-d H:i:s", $dh->created_at)->format("H:i:s d/m/Y") . '</td>
+                        <td>
+                            <a
+                                style="
+                                    min-width: 110px;
+                                    padding: 3px 12px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-success"
+                                href="' . route("donhang.chitiet", ["id" => $dh->id]) . '"
+                                >
+                                Chi tiết
+                            </a> <br />';
+                    if (
+                        auth()->check() && auth()->user()->quyen == "Quản trị" &&
+                        $dh->trang_thai != "Đã xoá"
+                    ) {
+                        $kq .= '<a
+                                style="
+                                    min-width: 110px;
+                                    padding: 3px 12px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-danger action_del"
+                                href=""
+                                data-url="' . route("donhang.xoa", ["id" => $dh->id]) . '"
+                                    >
+                                        Xóa
+                                    </a>';
+                    }
+                    $kq .= '
+                        </td>
+                    </tr>';
+                }
+                return Response($kq);
+            } else
+                return response()->json(['status' => 'Không tìm thấy',]);
+        }
     }
 
     // in đơn hàng

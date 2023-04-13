@@ -19,15 +19,14 @@ class NhapSanPham implements ToModel
     {
 
         return new SanPham([
-
             'ten_sp' => trim($row[0]),
             'slug' => Str::slug($row[0], '-'),
-            'hinh_anh_chinh' => $this->StorageTraitImport(strchr($row[1], "."), 'sanpham'),
+            'hinh_anh_chinh' => $this->StorageTraitImport($row[1], 'sanpham'),
             'mo_ta' => trim($row[2]),
             'so_luong' => trim($row[3]),
             'gia_nhap' => trim($row[4]),
             'gia_ban' => trim($row[5]),
-            'giam_gia' => trim($row[6]) || '0',
+            'giam_gia' => $row[6] != '' ? trim($row[6]) : '0',
             'bao_hanh' => trim($row[7]),
             'tinh_nang' => trim($row[8]),
             'dm_id' => trim($row[9]),

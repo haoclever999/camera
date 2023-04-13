@@ -13,6 +13,7 @@ use App\Models\SanPham;
 use App\Models\ThuongHieu;
 use App\Components\LaySP;
 use App\Models\CauHinh;
+use Carbon\Carbon;
 
 class DanhMucController extends Controller
 {
@@ -106,9 +107,51 @@ class DanhMucController extends Controller
 
     public function timkiem(Request $request)
     {
-        $page = 5;
-        $timkiem =  $this->dmuc->where('ten_dm', 'LIKE', '%' . $request->timkiem_dm . '%')->orderby('ten_dm')->paginate($page);
-        return view('backend.danhmuc.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+        if ($request->ajax()) {
+            $page = 5;
+            $timkiem =  $this->dmuc->where('ten_dm', 'LIKE', '%' . $request->timkiem_dm . '%')->orderby('ten_dm')->paginate($page);
+            if ($timkiem->count() > 0) {
+                $kq = '';
+                $i = (request()->input('page', 1) - 1) * $page;
+                foreach ($timkiem as $d) {
+                    $kq .= '<tr>
+                        <td>' . ++$i . '</td>
+                        <td style="text-align: left">' . $d->ten_dm . '</td>
+                        <td>' . Carbon::createFromFormat("Y-m-d H:i:s", $d->updated_at)->format("H:i:s d/m/Y") . '</td>
+                        <td>
+                            <a
+                                style="
+                                    width: 88px;
+                                    padding: 3px 10px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-warning"
+                                href="' . route("danhmuc.getSua", ["id" => $d->id]) . '"
+                            >
+                                Cập nhật
+                            </a>';
+                    if (auth()->check() && auth()->user()->quyen == "Quản trị") {
+                        $kq .= '<a
+                                style="
+                                    width: 88px;
+                                    padding: 3px 10px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-danger action_del"
+                                href=""
+                                data-url="' . route("danhmuc.xoa", ["id" => $d->id]) . '"
+                            >
+                                Xóa
+                            </a>';
+                    }
+                    $kq .= '
+                        </td>
+                    </tr>';
+                }
+                return Response($kq);
+            } else
+                return response()->json(['status' => 'Không tìm thấy',]);
+        }
     }
     // Kết thúc trang admin
 

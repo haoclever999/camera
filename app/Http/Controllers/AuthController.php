@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -84,7 +86,29 @@ class AuthController extends Controller
     }
 
     //chua
-    public function postQuenMatKhauUser()
+    public function postQuenMatKhauUser(Request $request)
+    {
+        $request->validate(
+            [
+                'email' => 'max:191|exists:users',
+            ],
+            [
+                'email.max' => 'Email quá dài',
+                'email.exists' => 'Email không tồn tại trong hệ thống',
+            ]
+        );
+        $mail = User::where('email', $request->email)->first();
+        $u = new User();
+        $token = strtoupper(Str::random(20));
+        Mail::to($mail->email)->send(new $u->GuiEmailQuenMK($token));
+        //https://www.youtube.com/watch?v=tkPel6zcw8Q -> 12:29 / 33:10
+    }
+
+    public function getLayLaiMatKhauUser()
+    {
+    }
+
+    public function postLayLaiMatKhauUser()
     {
     }
 

@@ -28,13 +28,12 @@ trait StorageImageTrait
         return Storage::url($filePath);
     }
 
-    public function StorageTraitImport($extension, $folderName)
+    public function StorageTraitImport($file, $folderName)
     {
 
-        $a = Carbon::now()->format('d-m-Y-H-i-s') . '/' . Str::random(30);
-        $fileNameHash = $a . '.' . $extension;
-        $img = file_get_contents($this->files);
-        $filePath = Storage::put('public/' . $folderName . '/' . auth()->id() . $fileNameHash, $img);
+        $a = Carbon::now()->format('d-m-Y-H-i-s') . '-' . Str::random(30);
+        $fileNameHash = $a  . strchr($file, ".");
+        $filePath = Storage::putFileAs('public/' . $folderName . '/' . auth()->id(), $file, $fileNameHash);
         return Storage::url($filePath);
     }
 }

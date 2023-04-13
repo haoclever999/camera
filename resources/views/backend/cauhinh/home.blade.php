@@ -2,64 +2,34 @@
 
 @extends('layouts.admin') @section('title')
 <title>Quản lý cấu hình</title>
+@endsection @section('css')
+<style>
+    .timkiem {
+        width: 25rem !important;
+        margin-left: 1rem !important;
+        right: -15.3rem !important;
+        border: 0.1rem solid rgba(78, 115, 223, 0.25) !important;
+        border-radius: 0.35rem !important;
+    }
+    .timkiem > .form-control:focus {
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25) !important;
+    }
+</style>
 @endsection @section('title-action')
 <div class="title-action">
     <h2 class="m-0"><b>Danh sách cấu hình</b></h2>
 </div>
-<form
-    action="{{ route('cauhinh.timkiem') }}"
-    class="d-none d-sm-inline-block form-inline ml-md-3 my-2 my-md-0 mw-100 navbar-search"
-    style="width: 30rem"
->
-    @csrf
 
-    <div class="input-group">
-        <input
-            type="radio"
-            id="cau_hinh_key"
-            name="cau_hinh"
-            value="cau_hinh_key"
-            checked
-            required
-        />
-        <label
-            for="cau_hinh_key"
-            style="
-                font-weight: normal;
-                vertical-align: middle;
-                margin-right: 1em;
-            "
-            >&nbsp; Tên
-        </label>
-        <input
-            type="radio"
-            id="cau_hinh_value"
-            name="cau_hinh"
-            value="cau_hinh_value"
-            required
-        />
-        &nbsp;
-        <label
-            for="cau_hinh_value"
-            style="
-                font-weight: normal;
-                vertical-align: middle;
-                margin-right: 1em;
-            "
-        >
-            Giá trị
-        </label>
-        <input
-            type="search"
-            class="form-control bg-light border-0 small"
-            placeholder="Tìm kiếm..."
-            name="timkiem_cauhinh"
-        />
-        <button class="btn btn-primary" type="submit">
-            <i class="fas fa-search fa-sm"></i>
-        </button>
-    </div>
-</form>
+<div class="input-group timkiem">
+    <input
+        type="search"
+        class="form-control bg-light border-0 small"
+        placeholder="Tìm kiếm..."
+        name="timkiem_cauhinh"
+        id="timkiem_cauhinh"
+    />
+</div>
+
 @endsection @section('content')
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
@@ -70,52 +40,61 @@
                 <div>
                     <div class="col-md-8" style="float: left">
                         <table class="table">
-                            <tr>
-                                <th>STT</th>
-                                <th>Tên cấu hình</th>
-                                <th>Giá trị</th>
-                                <th>Ngày cập nhật</th>
-                                <th>Hành động</th>
-                            </tr>
-                            @foreach($cauhinh as $ch)
-                            <tr>
-                                <td>{{ +(+$i) }}</td>
-                                <td>{{ $ch-> cau_hinh_key }}</td>
-                                <td>{{ $ch-> cau_hinh_value }}</td>
-                                <td>
-                                    {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ch->updated_at)->format('H:i:s d/m/Y') }}
-                                </td>
-                                <td>
-                                    <a
-                                        style="
-                                            width: 88px;
-                                            padding: 3px 10px;
-                                            margin: 3px;
-                                        "
-                                        class="btn btn-warning"
-                                        href="{{ route('cauhinh.getSua', ['id' => $ch->id]) }}"
-                                    >
-                                        Cập nhật
-                                    </a>
-                                    @if(auth()->check() &&
-                                    auth()->user()->quyen=='Quản trị')
-                                    <a
-                                        style="
-                                            width: 88px;
-                                            padding: 3px 10px;
-                                            margin: 3px;
-                                        "
-                                        class="btn btn-danger action_del"
-                                        href=""
-                                        data-url="{{ route('cauhinh.xoa', ['id' => $ch->id]) }}"
-                                    >
-                                        Xóa
-                                    </a>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
+                            <thead>
+                                <tr>
+                                    <th width="1%">STT</th>
+                                    <th width="22%">Tên cấu hình</th>
+                                    <th width="44%">Giá trị</th>
+                                    <th width="23%">Ngày cập nhật</th>
+                                    <th width="10%">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($cauhinh as $ch)
+                                <tr>
+                                    <td>{{ +(+$i) }}</td>
+                                    <td style="text-align: left">
+                                        {{ $ch-> cau_hinh_key }}
+                                    </td>
+                                    <td style="text-align: left">
+                                        {{ $ch-> cau_hinh_value }}
+                                    </td>
+                                    <td>
+                                        {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ch->updated_at)->format('H:i:s d/m/Y') }}
+                                    </td>
+                                    <td>
+                                        <a
+                                            style="
+                                                width: 88px;
+                                                padding: 3px 10px;
+                                                margin: 3px;
+                                            "
+                                            class="btn btn-warning"
+                                            href="{{ route('cauhinh.getSua', ['id' => $ch->id]) }}"
+                                        >
+                                            Cập nhật
+                                        </a>
+                                        @if(auth()->check() &&
+                                        auth()->user()->quyen=='Quản trị')
+                                        <a
+                                            style="
+                                                width: 88px;
+                                                padding: 3px 10px;
+                                                margin: 3px;
+                                            "
+                                            class="btn btn-danger action_del"
+                                            href=""
+                                            data-url="{{ route('cauhinh.xoa', ['id' => $ch->id]) }}"
+                                        >
+                                            Xóa
+                                        </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
                         </table>
+                        <div id="khongtimthay"></div>
                     </div>
                     <div class="col-md-4" style="float: right">
                         <h2 class="m-0"><b>Thêm cấu hình </b></h2>
@@ -173,7 +152,10 @@
                         </form>
                     </div>
                 </div>
-                <div class="col-md-12">{!! $cauhinh->links()!!}</div>
+                <div class="col-md-12 phantrang" style="margin-top: 1rem">
+                    {!! $cauhinh->links()!!}
+                </div>
+                <div style="margin-bottom: 1rem"></div>
             </div>
             <!-- /.row -->
         </div>
@@ -182,4 +164,35 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+@endsection @section('js')
+<script>
+    $(document).ready(function () {
+        $("#timkiem_cauhinh").val("");
+
+        $("#timkiem_cauhinh").on("keyup", function (e) {
+            e.preventDefault();
+
+            let timkiem_cauhinh = $("#timkiem_cauhinh").val();
+            $.ajax({
+                url: "{{ route('cauhinh.timkiem') }}",
+                method: "GET",
+                data: { timkiem_cauhinh: timkiem_cauhinh },
+                success: function (res) {
+                    $("tbody").html(res);
+                    $(".phantrang").hide();
+                    if (res.status === "Không tìm thấy") {
+                        $("#khongtimthay").html(
+                            "<h4>Không tìm thấy kết quả</h4>"
+                        );
+                        $("thead").hide();
+                    } else {
+                        $("#khongtimthay").html("");
+                        $("thead").show();
+                    }
+                    if (timkiem_cauhinh == "") $(".phantrang").show();
+                },
+            });
+        });
+    });
+</script>
 @endsection

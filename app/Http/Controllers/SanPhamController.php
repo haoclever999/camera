@@ -19,6 +19,7 @@ use App\Imports\NhapSanPham;
 use App\Models\CauHinh;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
+use Carbon\Carbon;
 
 
 class SanPhamController extends Controller
@@ -241,16 +242,71 @@ class SanPhamController extends Controller
 
     public function timkiem(Request $request)
     {
-        $th = $this->thuonghieu->where('ten_thuong_hieu ', 'LIKE', '%' . $request->timkiem_sp . '%');
-        $dm = $this->dmuc->where('dm_id ', 'LIKE', '%' . $request->timkiem_sp . '%');
-        $page = 5;
-        if ($request->san_pham == 'ten_sp')
-            $timkiem =  (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_sp . '%')->orderby('ten_sp')->paginate($page);
-        elseif ($request->san_pham == 'danh_muc')
-            $timkiem =  (new LaySP)->getSanPham()->where('dm_id ', $dm->id)->orderby('dm_id')->paginate($page);
-        else
-            $timkiem =  (new LaySP)->getSanPham()->where('thuong_hieu_id', $th->id)->orderby('thuong_hieu_id')->paginate($page);
-        return view('backend.sanpham.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+        if ($request->ajax()) {
+            $page = 5;
+            $spham = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_sp . '%')->orderby('ten_sp')->paginate($page);;
+            if ($spham->count() > 0) {
+                $kq = '';
+                $i = (request()->input('page', 1) - 1) * $page;
+                foreach ($spham as $s) {
+                    $kq .= '<tr>
+                        <td>' . ++$i . '</td>
+                        <td>' . $s->ten_sp . '</td>
+                        <td> <img class="list_sp_img_150" src="' . $s->hinh_anh_chinh . '" /> </td>
+                        <td>' . number_format($s->gia_ban, 0, ",", ".") . 'đ</td>
+                        <td>' . optional($s->DanhMuc)->ten_dm . '</td>
+                        <td>' . optional($s->ThuongHieu)->ten_thuong_hieu . '</td>
+
+                        <td>' . Carbon::createFromFormat("Y-m-d H:i:s", $s->updated_at)->format("H:i:s d/m/Y") . '</td>
+                        <td>
+                            <a
+                                style="
+                                    min-width: 110px;
+                                    padding: 3px 12px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-success"
+                                href="' . route("sanpham.chitiet", ["id" => $s->id]) . '"
+                            >
+                                Chi tiết
+                            </a>
+                            <br />
+                            <a
+                                style="
+                                    min-width: 110px;
+                                    padding: 3px 12px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-warning"
+                                href="' . route("sanpham.getSua", ["id" => $s->id]) . '"
+                            >
+                                Cập nhật
+                            </a>
+                            <br />';
+
+                    if (auth()->check() && auth()->user()->quyen == "Quản trị") {
+                        $kq .= '
+                            <a
+                                style="
+                                    min-width: 110px;
+                                    padding: 3px 12px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-danger action_del"
+                                href=""
+                                data-url="' . route("sanpham.xoa", ["id" => $s->id]) . '"
+                            >
+                                Xóa
+                            </a>';
+                    }
+                    $kq .= '
+                        </td>
+                    </tr>';
+                }
+                return Response($kq);
+            } else
+                return response()->json(['status' => 'Không tìm thấy',]);
+        }
     }
 
     public function nhap_excel()

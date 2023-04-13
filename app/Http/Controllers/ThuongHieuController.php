@@ -14,6 +14,7 @@ use App\Models\CauHinh;
 use App\Models\DanhMuc;
 use App\Models\SanPham;
 use RealRashid\SweetAlert\Facades\Alert;
+use Carbon\Carbon;
 
 class ThuongHieuController extends Controller
 {
@@ -122,9 +123,53 @@ class ThuongHieuController extends Controller
 
     public function timkiem(Request $request)
     {
-        $page = 5;
-        $timkiem =  $this->thuonghieu->where('ten_thuong_hieu', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_thuong_hieu')->paginate($page);
-        return view('backend.thuonghieu.timkiem', compact('timkiem'))->with('i', (request()->input('page', 1) - 1) * $page);
+        if ($request->ajax()) {
+            $page = 5;
+            $timkiem =  $this->thuonghieu->where('ten_thuong_hieu', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_thuong_hieu')->paginate($page);
+            if ($timkiem->count() > 0) {
+                $kq = '';
+                $i = (request()->input('page', 1) - 1) * $page;
+
+                foreach ($timkiem as $th) {
+                    $kq .= '<tr>
+                        <td>' . ++$i . '</td>
+                        <td >' . $th->ten_thuong_hieu . '</td>
+                        <td> <img class="list_sp_img_150" src="' . $th->logo . '" alt="HaoNganTelecom" /> </td>
+                        <td>' . Carbon::createFromFormat("Y-m-d H:i:s", $th->updated_at)->format("H:i:s d/m/Y") . '</td>
+                        <td>
+                            <a
+                                style="
+                                    width: 88px;
+                                    padding: 3px 10px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-warning"
+                                href="' . route("thuonghieu.getSua", ["id" => $th->id]) . '"
+                            >
+                                Cập nhật
+                            </a>';
+                    if (auth()->check() && auth()->user()->quyen == "Quản trị") {
+                        $kq .= '<a
+                                style="
+                                    width: 88px;
+                                    padding: 3px 10px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-danger action_del"
+                                href=""
+                                data-url="' . route("thuonghieu.xoa", ["id" => $th->id]) . '"
+                            >
+                                Xóa
+                            </a>';
+                    }
+                    $kq .= '
+                        </td>
+                    </tr>';
+                }
+                return Response($kq);
+            } else
+                return response()->json(['status' => 'Không tìm thấy',]);
+        }
     }
     // Kết thúc trang admin
 

@@ -97,9 +97,9 @@
                         </span>
                         <br />
                         <br />
-                        @else
-                        <span class="help-block" style="color: #000">
-                            Nhập email đã đăng ký để lấy lại mật khẩu
+                        @endif @if(Session::has('mgs-success'))
+                        <span class="help-block" style="color: #3fff5f">
+                            {{Session::get('mgs-success')}}
                         </span>
                         <br />
                         <br />
@@ -108,9 +108,15 @@
                         <div
                             class="wrap-input100 validate-input"
                             data-validate="Email đúng dạng là: abc@gmail.com"
-                            style="margin-bottom: 28px"
                         >
-                            <input class="input100" type="text" name="email" />
+                            <input
+                                class="input100"
+                                type="text"
+                                name="email"
+                                style="cursor: no-drop"
+                                value="$email?? old('email')"
+                                disabled
+                            />
                             <span
                                 class="focus-input100"
                                 data-placeholder="Email"
@@ -123,12 +129,62 @@
                             @endif
                         </div>
 
+                        <div
+                            class="wrap-input100 validate-input"
+                            data-validate="Nhập mật khẩu"
+                        >
+                            <span class="btn-show-pass">
+                                <i class="zmdi zmdi-eye"></i>
+                            </span>
+                            <input
+                                class="input100"
+                                type="password"
+                                name="password"
+                                minlength="6"
+                                required
+                            />
+                            <span
+                                class="focus-input100"
+                                data-placeholder="Nhập mật khẩu mới"
+                            >
+                            </span>
+                            @if ($errors->has('password'))
+                            <span class="help-block" style="color: #ff3f3f">
+                                <b>{{ $errors->first('password') }}</b>
+                            </span>
+                            @endif
+                        </div>
+
+                        <div
+                            class="wrap-input100 validate-input"
+                            data-validate="Nhập lại mật khẩu"
+                        >
+                            <span class="btn-show-pass">
+                                <i class="zmdi zmdi-eye"></i>
+                            </span>
+                            <input
+                                class="input100"
+                                type="password"
+                                name="password_confirm"
+                                minlength="6"
+                                required
+                            />
+                            <span
+                                class="focus-input100"
+                                data-placeholder="Nhập lại mật khẩu mới"
+                            >
+                            </span>
+                            @if ($errors->has('password'))
+                            <span class="help-block" style="color: #ff3f3f">
+                                <b>{{ $errors->first('password') }}</b>
+                            </span>
+                            @endif
+                        </div>
+
                         <div class="container-login100-form-btn">
                             <div class="wrap-login100-form-btn">
                                 <div class="login100-form-bgbtn"></div>
-                                <button class="login100-form-btn">
-                                    Gửi email xác nhận
-                                </button>
+                                <button class="login100-form-btn">Gửi</button>
                             </div>
                         </div>
                     </form>

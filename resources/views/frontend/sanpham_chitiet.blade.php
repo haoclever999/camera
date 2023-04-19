@@ -33,10 +33,49 @@
 </style>
 @endsection @section('content')
 <div class="row margin-bottom-40" style="margin-top: 40px">
+    @foreach($sp_chitiet as $spct)
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a
+                    style="text-decoration: none"
+                    href="{{ route('home.index') }}"
+                >
+                    Trang chủ
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a
+                    style="text-decoration: none"
+                    href="{{route('danhmuc.sanpham',
+                        [
+                        'slug'=>$spct->DanhMuc->slug,'id'=>$spct->DanhMuc->id
+                        ]
+                        )}}"
+                >
+                    {{$spct->DanhMuc->ten_dm}}
+                </a>
+            </li>
+            <li class="breadcrumb-item">
+                <a
+                    style="text-decoration: none"
+                    href="{{route('thuonghieu.sanpham_all',
+                        [
+                        'slug'=>$spct->ThuongHieu->slug,'id'=>$spct->ThuongHieu->id
+                        ]
+                        )}}"
+                >
+                    {{$spct->ThuongHieu->ten_thuong_hieu}}
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                {{$spct->ten_sp}}
+            </li>
+        </ol>
+    </nav>
     <div class="col-md-12 col-sm-7">
         <div class="product-page">
             <div class="row">
-                @foreach($sp_chitiet as $spct)
                 <div class="col-md-6 col-sm-6">
                     <div class="product-main-image">
                         <img
@@ -63,15 +102,17 @@
                         <div class="price">
                             <strong>
                                 {{number_format(($spct->gia_ban-($spct->gia_ban*$spct->giam_gia/100)),0,',','.')
-                                }}
-                                đ
+
+                                }}đ
                             </strong>
                             @if($spct->giam_gia!=0)
                             <span style="font-size: 18px">
                                 <del>
-                                    {{number_format(($spct->gia_ban),0,',','.')
-                                    }}
-                                    đ
+                                    <i>
+                                        {{number_format(($spct->gia_ban),0,',','.')
+
+                                        }}đ
+                                    </i>
                                 </del>
                             </span>
                             @endif
@@ -119,16 +160,15 @@
                     >
                         <b> Tag:</b>
                         @foreach($spct->SanPhamTag as $t)
-
                         <a
                             class="tagsp"
                             href="{{route('tagsp',[$t->ten_tag])}}"
                             style="
                                 text-decoration: none;
                                 color: black;
-                                background-color: rgba(209, 209, 209, 0.5);
-                                border: 1px solid rgba(209, 209, 209, 0.9);
-                                margin-right: 2px;
+                                background-color: rgb(100 179 255 / 30%);
+                                margin-right: 5px;
+                                border-radius: 6px !important;
                             "
                         >
                             {{$t->ten_tag}}
@@ -159,7 +199,7 @@
                                     type="number"
                                     min="1"
                                     value="1"
-                                    onchange="SoLuongMinMax(this)"
+                                    onchange="SoLuongMin(this)"
                                     readonly
                                     class="form-control input-sm"
                                 />
@@ -220,131 +260,102 @@
                         </div>
                     </div>
                     <!-- Sản phẩm liên quan -->
-                    <div class="row margin-bottom-40">
-                        <div class="sale-product">
-                            <h2><b>Sản phẩm liên quan</b></h2>
-                            <div
-                                id="carouselExampleControls"
-                                class="carousel slide"
-                                data-ride="carousel"
-                            >
-                                <div class="carousel-inner">
-                                    @foreach($sp_lienquan as $key => $lienquan)
-                                    <div
-                                        class="item {{
-                                            $key == 0 ? 'active' : ''
-                                        }} "
-                                    >
-                                        <div
-                                            class="col-sm-3"
-                                            style="margin-top: 6px"
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+    @if($sp_lienquan)
+    <div class="row margin-bottom-40">
+        <div class="sale-product">
+            <h2><b>Sản phẩm liên quan</b></h2>
+            <div class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                    @foreach($sp_lienquan as $key => $lienquan)
+                    <div class="item {{ $key == 0 ? 'active' : '' }} ">
+                        <div class="col-md-3">
+                            <div class="product-item">
+                                <div class="pi-img-wrapper">
+                                    <img
+                                        src="{{$lienquan->hinh_anh_chinh}}"
+                                        class="img-responsive"
+                                    />
+                                    <div>
+                                        <a
+                                            href="{{$lienquan->hinh_anh_chinh}}"
+                                            class="btn btn-default fancybox-button"
                                         >
-                                            <div class="product-item">
-                                                <div class="pi-img-wrapper">
-                                                    <img
-                                                        src="{{$lienquan->hinh_anh_chinh}}"
-                                                        class="img-responsive"
-                                                    />
-                                                    <div>
-                                                        <a
-                                                            href="{{$lienquan->hinh_anh_chinh}}"
-                                                            class="btn btn-default fancybox-button"
-                                                        >
-                                                            Phóng to
-                                                        </a>
-                                                        <a
-                                                            href="{{route('sanpham.chitiet_sp',[$lienquan->id])}}"
-                                                            class="btn btn-default fancybox-fast-view"
-                                                        >
-                                                            Chi tiết
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                                <h3>
-                                                    <a
-                                                        href="{{route('sanpham.chitiet_sp',[$lienquan->id])}}"
-                                                    >
-                                                        <b>
-                                                            {{$lienquan->ten_sp}}
-                                                        </b>
-                                                    </a>
-                                                </h3>
-                                                <div class="pi-price">
-                                                    {{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')
-                                                    }}
-                                                    đ
-                                                </div>
-                                                <form
-                                                    action="{{
-                                                        route(
-                                                            'giohang.them_giohang'
-                                                        )
-                                                    }}"
-                                                    method="post"
-                                                >
-                                                    @csrf
-                                                    <input
-                                                        type="hidden"
-                                                        name="id_sp"
-                                                        value="{{$lienquan->id}}"
-                                                    />
-                                                    <input
-                                                        type="hidden"
-                                                        name="gia"
-                                                        value="{{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')}}"
-                                                    />
-                                                    <div
-                                                        class="product-quantity"
-                                                    >
-                                                        <input
-                                                            name="num_so_luong"
-                                                            type="hidden"
-                                                            value="1"
-                                                        />
-                                                    </div>
-                                                    <button
-                                                        class="btn add2cart"
-                                                        type="submit"
-                                                        style="
-                                                            background-color: rgba(
-                                                                204,
-                                                                204,
-                                                                204,
-                                                                0.5
-                                                            );
-                                                        "
-                                                    >
-                                                        Thêm vào giỏ
-                                                    </button>
-                                                </form>
-                                                @if($lienquan->giam_gia !=0)
-                                                <div class="giamgia">
-                                                    <span
-                                                        class="chu"
-                                                        style="top: -2px"
-                                                    >
-                                                        GIẢM
-                                                    </span>
-                                                    <span
-                                                        class="phantram"
-                                                        style="top: -11px"
-                                                    >
-                                                        {{$lienquan->giam_gia}}%
-                                                    </span>
-                                                </div>
-                                                @endif
-                                            </div>
-                                        </div>
+                                            Phóng to
+                                        </a>
+                                        <a
+                                            href="{{route('sanpham.chitiet_sp',[$lienquan->id])}}"
+                                            class="btn btn-default fancybox-fast-view"
+                                        >
+                                            Chi tiết
+                                        </a>
                                     </div>
-                                    @endforeach @endforeach
                                 </div>
+                                <h3>
+                                    <a
+                                        href="{{route('sanpham.chitiet_sp',[$lienquan->id])}}"
+                                    >
+                                        <b>
+                                            {{$lienquan->ten_sp}}
+                                        </b>
+                                    </a>
+                                </h3>
+                                <div class="pi-price">
+                                    {{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')
+                                    }}
+                                    đ
+                                </div>
+                                <div class="price">
+                                    <del>
+                                        <i
+                                            style="
+                                                margin-left: 1em;
+                                                height: 25px;
+                                                line-height: 2;
+                                                vertical-align: middle;
+                                            "
+                                        >
+                                            {{number_format($lienquan->gia_ban,0,',','.')
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                            }}đ
+                                        </i>
+                                    </del>
+                                </div>
+                                @if($lienquan->giam_gia !=0)
+                                <div class="giamgia">
+                                    <span class="chu" style="top: -2px">
+                                        GIẢM
+                                    </span>
+                                    <span class="phantram" style="top: -11px">
+                                        {{$lienquan->giam_gia}}%
+                                    </span>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
+    @endif
     <!-- Bắt đầu bình luận-->
     <div class="col-md-12">
         <div class="col-md-1"></div>
@@ -363,32 +374,28 @@
 </div>
 
 @endsection @section('js')
-<script
-    src="{{
-        asset('frontend/assets_theme/plugins/uniform/jquery.uniform.min.js')
-    }}"
-    type="text/javascript"
-></script>
-<script
-    src="{{
-        asset('frontend/assets_theme/plugins/rateit/src/jquery.rateit.js')
-    }}"
-    type="text/javascript"
-></script>
-<script src="{{
-        asset('frontend/assets_theme/plugins/carousel/carousel.js')
-    }}"></script>
 <script>
-    function SoLuongMinMax(el) {
+    function SoLuongMin(el) {
         if (el.value != "") {
             if (parseInt(el.value) < parseInt(el.min)) {
                 el.value = el.min;
             }
-            if (parseInt(el.value) > parseInt(el.max)) {
-                el.value = el.max;
-            }
         }
     }
+    let items = document.querySelectorAll(".carousel .item");
+
+    items.forEach((el) => {
+        const minPerSlide = 4;
+        let next = el.nextElementSibling;
+        for (var i = 1; i < minPerSlide; i++) {
+            if (!next) {
+                next = items[0];
+            }
+            let cloneChild = next.cloneNode(true);
+            el.appendChild(cloneChild.children[0]);
+            next = next.nextElementSibling;
+        }
+    });
 </script>
 
 @endsection

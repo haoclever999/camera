@@ -15,6 +15,7 @@
     type="text/css"
 />
 
+
 <link
     rel="stylesheet"
     href="{{ asset('frontend/assets_theme/plugins/carousel/carousel.css') }}"
@@ -64,6 +65,7 @@
                         maxlength="10"
                         value="{{ Auth::user()->sdt }}"
                         placeholder="Nhập số điện thoại"
+                        onblur="kiemTraSDT(event)"
                         required
                     />
                 </div>
@@ -254,10 +256,7 @@
     }}"
     type="text/javascript"
 ></script>
-<script
-    src="{{ asset('frontend/assets_theme/plugins/jquery-ui.js') }}"
-    type="text/javascript"
-></script>
+
 <script
     src="{{
         asset('frontend/assets_theme/plugins/rateit/src/jquery.rateit.js')
@@ -290,11 +289,9 @@ $(document).ready(function(){
         })
     });
    
-    document.getElementById('myform').addEventListener('submit', kiemTraSDT(event));
-
 })
 
-    function kiemTraSDT(even) {
+    function kiemTraSDT(event) {
 
         var dt=document.getElementById("sdt").value;
         var dt2=document.getElementById("sdt");
@@ -307,7 +304,7 @@ $(document).ready(function(){
             dt2.reportValidity();
         }else if(dt.length!='10'){
             event.preventDefault()
-            dt2.setCustomValidity('Phải nhập đủ 10 số');
+            dt2.setCustomValidity('Số điện thoại phải đủ 10 số');
             dt2.reportValidity();
         }
         else if (kt==false){

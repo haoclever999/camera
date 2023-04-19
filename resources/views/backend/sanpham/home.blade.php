@@ -56,6 +56,31 @@
                     <a class="btn btn-success float-right m-2" id="nhapexcel">
                         Nhập excel
                     </a>
+                    <form
+                        action="{{ route('sanpham.nhap_hinhanh') }}"
+                        method="post"
+                        enctype="multipart/form-data"
+                        style="display: none"
+                        id="fnhap_hinhanh"
+                        class="float-right m-2"
+                    >
+                        @csrf
+                        <input
+                            type="file"
+                            name="file_Hinhanh"
+                            id="file_Hinhanh"
+                            required
+                        />
+                        <button type="submit" class="btn btn-primary">
+                            Nhập
+                        </button>
+                    </form>
+                    <a
+                        class="btn btn-success float-right m-2"
+                        id="nhap_hinhanh"
+                    >
+                        Nhập hình ảnh chi tiết
+                    </a>
                     <a
                         href="{{ route('sanpham.getThem') }}"
                         class="btn btn-primary float-right m-2"
@@ -116,14 +141,13 @@
                                         {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $s->updated_at)->format('H:i:s d/m/Y')}}
                                     </td>
                                     <td>
-                                        <!-- sua lai -->
                                         <a
                                             style="
-                                                min-width: 110px;
+                                                min-width: 90px;
                                                 padding: 3px 12px;
                                                 margin: 3px;
                                             "
-                                            class="btn btn-success"
+                                            class="btn btn-primary"
                                             href="{{ route('sanpham.chitiet', ['id' => $s->id]) }}"
                                         >
                                             Chi tiết
@@ -131,7 +155,7 @@
                                         <br />
                                         <a
                                             style="
-                                                min-width: 110px;
+                                                min-width: 90px;
                                                 padding: 3px 12px;
                                                 margin: 3px;
                                             "
@@ -145,7 +169,7 @@
                                         auth()->user()->quyen=='Quản trị')
                                         <a
                                             style="
-                                                min-width: 110px;
+                                                min-width: 90px;
                                                 padding: 3px 12px;
                                                 margin: 3px;
                                             "
@@ -182,6 +206,16 @@
     $(document).ready(function () {
         $("#nhapexcel").click(function () {
             document.getElementById("fnhapexcel").style.display = "block";
+            document.getElementById("nhapexcel").style.display = "none";
+            document.getElementById("themsp").style.display = "none";
+            document.getElementById("fnhap_hinhanh").style.display = "none";
+            document.getElementById("nhap_hinhanh").style.display = "none";
+        });
+
+        $("#nhap_hinhanh").click(function () {
+            document.getElementById("fnhap_hinhanh").style.display = "block";
+            document.getElementById("nhap_hinhanh").style.display = "none";
+            document.getElementById("fnhapexcel").style.display = "none";
             document.getElementById("nhapexcel").style.display = "none";
             document.getElementById("themsp").style.display = "none";
         });

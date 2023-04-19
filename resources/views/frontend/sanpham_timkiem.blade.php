@@ -6,33 +6,34 @@
     @include('view-page.user.sidebar_menu')
     <div class="col-md-9 col-sm-7">
         <div class="row list-view-sorting clearfix">
-            <div class="col-md-7 col-sm-7">
+            <div class="col-md-6 col-sm-6">
                 <h3><b>Kết quả tìm kiếm</b></h3>
             </div>
-            <div class="col-md-5 col-sm-5">
-                <div class="pull-right">
-                    <label class="control-label">Lọc:</label>
-                    <select class="form-control input-sm">
-                        <option
-                            value="#?sort=p.sort_order&amp;order=ASC"
-                            selected="selected"
-                        >
-                            Default
-                        </option>
-                        <option value="#?sort=pd.name&amp;order=ASC">
-                            Tên (A - Z)
-                        </option>
-                        <option value="#?sort=pd.name&amp;order=DESC">
-                            Tên (Z - A)
-                        </option>
-                        <option value="#?sort=p.price&amp;order=ASC">
-                            Giá (Thấp &gt; Cao)
-                        </option>
-                        <option value="#?sort=p.price&amp;order=DESC">
-                            Giá (Cao &gt; Thấp)
-                        </option>
-                    </select>
-                </div>
+            <div class="col-md-6 col-sm-6">
+                <form >
+                    <div class="pull-right">
+                        <label class="control-label">Hiển thị:</label>
+                        <select class="form-control input-sm" onchange="this.form.submit();" name="hienthi">
+                        <option {{request('hienthi') == '6' ? 'selected' : ''}} value="6" selected="selected">6</option>
+                        <option {{request('hienthi') == '12' ? 'selected' : ''}} value="12">12</option>
+                        <option {{request('hienthi') == '18' ? 'selected' : ''}} value="18">18</option>
+                        <option {{request('hienthi') == '24' ? 'selected' : ''}} value="24">24</option>
+                        </select>
+                    </div>
+                    <div class="pull-right">
+                        <label class="control-label">Sắp xếp:</label>
+                        <select class="form-control input-sm" onchange="this.form.submit();" name="sx_sp">
+                            <option {{request('sx_sp') == 'mac_dinh' ? 'selected' : ''}} value="mac_dinh">Mặc định
+                            </option>
+                            <option {{request('sx_sp') == 'a_z' ? 'selected' : ''}} value="a_z">Tên (A - Z)</option>
+                            <option {{request('sx_sp') == 'z_a' ? 'selected' : ''}} value="z_a">Tên (Z - A)</option>
+                            <option {{request('sx_sp') == 'thap_cao' ? 'selected' : ''}} value="thap_cao">Giá (Thấp &gt; Cao)
+                            </option>
+                            <option {{request('sx_sp')=='cao_thap'?'selected' : ''}} value="cao_thap">Giá (Cao &gt; Thấp)
+                            </option>
+                        </select>
+                    </div>
+                </form>
             </div>
         </div>
         <!-- BEGIN PRODUCT LIST -->
@@ -69,36 +70,31 @@
                     </h3>
                     <div class="pi-price">
                         {{number_format(($tk->gia_ban-($tk->gia_ban*$tk->giam_gia/100)),0,',','.')
-                        }}
-                        đ
-                    </div>
 
-                    <form
-                        action="{{ route('giohang.them_giohang') }}"
-                        method="post"
-                    >
-                        @csrf
-                        <input type="hidden" name="id_sp" value="{{$tk->id}}" />
-                        <input
-                            type="hidden"
-                            name="gia"
-                            value="{{number_format(($tk->gia_ban-($tk->gia_ban*$tk->giam_gia/100)),0,',','.')}}"
-                        />
-                        <div class="product-quantity">
-                            <input
-                                name="num_so_luong"
-                                type="hidden"
-                                value="1"
-                            />
-                        </div>
-                        <button
-                            class="btn add2cart"
-                            type="submit"
-                            style="background-color: rgba(204, 204, 204, 0.5)"
-                        >
-                            Thêm vào giỏ
-                        </button>
-                    </form>
+
+
+
+
+                        }}đ
+                    </div>
+                    <div class="price">
+                        <del>
+                            <i
+                                style="
+                                    margin-left: 1em;
+                                    height: 25px;
+                                    line-height: 2;
+                                    vertical-align: middle;
+                                "
+                            >
+                                {{number_format($tk->gia_ban,0,',','.')
+
+
+
+                                }}đ
+                            </i>
+                        </del>
+                    </div>
                     @if($tk->giam_gia !=0)
                     <div class="giamgia">
                         <span class="chu">GIẢM</span>
@@ -128,22 +124,4 @@
     </div>
 </div>
 
-@endsection @section('js')
-<script
-    src="{{
-        asset('frontend/assets_theme/plugins/uniform/jquery.uniform.min.js')
-    }}"
-    type="text/javascript"
-></script>
-<script
-    src="{{
-        asset('frontend/assets_theme/plugins/rateit/src/jquery.rateit.js')
-    }}"
-    type="text/javascript"
-></script>
-<script
-    src="{{ asset('frontend/assets_theme/plugins/jquery-ui.js') }}"
-    type="text/javascript"
-></script>
-<!-- for slider-range -->
 @endsection

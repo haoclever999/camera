@@ -782,7 +782,7 @@ body.page-header-fixed {
 }
 @media (min-width: 1025px) {
     .reduce-header .header-navigation > ul > li > a {
-        padding: 29px 12px 30px;
+        padding: 35px 12px 35px !important;
     }
     .ecommerce .reduce-header .header-navigation > ul > li > a {
         padding: 23px 12px 20px;

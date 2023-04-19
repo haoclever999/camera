@@ -16,6 +16,7 @@ use App\Models\TinhThanhPho;
 use App\Models\XaPhuong;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class NguoiDungController extends Controller
 {
@@ -32,15 +33,21 @@ class NguoiDungController extends Controller
     //Bắt đầu trang admin
     public function index()
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $id_sua = '0';
         $capnhatquyen = '';
         $page = 5;
-        $users = $this->user::orderBy('ho_ten')->paginate($page);
+        $users = $this->user::orderBy('quyen', 'desc')->paginate($page);
         return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function getThem()
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         return view('backend.nguoidung.them');
     }
 
@@ -83,6 +90,9 @@ class NguoiDungController extends Controller
 
     public function gethoso($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
         $huyen = QuanHuyen::orderby('ten_qh')->get();
         $xa = XaPhuong::orderby('ten_xa')->get();
@@ -174,6 +184,9 @@ class NguoiDungController extends Controller
 
     public function getdoimatkhau($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $user = $this->user->find($id);
         return view('backend.nguoidung.doimatkhau', compact('user'));
     }
@@ -213,17 +226,9 @@ class NguoiDungController extends Controller
         }
     }
 
-    public function getcapnhatquyen($id)
-    {
-        $id_sua = $id;
-        $capnhatquyen = 'capnhatquyen';
-        $page = 5;
-        $users = $this->user::orderBy('ho_ten')->paginate($page);
-        return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
-    }
-
     public function postcapnhatquyen(Request $request,  $id)
     {
+
         try {
             DB::beginTransaction();
             $u = $this->user->find($id);
@@ -243,6 +248,7 @@ class NguoiDungController extends Controller
 
     public function trangthai(Request $request,  $id)
     {
+
         try {
             DB::beginTransaction();
             $u = $this->user->find($id);
@@ -262,16 +268,22 @@ class NguoiDungController extends Controller
 
     public function xoa($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         return $this->deleteModelTrait($id, $this->user);
     }
 
     public function timkiem(Request $request)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         if ($request->ajax()) {
             $id_sua = '0';
             $capnhatquyen = '';
             $page = 5;
-            $timkiem =  $this->user->where('ho_ten', 'LIKE', '%' . $request->timkiem_nd . '%')->orderby('ho_ten')->paginate($page);
+            $timkiem =  $this->user->where('ho_ten', 'LIKE', '%' . $request->timkiem_nd . '%')->orwhere('email', 'LIKE', '%' . $request->timkiem_nd . '%')->orderby('quyen', 'desc')->paginate($page);
             if ($timkiem->count() > 0) {
                 $kq = '';
                 $i = (request()->input('page', 1) - 1) * $page;
@@ -290,7 +302,7 @@ class NguoiDungController extends Controller
                         if ($u->trang_thai == 1) {
                             $kq .= '<td> 
                                     <form action="' . route("nguoidung.trangthai", ["id" => $u->id]) . '" method="post">
-                                        @csrf
+                                    ' . csrf_field() . '
                                         <input type="hidden" name = "khoa" value="0">
                                         <button type="submit" class="btn btn-danger action_edit" >Khóa</button>
                                     </form>
@@ -299,7 +311,7 @@ class NguoiDungController extends Controller
                             $kq .= '
                                     <td>
                                         <form action="' . route("nguoidung.trangthai", ["id" => $u->id]) . '" method="post">
-                                        @csrf
+                                        ' . csrf_field() . '
                                             <input type="hidden" name = "khoa" value="1">
                                             <button type="submit" class="btn btn-primary">Kích hoạt</button>
                                         </form>
@@ -308,26 +320,26 @@ class NguoiDungController extends Controller
                     } else
                         $kq .= '<td></td>';
 
-                    if ($id_sua == $u->id && $capnhatquyen == "capnhatquyen") {
-                        $kq .= '<td>
-                            <form action="' . route("nguoidung.postcapnhatquyen", ["id" => $id_sua]) . '" method="post">
-                                @csrf
+                    $kq .= '<td>
+                            <form action="' . route("nguoidung.postcapnhatquyen", ["id" => $u->id]) . '" method="post" style="display: none;" class="fcapnhatquyen">
+                            ' . csrf_field() . '
                                 <select
                                     id="opt_quyen"
                                     name="opt_quyen"
-                                >
-                                    <option';
-                        if ($u->quyen == "Quản trị") $kq .= '" selected"';
-                        else $kq .= '" "';
-                        $kq .= 'value="Quản trị">Quản trị</option>
-                                    <option';
-                        if ($u->quyen == "Nhân viên") $kq .= '" selected"';
-                        else $kq .= '" "';
-                        $kq .= 'value="Nhân viên">Nhân viên</option>
-                                    <option';
-                        if ($u->quyen == "Khách hàng") $kq .= '" selected"';
-                        else $kq .= '" "';
-                        $kq .= ' value="Khách hàng">Khách hàng</option>
+                                >';
+                    if ($u->quyen == "Quản trị")
+                        $kq .= '<option selected value="Quản trị">Quản trị</option>
+                                <option value="Nhân viên">Nhân viên</option>
+                                <option value="Khách hàng">Khách hàng</option>';
+                    elseif ($u->quyen == "Nhân viên")
+                        $kq .= '<option  value="Quản trị">Quản trị</option>
+                                <option selected value="Nhân viên">Nhân viên</option>
+                                <option value="Khách hàng">Khách hàng</option>';
+                    else
+                        $kq .= '<option value="Quản trị">Quản trị</option>
+                                <option value="Nhân viên">Nhân viên</option>
+                                <option selected value="Khách hàng">Khách hàng</option>';
+                    $kq .= '
                                 </select>
                                 <button style="
                                     min-width: max-content;
@@ -336,28 +348,23 @@ class NguoiDungController extends Controller
                                     type="submit" class="btn btn-warning"> Cập nhật
                                 </button>
                             </form>                              
-                        </td>';
-                    } else {
-                        $kq .= '<td>
-                                <a                                         
-                                    style="
-                                        min-width: max-content;
-                                        padding: 3px 12px;
-                                        margin: 3px;
-                                    "
-                                    class="btn btn-warning"
-                                    href="' . route("nguoidung.getcapnhatquyen", ["id" => $u->id]) . '"
-                                >
-                                    
-                                    Cập nhật 
-                                </a>                       
-                            </td>';
-                    }
+                            <a                                         
+                                style="
+                                    min-width: max-content;
+                                    padding: 3px 12px;
+                                    margin: 3px;
+                                "
+                                class="btn btn-warning capnhatquyen"
+                            >                                    
+                                Cập nhật 
+                            </a>                       
+                    </td>';
+
                     $kq .= '
                         <td>
                            <a
                                 style="
-                                    min-width: 110px;
+                                    min-width: max-content;
                                     padding: 3px 12px;
                                     margin: 3px;
                                 "

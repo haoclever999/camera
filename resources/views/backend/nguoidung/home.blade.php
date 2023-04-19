@@ -93,44 +93,39 @@
                                         @else
                                         <td></td>
                                         @endif
-    
-                                        @if($id_sua==$u->id && $capnhatquyen=='capnhatquyen')
-                                            <td>
-                                                <form action="{{ route('nguoidung.postcapnhatquyen', ['id' => $id_sua]) }}" method="post">
-                                                    @csrf
-                                                    <select
-                                                        id="opt_quyen"
-                                                        name="opt_quyen"
-                                                    >
-                                                        <option {{$u->quyen=="Quản trị" ?'selected':''}} value="Quản trị">Quản trị</option>
-                                                        <option {{$u->quyen=="Nhân viên" ?'selected':''}} value="Nhân viên">Nhân viên</option>
-                                                        <option {{$u->quyen=="Khách hàng" ?'selected':''}} value="Khách hàng">Khách hàng</option>
-                                                    </select>
-                                                    
-                                                    <button style="
-                                                        min-width: max-content;
-                                                        padding: 3px 12px;
-                                                        margin: 3px;" 
-                                                        type="submit" class="btn btn-warning"> Cập nhật
-                                                    </button>
-                                                </form>                              
-                                            </td>
-                                        @else
-                                            <td>
-                                                <a                                         
-                                                    style="
-                                                        min-width: max-content;
-                                                        padding: 3px 12px;
-                                                        margin: 3px;
-                                                    "
-                                                    class="btn btn-warning"
-                                                    href="{{ route('nguoidung.getcapnhatquyen', ['id' => $u->id]) }}"
-                                                >
-                                                    
-                                                    Cập nhật 
-                                                </a>                       
-                                            </td>
-                                        @endif
+                                        <td>
+                                            <form action="{{ route('nguoidung.postcapnhatquyen', ['id' => $u->id]) }}" method="post" style="display: none;" class="fcapnhatquyen">
+                                                @csrf
+                                                <select
+                                                    id="opt_quyen"
+                                                    name="opt_quyen"
+                                            >
+                                                    <option {{$u->quyen=="Quản trị" ?'selected':''}} value="Quản trị">Quản trị</option>
+                                                    <option {{$u->quyen=="Nhân viên" ?'selected':''}} value="Nhân viên">Nhân viên</option>
+                                                    <option {{$u->quyen=="Khách hàng" ?'selected':''}} value="Khách hàng">Khách hàng</option>
+                                                </select>
+                                                
+                                                <button style="
+                                                    min-width: max-content;
+                                                    padding: 3px 12px;
+                                                    margin: 3px;" 
+                                                    type="submit" class="btn btn-warning"> Cập nhật
+                                                </button>
+                                            </form>                              
+                                        
+                                            <a                                         
+                                                style="
+                                                    min-width: max-content;
+                                                    padding: 3px 12px;
+                                                    margin: 3px;
+                                                "
+                                                class="btn btn-warning capnhatquyen"
+                                            >
+                                                
+                                                Cập nhật 
+                                            </a>                       
+                                        </td>
+                                       
                                         <td>
                                             <a 
                                                 class="btn btn-danger action_del" 
@@ -190,6 +185,14 @@
                     if (timkiem_nd == "") $(".phantrang").show();
                 },
             });
+        });
+        $("table").on('click','.capnhatquyen',function(){
+            $("table").find(">tbody > tr").each(function(){
+                $(this).find("td:eq(7) >.fcapnhatquyen").hide(); 
+                $(this).find("td:eq(7) >.capnhatquyen").show(); 
+            });
+            $(this).closest("tr").find("td:eq(7) >.fcapnhatquyen").show(); 
+            $(this).closest("tr").find("td:eq(7) >.capnhatquyen").hide(); 
         });
     });
 </script>

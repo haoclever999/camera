@@ -1,27 +1,13 @@
 -design
 	set color title action
--- 
-    điều chỉnh hrel header.blade.php
 
--- chức năng lọc
 
 -- Tích hợp thanh toán
     + https://transmoni.io/blog/tich-hop-thanh-toan-chuyen-khoan-vao-website-su-dung-laravel
     + https://viblo.asia/p/tich-hop-cong-thanh-toan-vnpay-voi-laravel-Az45bGD6KxY
     + https://sandbox.vnpayment.vn/apis/docs/huong-dan-tich-hop/
-    + momo
-
--- Trang liên hệ: https://nentang.vn/app/edu/khoa-hoc/thiet-ke-lap-trinh-web-backend/khoa-hoc-backend-thiet-ke-web-voi-laravel/lessons/tao-giao-dien-trang-lien-he-contact
-    
-   
+    + momo   
 
 -- Chia sẻ fb, nút thích trong chi tiết sp
     đăng nhập fb, gg
     chat zalo
--- Liên hệ
-
---  check quyền người dùng
-    Hình thức thanh toán
-
--- Gửi mail khi thanh toán thành công: https://www.youtube.com/watch?v=zHHyyJ-duhM
--- search người dùng lỗi form (tinh chỉnh search user)

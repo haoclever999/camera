@@ -6,6 +6,7 @@ use App\Models\SanPham;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Support\Str;
 use App\Components\Traits\StorageImageTrait;
+use App\Models\HinhAnh;
 
 class NhapSanPham implements ToModel
 {

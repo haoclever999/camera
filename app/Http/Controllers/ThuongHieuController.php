@@ -15,6 +15,7 @@ use App\Models\DanhMuc;
 use App\Models\SanPham;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class ThuongHieuController extends Controller
 {
@@ -34,6 +35,9 @@ class ThuongHieuController extends Controller
     // Bat dau trang admin
     public function index()
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $page = 5;
         $th = $this->thuonghieu::orderBy('ten_thuong_hieu')->paginate($page);
         return view('backend.thuonghieu.home', compact("th"))->with('i', (request()->input('page', 1) - 1) * $page);
@@ -72,6 +76,9 @@ class ThuongHieuController extends Controller
 
     public function getSua($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $th = $this->thuonghieu->find($id);
         return view('backend.thuonghieu.sua', compact('th'));
     }
@@ -118,11 +125,17 @@ class ThuongHieuController extends Controller
 
     public function xoa($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         return $this->deleteModelTrait($id, $this->thuonghieu);
     }
 
     public function timkiem(Request $request)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         if ($request->ajax()) {
             $page = 5;
             $timkiem =  $this->thuonghieu->where('ten_thuong_hieu', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_thuong_hieu')->paginate($page);
@@ -187,7 +200,33 @@ class ThuongHieuController extends Controller
         $meta_title = '';
         $url_canonical = $request->url();
 
-        $sp = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id)->where('dm_id', $id_dm)->paginate(6);
+        if ($request->hienthi)
+            $hienthi = $request->hienthi;
+        else
+            $hienthi = 6;
+
+        $sx_sp = $request->sx_sp;
+
+        $spham = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id)->where('dm_id', $id_dm);
+        switch ($sx_sp) {
+            case 'a_z':
+                $spham->orderby('ten_sp')->get();
+                break;
+            case 'z_a':
+                $spham->orderby('ten_sp', 'desc')->get();
+                break;
+            case 'thap_cao':
+                $spham->orderby('gia_ban')->get();
+                break;
+            case 'cao_thap':
+                $spham->orderby('gia_ban', 'desc')->get();
+                break;
+            default:
+                $spham->get();
+        }
+
+        $sp = $spham->paginate($hienthi);
+
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
         $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
@@ -196,7 +235,7 @@ class ThuongHieuController extends Controller
         foreach ($spham as $value)
             $id_th[] = $value->thuong_hieu_id;
         $th_sp = $this->thuonghieu->whereIn('id', $id_th)->distinct()->get();
-        return view('frontend.thuonghieu_danhmuc', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
     public function getThuongHieuSanPham(Request $request, $slug, $id)
@@ -212,7 +251,33 @@ class ThuongHieuController extends Controller
         $meta_title = '';
         $url_canonical = $request->url();
 
-        $sp = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id)->paginate(6);
+        if ($request->hienthi)
+            $hienthi = $request->hienthi;
+        else
+            $hienthi = 6;
+
+        $sx_sp = $request->sx_sp;
+
+        $spham = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id);
+        switch ($sx_sp) {
+            case 'a_z':
+                $spham->orderby('ten_sp')->get();
+                break;
+            case 'z_a':
+                $spham->orderby('ten_sp', 'desc')->get();
+                break;
+            case 'thap_cao':
+                $spham->orderby('gia_ban')->get();
+                break;
+            case 'cao_thap':
+                $spham->orderby('gia_ban', 'desc')->get();
+                break;
+            default:
+                $spham->get();
+        }
+
+        $sp = $spham->paginate($hienthi);
+
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();

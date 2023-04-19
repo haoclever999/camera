@@ -28,8 +28,20 @@
 @endsection @section('content')
 <div class="row margin-bottom-40" style="margin-top: 40px">
     <div class="col-md-12 col-sm-12">
-        <h1>Giỏ hàng của bạn</h1>
-        <div class="goods-page">
+        <div class="col-md-12 col-sm-12">
+            <h1 style="float: left">Giỏ hàng của bạn</h1>
+            @if(Auth::check())
+            <a
+                href="{{ route('getLichSuMuaHang') }}"
+                class="btn btn-primary"
+                type="button"
+                style="float: right; width: max-content"
+            >
+                Lịch sử mua hàng
+            </a>
+            @endif
+        </div>
+        <div class="goods-page" style="clear: both">
             @if(Session::has('success'))
             <div style="min-height: 300px">
                 <br />
@@ -221,10 +233,7 @@
     }}"
     type="text/javascript"
 ></script>
-<script
-    src="{{ asset('frontend/assets_theme/plugins/jquery-ui.js') }}"
-    type="text/javascript"
-></script>
+
 <script
     src="{{
         asset('frontend/assets_theme/plugins/rateit/src/jquery.rateit.js')

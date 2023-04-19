@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Đăng nhập</title>
+        <title>Đăng nhập - Đặt lại mật khẩu</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -80,26 +80,29 @@
                     url('frontend/img/background_login.jpg')
                 }})"
             >
-                <div class="wrap-login100" style="padding-top: 55px">
+                <div
+                    class="wrap-login100"
+                    style="padding-top: 55px; width: 420px"
+                >
                     <form
                         class="login100-form validate-form was-validated"
-                        action="{{ route('postQuenMatKhauUser') }}"
+                        action="{{ route('postDatLaiMatKhauUser',['id'=>$user->id]) }}"
                         method="post"
                     >
                         @csrf
                         <h1 style="text-align: center; font-size: 2.4rem">
-                            <b>Quên mật khẩu</b>
+                            <b>Đặt lại mật khẩu</b>
                         </h1>
                         <br />
-                        @if(Session::has('mgs'))
+                        @if(Session::has('err'))
                         <span class="help-block" style="color: #ff3f3f">
-                            {{Session::get('mgs')}}
+                            {{Session::get('err')}}
                         </span>
                         <br />
                         <br />
-                        @endif @if(Session::has('mgs-success'))
+                        @endif @if(Session::has('success'))
                         <span class="help-block" style="color: #3fff5f">
-                            {{Session::get('mgs-success')}}
+                            {{Session::get('success')}}
                         </span>
                         <br />
                         <br />
@@ -114,19 +117,9 @@
                                 type="text"
                                 name="email"
                                 style="cursor: no-drop"
-                                value="$email?? old('email')"
+                                value="{{$user->email}}"
                                 disabled
                             />
-                            <span
-                                class="focus-input100"
-                                data-placeholder="Email"
-                            >
-                            </span>
-                            @if ($errors->has('email'))
-                            <span class="help-block" style="color: #ff3f3f">
-                                <b>{{ $errors->first('email') }}</b>
-                            </span>
-                            @endif
                         </div>
 
                         <div
@@ -180,11 +173,31 @@
                             </span>
                             @endif
                         </div>
-
+                        <div class="login_remember_box">
+                            <a
+                                href="{{ route('getDangNhapUser') }}"
+                                style="text-decoration: none; float: left"
+                            >
+                                <!-- http://haongan.com/dang-nhap/dat-lai-mat-khau/5/7H2203GxLLdOxvzSLxTxFfDs6A2lixNFck2MVz6VjeKjJRQbES -->
+                                Quay về đăng nhập
+                                <img
+                                    src="{{ asset('frontend/img/logout.png') }}"
+                                    width="15px"
+                                    style="
+                                        margin-right: 4px;
+                                        width: 1.25em;
+                                        text-align: center;
+                                    "
+                                />
+                            </a>
+                        </div>
+                        <br />
                         <div class="container-login100-form-btn">
                             <div class="wrap-login100-form-btn">
                                 <div class="login100-form-bgbtn"></div>
-                                <button class="login100-form-btn">Gửi</button>
+                                <button class="login100-form-btn">
+                                    Đặt lại
+                                </button>
                             </div>
                         </div>
                     </form>

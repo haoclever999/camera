@@ -43,11 +43,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function GuiEmailQuenMK($token)
-    {
-        $this->notify(new LayLaiMK($token));
-    }
-
     public function DonHang()
     {
         return $this->hasMany(DonHang::class, 'user_id', 'id');
@@ -55,17 +50,5 @@ class User extends Authenticatable
     public function SanPham()
     {
         return $this->hasMany(SanPham::class, 'user_id', 'id');
-    }
-}
-class LayLaiMK extends ResetPassword
-{
-    public function toMail($notifiable)
-    {
-        return (new MailMessage)
-            ->subject('Khôi phục mật khẩu')
-            ->line('Bạn vừa yêu cầu ' . config('app.name') . ' khôi phục mật khẩu của mình.')
-            ->line('Xin vui lòng nhấn vào nút "Khôi phục mật khẩu" bên dưới để tiến hành cấp mật khẩu mới.')
-            ->action('Khôi phục mật khẩu', url(config('app.url') . route('getLayLaiMatKhauUser', $this->token, false)))
-            ->line('Nếu bạn không yêu cầu đặt lại mật khẩu, xin vui lòng không làm gì thêm và báo lại cho quản trị hệ thống về vấn đề này.');
     }
 }

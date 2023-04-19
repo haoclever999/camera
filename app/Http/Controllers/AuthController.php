@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\LayLaiMK;
+use App\Models\PasswordReset;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Rules\ReCaptcha;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
@@ -85,7 +88,6 @@ class AuthController extends Controller
         return view('auth.quenmatkhau');
     }
 
-    //chua
     public function postQuenMatKhauUser(Request $request)
     {
         $request->validate(
@@ -97,19 +99,59 @@ class AuthController extends Controller
                 'email.exists' => 'Email không tồn tại trong hệ thống',
             ]
         );
-        $mail = User::where('email', $request->email)->first();
-        $u = new User();
-        $token = strtoupper(Str::random(20));
-        Mail::to($mail->email)->send(new $u->GuiEmailQuenMK($token));
-        //https://www.youtube.com/watch?v=tkPel6zcw8Q -> 12:29 / 33:10
+        $user = User::where('email', $request->email)->first();
+        $token = Str::random(50);
+        $pass = PasswordReset::where('email', $request->email)->first();
+        if (!empty($pass))
+            $pass->update(['token' => $token,]);
+        else
+            PasswordReset::Create([
+                'email' => $user->email,
+                'token' => $token,
+            ]);
+        Mail::to($user->email)->send(new LayLaiMK($user, $token));
+        Session::flash('thongbao', 'Vui lòng kiểm tra email để thực hiện lấy lại mật khẩu.');
+        return redirect()->route('getQuenMatKhauUser');
     }
 
-    public function getLayLaiMatKhauUser()
+    public function getDatLaiMatKhauUser($id, $token)
     {
+        $user = User::find($id);
+        return view('auth.datlaimatkhau', compact('user'));
     }
 
-    public function postLayLaiMatKhauUser()
+    public function postDatLaiMatKhauUser(Request $request, $id)
     {
+        $request->validate(
+            [
+                'password' => 'required|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
+                'password_confirm' => 'required|same:password',
+            ],
+            [
+                'password.required' => 'Hãy nhập mật khẩu mới',
+                'password.regex' => 'Mật khẩu có ít nhất 1 số, 1 chữ hoa, 1 chữ thường và 1 ký tự đặc biệt',
+                'password_confirm.required' => 'Hãy nhập lại mật khẩu mới',
+                'password_confirm.same' => 'Mật khẩu mới và mật khẩu nhập lại không giống nhau',
+
+            ]
+        );
+        try {
+            DB::beginTransaction();
+            $u = User::find($id);
+
+            $u->update([
+                'password' => bcrypt(trim($request->password))
+            ]);
+
+            DB::commit();
+            session()->flash('success', 'Đặt lại mật khẩu thàng công');
+            return redirect()->back();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            session()->flash('err', 'Đặt lại mật khẩu thất bại');
+            return redirect()->back();
+        }
     }
 
     public function getDangKy()

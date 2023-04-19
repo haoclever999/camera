@@ -99,7 +99,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'npmhao195138@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'Hao Ngan'),
+        'name' => env('MAIL_FROM_NAME', 'Cửa Hàng Camera Quan Sát, Camera An Ninh, Camera Giám Sát'),
     ],
 
     /*

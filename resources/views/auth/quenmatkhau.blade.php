@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Đăng nhập</title>
+        <title>Đăng nhập - Quên mật khẩu</title>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
@@ -80,31 +80,33 @@
                     url('frontend/img/background_login.jpg')
                 }})"
             >
-                <div class="wrap-login100" style="padding-top: 55px">
+                <div
+                    class="wrap-login100"
+                    style="padding-top: 55px; width: 420px"
+                >
+                    <h1 style="text-align: center; font-size: 2.4rem">
+                        <b>Quên mật khẩu</b>
+                    </h1>
+                    <br />
+                    @csrf @if(Session::has('thongbao'))
+                    <span class="help-block" style="color: #3fff5f">
+                        {{Session::get('thongbao')}}
+                    </span>
+                    <br />
+                    <br />
+                    @else
+                    <span class="help-block" style="color: #000">
+                        Nhập email đã đăng ký để lấy lại mật khẩu
+                    </span>
+                    <br />
+                    <br />
+                    @endif
                     <form
                         class="login100-form validate-form was-validated"
                         action="{{ route('postQuenMatKhauUser') }}"
                         method="post"
                     >
                         @csrf
-                        <h1 style="text-align: center; font-size: 2.4rem">
-                            <b>Quên mật khẩu</b>
-                        </h1>
-                        <br />
-                        @if(Session::has('mgs'))
-                        <span class="help-block" style="color: #ff3f3f">
-                            {{Session::get('mgs')}}
-                        </span>
-                        <br />
-                        <br />
-                        @else
-                        <span class="help-block" style="color: #000">
-                            Nhập email đã đăng ký để lấy lại mật khẩu
-                        </span>
-                        <br />
-                        <br />
-                        @endif
-
                         <div
                             class="wrap-input100 validate-input"
                             data-validate="Email đúng dạng là: abc@gmail.com"
@@ -122,6 +124,24 @@
                             </span>
                             @endif
                         </div>
+                        <div class="login_remember_box">
+                            <a
+                                href="{{ route('getDangNhapUser') }}"
+                                style="text-decoration: none; float: left"
+                            >
+                                Quay về đăng nhập
+                                <img
+                                    src="{{ asset('frontend/img/logout.png') }}"
+                                    width="15px"
+                                    style="
+                                        margin-right: 4px;
+                                        width: 1.25em;
+                                        text-align: center;
+                                    "
+                                />
+                            </a>
+                        </div>
+                        <br />
 
                         <div class="container-login100-form-btn">
                             <div class="wrap-login100-form-btn">

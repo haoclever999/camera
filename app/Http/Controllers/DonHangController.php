@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Exports\XuatDonHang;
 use App\Models\DonHangChiTiet;
+use Illuminate\Support\Facades\Gate;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DonHangController extends Controller
@@ -26,6 +27,9 @@ class DonHangController extends Controller
 
     public function index()
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $page = 5;
         $dhang = $this->donhang::orderBy('created_at', 'desc')->paginate($page);
         return view('backend.donhang.home', compact("dhang"))->with('i', (request()->input('page', 1) - 1) * $page);
@@ -33,12 +37,18 @@ class DonHangController extends Controller
 
     public function chitiet($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $dhang = $this->donhang->find($id);
         return view('backend.donhang.show', compact('dhang'));
     }
 
     public function xacnhan($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         try {
             DB::beginTransaction();
             $dhang = $this->donhang->find($id);
@@ -58,6 +68,9 @@ class DonHangController extends Controller
 
     public function huy($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         try {
             DB::beginTransaction();
             $dhang = $this->donhang->find($id);
@@ -81,6 +94,9 @@ class DonHangController extends Controller
 
     public function xoa($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         try {
             DB::beginTransaction();
             $dhang = $this->donhang->find($id);
@@ -104,6 +120,9 @@ class DonHangController extends Controller
 
     public function timkiem(Request $request)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         if ($request->ajax()) {
             $page = 5;
             $timkiem =  $this->donhang->where('ten_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orwhere('sdt_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orwhere('dia_chi_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('ten_kh')->paginate($page);
@@ -163,6 +182,9 @@ class DonHangController extends Controller
     // in đơn hàng
     public function inDonHang($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $dhang = $this->donhang->where('id', $id)->first();
         $pdf = PDF::loadView('backend.donhang.indonhang',  ['dhang' => $dhang]);
         return $pdf->stream('donhang-' . Carbon::now()->format("d-m-Y") . '.pdf');
@@ -170,6 +192,9 @@ class DonHangController extends Controller
 
     public function xuat_excel()
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $dhang = DonHangChiTiet::all()->makeHidden(['id', 'updated_at']);
         return Excel::download(new XuatDonHang($dhang), 'danhsachdonhang-' . Carbon::now()->format("His-dmY") . '.xlsx');
     }

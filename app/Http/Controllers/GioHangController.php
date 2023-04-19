@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ThanhToan;
 use App\Models\CauHinh;
 use App\Models\DanhMuc;
 use App\Models\DonHang;
@@ -15,7 +16,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Mail;
+use Illuminate\Support\Facades\Mail;
+
 
 class GioHangController extends Controller
 {
@@ -41,7 +43,7 @@ class GioHangController extends Controller
         $data['options']['hinh_anh'] = $giohang->hinh_anh_chinh;
         Cart::add($data);
 
-        return redirect()->route('giohang.chitiet_giohang');
+        return redirect()->back();
     }
 
     public function chitiet(Request $request)
@@ -60,7 +62,6 @@ class GioHangController extends Controller
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         return view('frontend.giohang.giohang_show', compact('dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
-
 
     public function capnhat_soluong(Request $request)
     {
@@ -172,7 +173,11 @@ class GioHangController extends Controller
                     ]);
                 }
             }
+            $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+
             DB::commit();
+            Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->cau_hinh_value));
+
             Cart::destroy();
             session()->flash('success', 'Cảm ơn bạn đã đặt hàng. Đơn hàng đang chờ xử lý. Vui lòng chờ!');
             return redirect()->route('giohang.chitiet_giohang');
@@ -203,5 +208,41 @@ class GioHangController extends Controller
             }
         }
         echo $kq;
+    }
+
+    public function getLichSuMuaHang(Request $request)
+    {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
+        //SEO
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
+        $url_canonical = $request->url();
+
+        $dm =  $this->dmuc->orderby('ten_dm')->get();
+        $lichsu = $this->donhang->where('user_id', auth()->user()->id)->orderby('created_at', 'desc')->get();
+        return view('frontend.giohang.lichsu_muahang', compact('lichsu', 'dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+    }
+
+    public function getLichSuMuaHangChiTiet($id, Request $request)
+    {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
+        //SEO
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
+        $url_canonical = $request->url();
+
+        $dm =  $this->dmuc->orderby('ten_dm')->get();
+        $lichsu = $this->donhang->find($id);
+        return view('frontend.giohang.lichsu_muahang_chitiet', compact('lichsu', 'dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 }

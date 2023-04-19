@@ -32,7 +32,7 @@
                         class="btn btn-danger action_huy float-right m-2"
                         data-url="{{ route('donhang.huy', ['id' => $dhang->id]) }}"
                     >
-                        Huỷ đơn
+                        Huỷ đơn hàng
                     </a>
                     <a
                         class="btn btn-primary float-right m-2"

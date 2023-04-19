@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Camera'),
+    'name' => env('APP_NAME', 'Cửa Hàng Camera Quan Sát, Camera An Ninh, Camera Giám Sát'),
 
     /*
     |--------------------------------------------------------------------------

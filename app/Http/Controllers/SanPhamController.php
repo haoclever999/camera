@@ -15,12 +15,13 @@ use App\Components\Traits\StorageImageTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
+use App\Imports\NhapHinhAnhSP;
 use App\Imports\NhapSanPham;
 use App\Models\CauHinh;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\Gate;
 
 class SanPhamController extends Controller
 {
@@ -52,6 +53,9 @@ class SanPhamController extends Controller
 
     public function index()
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $page = 5;
         $sp = (new LaySP)->getSanPham()->orderBy('ten_sp')->paginate($page);
         return view('backend.sanpham.home', compact('sp'))->with('i', (request()->input('page', 1) - 1) * $page);
@@ -59,12 +63,18 @@ class SanPhamController extends Controller
 
     public function chitiet($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $sp = $this->spham->find($id);
         return view('backend.sanpham.show', compact('sp'));
     }
 
     public function getThem()
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $DmOpt = $this->getDanhMuc('0');
         $ThOpt = $this->getThuongHieu('0');
         return view('backend.sanpham.them', compact('DmOpt', 'ThOpt'));
@@ -135,6 +145,9 @@ class SanPhamController extends Controller
 
     public function getSua($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $sp = $this->spham->find($id);
         $DmOpt = $this->getDanhMuc($sp->dm_id);
         $ThOpt = $this->getThuongHieu($sp->thuong_hieu_id);
@@ -237,14 +250,21 @@ class SanPhamController extends Controller
 
     public function xoa($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         return $this->deleteModelTrait($id, $this->spham);
     }
 
     public function timkiem(Request $request)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         if ($request->ajax()) {
+
             $page = 5;
-            $spham = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_sp . '%')->orderby('ten_sp')->paginate($page);;
+            $spham = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_sp . '%')->orderby('ten_sp')->paginate($page);
             if ($spham->count() > 0) {
                 $kq = '';
                 $i = (request()->input('page', 1) - 1) * $page;
@@ -311,8 +331,35 @@ class SanPhamController extends Controller
 
     public function nhap_excel()
     {
-        Excel::import(new NhapSanPham, request()->file('file'));
-        return back();
+        try {
+            DB::beginTransaction();
+            Excel::import(new NhapSanPham, request()->file('file'));
+            DB::commit();
+            Alert::success('Thành công', 'Nhập sản phẩm thành công');
+            return back();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Nhập sản phẩm thất bại');
+            return back();
+        }
+    }
+
+    public function nhap_hinhanh()
+    {
+
+        try {
+            DB::beginTransaction();
+            Excel::import(new NhapHinhAnhSP, request()->file('file_Hinhanh'));
+            DB::commit();
+            Alert::success('Thành công', 'Nhập hình ảnh thành công');
+            return back();
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            Alert::error('Thất bại', 'Nhập hình ảnh thất bại');
+            return back();
+        }
     }
     // Kết thúc trang admin
 
@@ -356,11 +403,38 @@ class SanPhamController extends Controller
         $meta_image = '';
         $meta_description = '';
         $meta_title = '';
-
         $url_canonical = $request->url();
+
+        if ($request->hienthi)
+            $hienthi = $request->hienthi;
+        else
+            $hienthi = 6;
+
+        $sx_sp = $request->sx_sp;
+
+        $spham = (new LaySP)->getSanPham();
+        switch ($sx_sp) {
+            case 'a_z':
+                $spham->orderby('ten_sp')->get();
+                break;
+            case 'z_a':
+                $spham->orderby('ten_sp', 'desc')->get();
+                break;
+            case 'thap_cao':
+                $spham->orderby('gia_ban')->get();
+                break;
+            case 'cao_thap':
+                $spham->orderby('gia_ban', 'desc')->get();
+                break;
+            default:
+                $spham->get();
+        }
+
+        $sp = $spham->paginate($hienthi);
+
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
-        $sp = (new LaySP)->getSanPham()->orderBy('ten_sp')->paginate(12);
+
         return view('frontend.sanpham_all', compact('dm', 'sp', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
@@ -376,16 +450,75 @@ class SanPhamController extends Controller
         $meta_description = '';
         $meta_title = '';
 
+        if ($request->hienthi)
+            $hienthi = $request->hienthi;
+        else
+            $hienthi = 6;
+
+        $sx_sp = $request->sx_sp;
+
+        $spham = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%');
+        switch ($sx_sp) {
+            case 'a_z':
+                $spham->orderby('ten_sp')->get();
+                break;
+            case 'z_a':
+                $spham->orderby('ten_sp', 'desc')->get();
+                break;
+            case 'thap_cao':
+                $spham->orderby('gia_ban')->get();
+                break;
+            case 'cao_thap':
+                $spham->orderby('gia_ban', 'desc')->get();
+                break;
+            default:
+                $spham->get();
+        }
+
         $url_canonical = $request->url();
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
-        $timkiem = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%')->paginate(12);;
+        $timkiem = $spham->paginate($hienthi);
         return view('frontend.sanpham_timkiem', compact('dm', 'th', 'timkiem', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
-    public function getTagSanPham($tag)
+    public function timKiem_Header(Request $request)
     {
-        return $tag;
+        if ($request->ajax()) {
+            $spham = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_header . '%')->orderby('ten_sp')->get();
+            if ($spham->count() > 0) {
+                $kq = '';
+                $kq .= '<ul style="text-align: left">';
+                foreach ($spham as $s) {
+                    $kq .= '<li style="margin-bottom: 5px"><a style="color:#000" href="' . route("sanpham.chitiet_sp", [$s->id]) . '">' . $s->ten_sp . ' </a></li>';
+                }
+                $kq .= '</ul>';
+                return Response($kq);
+            } else {
+                return response()->json(['status' => 'Không tìm thấy',]);
+            }
+        }
+    }
+
+    public function getTagSanPham(Request $request, $tag)
+    {
+        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
+        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+
+        //SEO
+        $url_canonical = $request->url();
+        $meta_keyword = '';
+        $meta_image = '';
+        $meta_description = '';
+        $meta_title = '';
+
+
+        $dm =  $this->dmuc->orderby('ten_dm')->get();
+        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
+
+        $tags = $this->tag->where('ten_tag', $tag)->first();
+        return view('frontend.sanpham_tag', compact('dm', 'tags', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
     // Kết thúc trang người dùng
 }

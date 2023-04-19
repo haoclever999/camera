@@ -36,7 +36,7 @@
                     <form
                         action="{{ route('nguoidung.posthoso', ['id' => $user->id] ) }}"
                         method="post"
-                        onsubmit="return kiemTraSDT(event)"
+                        
                     >
                         @csrf
 
@@ -87,7 +87,7 @@
                                 class="form-control @error('sdt') is-invalid @enderror"
                                 id="sdt"
                                 name="sodt"
-                                
+                                onblur="kiemTraSDT(event)"
                                 placeholder="Nhập số điện thoại"
                                 value="{{ $user->sdt }}"
                                 maxlength="10"
@@ -213,7 +213,6 @@ $(document).ready(function(){
     });
     $('#sdt').on('change',function(){
         document.getElementById("sdt").setAttribute("name", "sdt");
-        kiemTraSDT('');
     });
 });
 
@@ -231,7 +230,7 @@ $(document).ready(function(){
             return false;
         } else if (dt.length != "10") {
             event.preventDefault();
-            dt2.setCustomValidity("Phải nhập đủ 10 số");
+            dt2.setCustomValidity("Số điện thoại phải đủ 10 số");
             dt2.reportValidity();
             return false;
         } else if (kt == false) {

@@ -1,3 +1,8 @@
+<style>
+    .input-group > .goiy_timkiem > ul > li > a:hover {
+        color: #26a5f0 !important;
+    }
+</style>
 <div class="header">
     <div class="container">
         <a class="site-logo" href="{{ route('home.index') }}">
@@ -123,34 +128,99 @@
                     <a href="{{ route('sanpham.all') }}"> <b> Sản phẩm </b> </a>
                 </li>
                 <li>
-                    <a href="#"> <b> Liên hệ </b> </a>
+                    <a href="{{ route('getLienHe') }}"> <b> Liên hệ </b> </a>
                 </li>
 
                 <!-- BEGIN TOP SEARCH -->
-                <li class="menu-search">
+                <li>
                     <span class="sep"></span>
-                    <i class="fa fa-search search-btn"></i>
-                    <div class="search-box">
-                        <form action="{{ route('sanpham.timkiemsp') }}">
-                            @csrf
+                    <ul
+                        style="
+                            right: -7px;
+                            top: 100%;
+                            padding: 23px 12px 20px;
+                            display: block;
+                            background: transparent;
+                            position: relative;
+                            width: 274px;
+                            margin-top: 0;
+                            z-index: 22;
+                        "
+                    >
+                        <form
+                            action="{{ route('sanpham.timkiemsp') }}"
+                            method="get"
+                        >
                             <div class="input-group">
                                 <input
-                                    type="text"
+                                    type="search"
                                     placeholder="Tìm kiếm..."
-                                    class="form-control"
-                                    name="timkiem"
+                                    class="form-control timkiem_header"
+                                    name="timkiem_header"
+                                    style="
+                                        border-radius: 0.4em 0 0 0.4em !important;
+                                    "
+                                    onkeyup="timKiem(event)"
                                 />
+
+                                <div
+                                    style="
+                                        display: none;
+                                        padding: 8px 15px 10px;
+                                        background: rgb(252, 250, 251);
+                                        box-shadow: 5px 5px
+                                            rgba(91, 91, 91, 0.2);
+                                        width: max-content;
+                                        margin-top: 34px;
+                                        position: absolute;
+                                        border-radius: 0.4em !important;
+                                    "
+                                    class="goiy_timkiem"
+                                ></div>
+
                                 <span class="input-group-btn">
                                     <button
-                                        class="btn btn-primary"
                                         type="submit"
+                                        class="btn btn-primary btn_timkiem"
+                                        style="
+                                            border-radius: 0 0.4em 0.4em 0 !important;
+                                        "
                                     >
-                                        Tìm kiếm
+                                        <i class="fa fa-search"></i>
                                     </button>
                                 </span>
                             </div>
                         </form>
-                    </div>
+                        <script>
+                            function timKiem(event) {
+                                event.preventDefault();
+                                let timkiem_header =
+                                    document.querySelector(
+                                        ".timkiem_header"
+                                    ).value;
+                                $.ajax({
+                                    url: "{{ route('timkiem_header') }}",
+                                    method: "GET",
+                                    data: { timkiem_header: timkiem_header },
+
+                                    success: function (res) {
+                                        var goi_y =
+                                            document.querySelector(
+                                                ".goiy_timkiem"
+                                            );
+                                        console.log(goi_y.style);
+                                        goi_y.style.display = "block";
+                                        goi_y.innerHTML = res;
+                                        if (res.status === "Không tìm thấy") {
+                                            goi_y.style.display = "block";
+                                            goi_y.innerHTML =
+                                                "Không tìm thấy kết quả";
+                                        }
+                                    },
+                                });
+                            }
+                        </script>
+                    </ul>
                 </li>
                 <!-- END TOP SEARCH -->
             </ul>

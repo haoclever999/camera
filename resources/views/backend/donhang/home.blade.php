@@ -98,11 +98,11 @@
                                     <td>
                                         <a
                                             style="
-                                                min-width: 110px;
+                                                min-width: 80px;
                                                 padding: 3px 12px;
                                                 margin: 3px;
                                             "
-                                            class="btn btn-success"
+                                            class="btn btn-primary"
                                             href="{{ route('donhang.chitiet', ['id' => $dh->id]) }}"
                                         >
                                             Chi tiết
@@ -113,7 +113,7 @@
                                         $dh->trang_thai!='Đã xoá')
                                         <a
                                             style="
-                                                min-width: 110px;
+                                                min-width: 80px;
                                                 padding: 3px 12px;
                                                 margin: 3px;
                                             "

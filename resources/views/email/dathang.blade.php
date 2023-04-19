@@ -15,56 +15,76 @@
         </style>
     </head>
     <body>
-        <p>Xin chào {{ Auth::user()->name }}!</p>
+        <p>Xin chào {{ Auth::user()->ho_ten }}!</p>
         <p>
-            Xin cảm ơn bạn đã đặt hàng tại {{ config("app.name", "Laravel") }}.
+            Cảm ơn bạn đã đặt hàng tại Cửa Hàng Camera Quan Sát, Camera An Ninh,
+            Camera Giám Sát.
         </p>
         <p>Thông tin giao hàng:</p>
         <p>
-            - Điện thoại: <strong>{{ $donhang->dienthoaigiaohang }}</strong>
+            - Điện thoại: <strong>{{ $data->sdt_kh }}</strong>
         </p>
         <p>
-            - Địa chỉ giao: <strong>{{ $donhang->diachigiaohang }}</strong>
+            - Địa chỉ giao hàng: <strong>{{ $data->dia_chi_kh }}</strong>
         </p>
         <p>Thông tin đơn hàng bao gồm:</p>
         <table border="1">
             <thead>
                 <tr>
-                    <th width="5%">#</th>
-                    <th>Sản phẩm</th>
-                    <th width="5%">SL</th>
-                    <th width="15%">Đơn giá</th>
+                    <th width="1%">STT</th>
+                    <th width="49%">Sản phẩm</th>
+                    <th width="10%">Số lượng</th>
+                    <th width="20%">Đơn giá</th>
                     <th width="20%">Thành tiền</th>
                 </tr>
             </thead>
             <tbody>
-                @php $tongtien = 0; @endphp @foreach($donhang->DonHang_ChiTiet
-                as $chitiet)
+                @php $i=1; @endphp @foreach($data->DonHangChiTiet as $chitiet)
                 <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $chitiet->SanPham->tensanpham }}</td>
-                    <td>{{ $chitiet->soluongban }}</td>
+                    <td style="text-align: center">{{ $i++ }}</td>
+                    <td>{{ $chitiet->SanPham->ten_sp }}</td>
                     <td style="text-align: right">
-                        {{ number_format($chitiet->dongiaban)
-                        }}<sup><u>đ</u></sup>
+                        {{ $chitiet->so_luong_ban }}
                     </td>
                     <td style="text-align: right">
-                        {{ number_format($chitiet->soluongban * $chitiet->dongiaban)
-                        }}<sup><u>đ</u></sup>
+                        {{ number_format($chitiet->gia,0,',','.')}}đ
+                    </td>
+                    <td style="text-align: right">
+                        {{ number_format($chitiet->thanh_tien,0,',','.')}}đ
                     </td>
                 </tr>
-                @php $tongtien += $chitiet->soluongban * $chitiet->dongiaban;
-                @endphp @endforeach
-                <tr>
-                    <td colspan="4">Tổng tiền sản phẩm:</td>
-                    <td style="text-align: right">
-                        <strong>{{ number_format($tongtien) }}</strong
-                        ><sup><u>đ</u></sup>
-                    </td>
-                </tr>
+                @endforeach
             </tbody>
         </table>
-        <p>Trân trọng,</p>
-        <p>{{ config("app.name", "Laravel") }}</p>
+        <div style="width: 100%">
+            <div style="width: 70%; float: left; text-align: justify">
+                <h5>Ghi chú:</h5>
+                @if(!empty($data))
+                {{$data->ghi_chu}}
+                @endif
+            </div>
+            <div style="width: 20%; float: right; padding-right: 20px">
+                <ul style="padding-left: 20px; list-style: none">
+                    <li>
+                        <em>Thuế:</em>
+                        <strong class="price" style="float: right">
+                            {{ number_format($data->thue, 0, ",", ".") }}đ
+                        </strong>
+                    </li>
+
+                    <li class="shopping-total-price">
+                        <em>Thành tiền:</em>
+                        <strong class="price" style="float: right">
+                            {{number_format($data->tong_tien, 0, ",", ".")}}đ
+                        </strong>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div style="width: 100%; clear: both">
+            <hr />
+            <p>Mọi thắc mắc vui lòng liên hệ số điện thoại: {{ $dt }}</p>
+            <p>Trân trọng,</p>
+        </div>
     </body>
 </html>

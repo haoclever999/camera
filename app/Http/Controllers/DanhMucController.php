@@ -14,6 +14,7 @@ use App\Models\ThuongHieu;
 use App\Components\LaySP;
 use App\Models\CauHinh;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class DanhMucController extends Controller
 {
@@ -31,6 +32,9 @@ class DanhMucController extends Controller
 
     public function index()
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $page = 5;
         $dm = $this->dmuc::orderBy('ten_dm')->paginate($page);
         return view('backend.danhmuc.home', compact('dm'))->with('i', (request()->input('page', 1) - 1) * $page);
@@ -65,6 +69,9 @@ class DanhMucController extends Controller
 
     public function getSua($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $dm = $this->dmuc->find($id);
         return view('backend.danhmuc.sua', compact('dm'));
     }
@@ -102,11 +109,17 @@ class DanhMucController extends Controller
 
     public function xoa($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         return $this->deleteModelTrait($id, $this->dmuc);
     }
 
     public function timkiem(Request $request)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         if ($request->ajax()) {
             $page = 5;
             $timkiem =  $this->dmuc->where('ten_dm', 'LIKE', '%' . $request->timkiem_dm . '%')->orderby('ten_dm')->paginate($page);
@@ -156,8 +169,6 @@ class DanhMucController extends Controller
     // Kết thúc trang admin
 
     // Bắt đầu trang người dùng
-
-
     public function getDanhMucSanPham(Request $request, $slug, $id_dm)
     {
         $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
@@ -171,7 +182,32 @@ class DanhMucController extends Controller
         $meta_title = '';
         $url_canonical = $request->url();
 
-        $sp = (new LaySP)->getSanPham()->where('dm_id', $id_dm)->paginate(6);
+        if ($request->hienthi)
+            $hienthi = $request->hienthi;
+        else
+            $hienthi = 6;
+
+        $sx_sp = $request->sx_sp;
+
+        $spham = (new LaySP)->getSanPham()->where('dm_id', $id_dm);
+        switch ($sx_sp) {
+            case 'a_z':
+                $spham->orderby('ten_sp')->get();
+                break;
+            case 'z_a':
+                $spham->orderby('ten_sp', 'desc')->get();
+                break;
+            case 'thap_cao':
+                $spham->orderby('gia_ban')->get();
+                break;
+            case 'cao_thap':
+                $spham->orderby('gia_ban', 'desc')->get();
+                break;
+            default:
+                $spham->get();
+        }
+
+        $sp = $spham->paginate($hienthi);
 
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();

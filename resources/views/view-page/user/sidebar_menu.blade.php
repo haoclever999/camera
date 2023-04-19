@@ -1,4 +1,10 @@
 <div class="sidebar col-md-3 col-sm-4">
+    <link
+        rel="stylesheet"
+        href="{{
+            asset('frontend/assets_theme/plugins/smoothness/jquery-ui.css')
+        }}"
+    />
     <h4><b> Danh mục sản phẩm</b></h4>
     <ul class="list-group margin-bottom-25 sidebar-menu">
         @foreach($dm as $d)
@@ -49,4 +55,44 @@
         </li>
         @endforeach @endforeach @endif
     </ul>
+
+    <h4><b>Lọc giá</b></h4>
+    <ul class="col-md-6 col-sm-6">
+        <form>
+            <div id="loc_gia"></div>
+            <input type="hidden" id="tu_gia" />
+            <input type="hidden" id="den_gia" />
+            <p>
+                <input
+                    type="text"
+                    id="amount"
+                    style="border: 0; color: #f6931f; font-weight: bold"
+                />
+            </p>
+        </form>
+    </ul>
+
+    <script>
+        $(document).ready(function () {
+            $("#loc_gia").slider({
+                orientation: "horizontal",
+                range: true,
+                values: [0, 10000000],
+                slide: function (event, ui) {
+                    $("#amount").val(
+                        ui.values[0] + "đ" + " - " + ui.values[1] + "đ"
+                    );
+                    $("#tu_gia").val(ui.values[0]);
+                    $("#den_gia").val(ui.values[1]);
+                },
+            });
+            $("#amount").val(
+                $("#loc_gia").slider("values", 0) +
+                    "đ" +
+                    " - " +
+                    $("#loc_gia").slider("values", 1) +
+                    "đ"
+            );
+        });
+    </script>
 </div>

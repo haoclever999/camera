@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Gate;
 
 class CauHinhController extends Controller
 {
@@ -21,6 +22,9 @@ class CauHinhController extends Controller
 
     public function index()
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $page = 5;
         $cauhinh = $this->cauhinh::orderBy('cau_hinh_key')->paginate($page);
         return view('backend.cauhinh.home', compact("cauhinh"))->with('i', (request()->input('page', 1) - 1) * $page);
@@ -58,6 +62,9 @@ class CauHinhController extends Controller
 
     public function getSua($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         $cauhinh = $this->cauhinh->find($id);
         return view('backend.cauhinh.sua', compact('cauhinh'));
     }
@@ -111,11 +118,17 @@ class CauHinhController extends Controller
 
     public function xoa($id)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         return $this->deleteModelTrait($id, $this->cauhinh);
     }
 
     public function timkiem(Request $request)
     {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
         if ($request->ajax()) {
             $page = 5;
             $timkiem = $this->cauhinh->where('cau_hinh_key', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orwhere('cau_hinh_value', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orderby('cau_hinh_key')->paginate($page);

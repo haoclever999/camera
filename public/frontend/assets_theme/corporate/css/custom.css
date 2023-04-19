@@ -71,19 +71,17 @@
     color: rgba(255, 216, 64, 0.94);
     border-color: transparent currentColor transparent currentColor;
 }
-.giamgia > .chu {
-    color: #ee4d2d;
-    font-weight: bold;
-    font-size: 1.2rem;
-    line-height: 1.2rem;
-    position: relative;
-    top: 4px;
-}
+.giamgia > .chu,
 .giamgia > .phantram {
     color: #ee4d2d;
     font-weight: bold;
     font-size: 1.2rem;
     line-height: 1.2rem;
     position: relative;
-    top: 0;
+}
+.giamgia > .chu {
+    top: 4px !important;
+}
+.giamgia > .phantram {
+    top: 0 !important;
 }

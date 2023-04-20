@@ -69,15 +69,9 @@
                         </a>
                     </h3>
                     <div class="pi-price">
-                        {{number_format(($tk->gia_ban-($tk->gia_ban*$tk->giam_gia/100)),0,',','.')
-
-
-
-
-
-                        }}đ
+                        {{number_format(($tk->gia_ban-($tk->gia_ban*$tk->giam_gia/100)),0,',','.')}}đ
                     </div>
-                    <div class="price">
+                    <div class="price pull-right">
                         <del>
                             <i
                                 style="

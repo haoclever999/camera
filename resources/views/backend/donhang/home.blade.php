@@ -63,8 +63,6 @@
                                 <tr>
                                     <th>STT</th>
                                     <th>Tên khách hàng</th>
-                                    <th>Số điện thoại</th>
-                                    <th>Địa chỉ</th>
                                     <th>Tổng số lượng</th>
                                     <th>Tổng tiền</th>
                                     <th>Hình thức</th>
@@ -78,10 +76,6 @@
                                 <tr>
                                     <td>{{ +(+$i) }}</td>
                                     <td>{{$dh->ten_kh}}</td>
-                                    <td>{{$dh->sdt_kh}}</td>
-                                    <td style="text-align: left">
-                                        {{$dh->dia_chi_kh}}
-                                    </td>
                                     <td>{{$dh->tong_so_luong}}</td>
                                     <td>
                                         {{number_format($dh->tong_tien,0,",",".")}}

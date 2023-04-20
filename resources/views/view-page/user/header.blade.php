@@ -95,10 +95,12 @@
         <!-- BEGIN NAVIGATION -->
         <div class="header-navigation" style="text-align: center">
             <ul>
-                <li>
+                <li class="{{ Request::segment(1) == '' ? 'active' : ''}}">
                     <a href="{{ route('home.index') }}"> <b> Trang chủ </b> </a>
                 </li>
-                <li class="dropdown dropdown-megamenu">
+                <li
+                    class="dropdown dropdown-megamenu {{ Request::segment(1) == 'danh-muc' ? 'active' : ''}}"
+                >
                     <a
                         class="dropdown-toggle"
                         data-toggle="dropdown"
@@ -109,7 +111,9 @@
                     </a>
                     <ul class="dropdown-menu">
                         @foreach($dm as $d)
-                        <li>
+                        <li
+                            class="{{ Request::segment(2) == $d->slug ? 'active' : ''}}"
+                        >
                             <a
                                 href="{{route('danhmuc.sanpham',
                                     [
@@ -124,10 +128,14 @@
                         @endforeach
                     </ul>
                 </li>
-                <li>
+                <li
+                    class="{{ Request::segment(1) == 'san-pham' || Request::segment(1) == 'thuong-hieu' ? 'active' : ''}}"
+                >
                     <a href="{{ route('sanpham.all') }}"> <b> Sản phẩm </b> </a>
                 </li>
-                <li>
+                <li
+                    class="{{ Request::segment(1) == 'lien-he' ? 'active' : ''}}"
+                >
                     <a href="{{ route('getLienHe') }}"> <b> Liên hệ </b> </a>
                 </li>
 
@@ -160,6 +168,7 @@
                                     style="
                                         border-radius: 0.4em 0 0 0.4em !important;
                                     "
+                                    onblur="huyTimKiem(event)"
                                     onkeyup="timKiem(event)"
                                 />
 
@@ -174,6 +183,7 @@
                                         margin-top: 34px;
                                         position: absolute;
                                         border-radius: 0.4em !important;
+                                        text-transform: none;
                                     "
                                     class="goiy_timkiem"
                                 ></div>
@@ -208,7 +218,6 @@
                                             document.querySelector(
                                                 ".goiy_timkiem"
                                             );
-                                        console.log(goi_y.style);
                                         goi_y.style.display = "block";
                                         goi_y.innerHTML = res;
                                         if (res.status === "Không tìm thấy") {
@@ -218,6 +227,12 @@
                                         }
                                     },
                                 });
+                            }
+                            function huyTimKiem(event) {
+                                event.preventDefault();
+                                var goi_y = (document.querySelector(
+                                    ".goiy_timkiem"
+                                ).style.display = "none");
                             }
                         </script>
                     </ul>

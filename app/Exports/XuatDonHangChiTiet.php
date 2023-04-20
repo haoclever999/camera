@@ -11,36 +11,31 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Events\AfterSheet;
 
-class XuatDonHang implements FromCollection, WithHeadings, ShouldAutoSize, WithMapping, WithTitle, WithEvents
+class XuatDonHangChiTiet implements FromCollection, WithHeadings, ShouldAutoSize, WithMapping, WithTitle, WithEvents
 {
     use Exportable;
     /**
      * @return \Illuminate\Support\Collection
      */
-    private $dhang;
+    private $dhct;
     public function __construct($data)
     {
-        $this->dhang = $data;
+        $this->dhct = $data;
     }
 
     public function collection()
     {
-        return $this->dhang;
+        return $this->dhct;
     }
 
     public function map($row): array
     {
         return [
-            $row->id,
-            $row->ten_kh,
-            $row->sdt_kh,
-            $row->dia_chi_kh,
-            $row->tong_so_luong,
-            $row->thue,
-            $row->tong_tien,
-            $row->hinh_thuc,
-            $row->ghi_chu,
-            $row->trang_thai,
+            $row->don_hang_id,
+            $row->SanPham->ten_sp,
+            $row->so_luong_ban,
+            $row->gia,
+            $row->thanh_tien,
             $row->created_at,
         ];
     }
@@ -49,22 +44,17 @@ class XuatDonHang implements FromCollection, WithHeadings, ShouldAutoSize, WithM
     {
         return [
             "Mã đơn hàng",
-            "Tên khách hàng",
-            "Số điện thoại",
-            "Địa chỉ khách hàng",
-            "Tổng số lượng",
-            "Thuế",
-            "Tổng tiền",
-            "Hình thức thanh toán",
-            "Ghi chú",
-            "Trạng thái",
+            "Tên sản phẩm",
+            "Số lượng bán",
+            "Giá bán",
+            "Thành tiền",
             "Ngày tạo đơn",
         ];
     }
 
     public function title(): string
     {
-        return 'Đơn hàng';
+        return 'Đơn hàng chi tiết';
     }
 
     public function registerEvents(): array
@@ -72,7 +62,7 @@ class XuatDonHang implements FromCollection, WithHeadings, ShouldAutoSize, WithM
         return [
             // Array callable, refering to a static method.
             AfterSheet::class => function (AfterSheet $event) {
-                $event->sheet->getStyle('A1:K1')->applyFromArray([
+                $event->sheet->getStyle('A1:F1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ]

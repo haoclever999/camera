@@ -39,9 +39,12 @@
                 </h3>
                 <div class="pi-price">
                     {{number_format(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),0,',','.')
+
+
+
                     }}đ
                 </div>
-                <div class="price">
+                <div class="price pull-right">
                     <del>
                         <i
                             style="
@@ -124,12 +127,7 @@
                                 vertical-align: middle;
                             "
                         >
-                            {{number_format($sp_nb->gia_ban,0,',','.')
-
-
-
-
-                            }}đ
+                            {{number_format($sp_nb->gia_ban,0,',','.')}}đ
                         </i>
                     </del>
                 </div>

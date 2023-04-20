@@ -38,6 +38,8 @@
                         Ngày mua hàng:
                         {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $lichsu->created_at)->format('H:i:s d/m/Y')}}
                     </h4>
+                    <h4>Trạng thái: {{$lichsu->trang_thai}}</h4>
+                    <br />
                     <table style="font-size: 1.2em">
                         <tr style="background-color: rgba(204, 204, 204, 0.8)">
                             <th style="text-align: center">STT</th>
@@ -71,6 +73,10 @@
                             <td style="text-align: right">
                                 <strong>
                                     {{number_format($dhct->thanh_tien,0,",",".")
+
+
+
+
                                     }}đ
                                 </strong>
                             </td>

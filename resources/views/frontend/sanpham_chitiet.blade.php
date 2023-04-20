@@ -102,7 +102,6 @@
                         <div class="price">
                             <strong>
                                 {{number_format(($spct->gia_ban-($spct->gia_ban*$spct->giam_gia/100)),0,',','.')
-
                                 }}đ
                             </strong>
                             @if($spct->giam_gia!=0)
@@ -110,7 +109,6 @@
                                 <del>
                                     <i>
                                         {{number_format(($spct->gia_ban),0,',','.')
-
                                         }}đ
                                     </i>
                                 </del>
@@ -187,11 +185,7 @@
                                 name="id_sp"
                                 value="{{$spct->id}}"
                             />
-                            <input
-                                type="hidden"
-                                name="gia"
-                                value="{{number_format(($spct->gia_ban-($spct->gia_ban*$spct->giam_gia/100)),0,',','.')}}"
-                            />
+
                             <div class="product-quantity">
                                 <input
                                     id="product-quantity"
@@ -204,7 +198,11 @@
                                     class="form-control input-sm"
                                 />
                             </div>
-                            <button class="btn btn-primary" type="submit">
+                            <button
+                                class="btn btn-primary"
+                                type="submit"
+                                id="btnThem"
+                            >
                                 Thêm vào giỏ
                             </button>
                         </form>
@@ -212,13 +210,7 @@
 
                     <!-- Share facebook  -->
                     <div id="fb-root"></div>
-                    <script
-                        async
-                        defer
-                        crossorigin="anonymous"
-                        src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0&appId=553658326637566&autoLogAppEvents=1"
-                        nonce="QXUjLlwS"
-                    ></script>
+
                     <div
                         class="fb-share-button"
                         data-href="{{ $url_canonical }}"
@@ -237,7 +229,7 @@
                         </a>
                     </div>
                 </div>
-                <!-- Mô tả tính  năng sp -->
+                <!-- Mô tả, tính năng sp -->
                 <div class="product-page-content" style="font-size: 18px">
                     <ul id="myTab" class="nav nav-tabs">
                         <li class="active">
@@ -333,6 +325,28 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                             }}đ
                                         </i>
                                     </del>
@@ -374,6 +388,7 @@
 </div>
 
 @endsection @section('js')
+<script src="{{ asset('frontend/js/jquery.min.js') }}"></script>
 <script>
     function SoLuongMin(el) {
         if (el.value != "") {
@@ -396,6 +411,31 @@
             next = next.nextElementSibling;
         }
     });
+    $(document).ready(function (event) {
+        $("form").submit(function () {
+            var form = $(this);
+            var actionUrl = form.attr("action");
+
+            $.ajax({
+                type: "POST",
+                url: actionUrl,
+                data: form.serialize(),
+                success: function (data) {
+                    if (data.status === "Thêm thành công") {
+                        alert("Đã thêm vào giỏ hàng");
+                        location.reload(false);
+                    } else alert("Thêm vào giỏ hàng thất bại");
+                },
+            });
+        });
+    });
 </script>
+<script
+    async
+    defer
+    crossorigin="anonymous"
+    src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v16.0&appId=553658326637566&autoLogAppEvents=1"
+    nonce="QXUjLlwS"
+></script>
 
 @endsection

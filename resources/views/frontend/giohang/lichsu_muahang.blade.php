@@ -39,6 +39,7 @@
                             <th style="text-align: center">STT</th>
                             <th style="text-align: center">Tên khách hàng</th>
                             <th style="text-align: center">Tổng số lượng</th>
+                            <th style="text-align: center">Thuế</th>
                             <th style="text-align: center">Tổng tiền</th>
                             <th style="text-align: center">Trạng thái</th>
                             <th style="text-align: center">Ngày tạo</th>
@@ -52,6 +53,7 @@
                             <td>
                                 {{$ls->tong_so_luong}}
                             </td>
+                            <td>{{number_format($ls->thue,0,",",".")}}đ</td>
                             <td>
                                 {{number_format($ls->tong_tien,0,",",".")}}đ
                             </td>

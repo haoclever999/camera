@@ -7,6 +7,13 @@
             name="viewport"
             content="width=device-width, initial-scale=1, shrink-to-fit=no"
         />
+        <link
+            rel="icon"
+            href="{{ asset('frontend/img/Logo.png') }}"
+            type="image/gif"
+            sizes="32x32"
+        />
+
         <!-- Bắt đầu SEO  -->
         <meta name="description" content="{{ $meta_description }}" />
         <meta name="keywords" content="{{ $meta_keyword }}" />

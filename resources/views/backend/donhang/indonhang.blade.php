@@ -80,13 +80,14 @@
                 <img src="{{ public_path('frontend/img/logo.jpg') }}" />
                 <h3
                     style="
-                        width: 60%;
+                        width: 70%;
                         vertical-align: middle;
-                        margin-left: 20%;
-                        margin-right: 20%;
+                        margin-left: 15%;
+                        margin-right: 15%;
                     "
                 >
-                    Cửa Hàng Camera Quan Sát, Camera An Ninh, Camera Giám Sát
+                    Cửa Hàng Camera Quan Sát, <br />
+                    Camera An Ninh, Camera Giám Sát
                 </h3>
             </div>
             <div class="row">
@@ -179,6 +180,11 @@
 
                             <strong class="price" style="float: right">
                                 {{number_format($dhang->tong_tien, 0, ",", ".")
+
+
+
+
+
 
 
 

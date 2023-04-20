@@ -33,17 +33,18 @@ class GioHangController extends Controller
 
     public function them_giohang(Request $request)
     {
-        $giohang = $this->spham->where('id', $request->id_sp)->first();
-        $gia = $giohang->gia_ban - ($giohang->gia_ban * $giohang->giam_gia / 100);
+        if ($request->ajax()) {
+            $giohang = $this->spham->where('id', $request->id_sp)->first();
+            $gia = $giohang->gia_ban - ($giohang->gia_ban * $giohang->giam_gia / 100);
 
-        $data['id'] = $giohang->id;
-        $data['name'] = $giohang->ten_sp;
-        $data['price'] = $gia;
-        $data['qty'] = $request->num_so_luong;
-        $data['options']['hinh_anh'] = $giohang->hinh_anh_chinh;
-        Cart::add($data);
-
-        return redirect()->back();
+            $data['id'] = $giohang->id;
+            $data['name'] = $giohang->ten_sp;
+            $data['price'] = $gia;
+            $data['qty'] = $request->num_so_luong;
+            $data['options']['hinh_anh'] = $giohang->hinh_anh_chinh;
+            Cart::add($data);
+            return response()->json(['status' => 'Thêm thành công',]);
+        }
     }
 
     public function chitiet(Request $request)

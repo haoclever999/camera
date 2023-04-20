@@ -1,13 +1,9 @@
--design
-	set color title action
-
-
 -- Tích hợp thanh toán
-    + https://transmoni.io/blog/tich-hop-thanh-toan-chuyen-khoan-vao-website-su-dung-laravel
     + https://viblo.asia/p/tich-hop-cong-thanh-toan-vnpay-voi-laravel-Az45bGD6KxY
     + https://sandbox.vnpayment.vn/apis/docs/huong-dan-tich-hop/
     + momo   
 
--- Chia sẻ fb, nút thích trong chi tiết sp
-    đăng nhập fb, gg
-    chat zalo
+-- Chia sẻ fb, đăng nhập fb, gg, chat zalo
+
+-- so sanh sp
+-- loc sp theo price

@@ -12,7 +12,7 @@
                 @endforeach
             </div>
             <div class="col-md-6 col-sm-6">
-                <form >
+                <form>
                     <div class="pull-right">
                         <label class="control-label">Hiển thị:</label>
                         <select class="form-control input-sm" onchange="this.form.submit();" name="hienthi">
@@ -74,7 +74,7 @@
                         {{number_format(($s->gia_ban-($s->gia_ban*$s->giam_gia/100)),0,',','.')
                         }}đ
                     </div>
-                    <div class="price">
+                    <div class="price pull-right">
                         <del>
                             <i style="margin-left: 1em; height: 25px; line-height: 2; vertical-align: middle;">
                                 {{number_format($s->gia_ban,0,',','.')

@@ -77,7 +77,7 @@
 
                         }}đ
                     </div>
-                    <div class="price">
+                    <div class="price pull-right">
                         <del>
                             <i
                                 style="

@@ -513,7 +513,6 @@ class SanPhamController extends Controller
         $meta_description = '';
         $meta_title = '';
 
-
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
 

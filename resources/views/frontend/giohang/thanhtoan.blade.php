@@ -143,28 +143,25 @@
                 <div class="form-group">
                     <label>Chọn hình thức thanh toán</label>
                     <div style="margin-top: 1em">
-                        <input
-                            type="radio"
-                            id="chuyenkhoan"
+                        @if(Session::has('successPaypal'))
+                            <h6 style="color: green; font-weight: bold">{{Session::get('successPaypal')}}</h6>
+                            <input
+                            type="hidden"
+                            id="Paypal"
                             name="thanh_toan"
-                            value="Chuyển khoản"
-                            required
+                            value="Thanh toán bằng Paypal" 
+                            class="thanh_toan"
+                            
                         />
-                        <label
-                            for="chuyenkhoan"
-                            style="
-                                font-weight: normal;
-                                vertical-align: middle;
-                                margin-right: 0.5em;
-                            "
-                        >
-                            Chuyển khoản ngân hàng
-                        </label>
+                        @elseif(Session::has('errorPaypal'))
+                            <h6 style="color: red;  font-weight: bold">{{Session::get('errorPaypal')}}</h6>
+                        @else
                         <input
                             type="radio"
                             id="tienmat"
                             name="thanh_toan"
-                            value="Tiền mặt"
+                            class="thanh_toan"
+                            value="Thanh toán khi nhận hàng" checked
                         />
                         <label
                             for="tienmat"
@@ -178,16 +175,45 @@
                         </label>
                         <input
                             type="radio"
-                            id="momo"
+                            id="Paypal"
                             name="thanh_toan"
-                            value="Momo"
+                            
+                            class="thanh_toan"
+                            required
                         />
                         <label
-                            for="momo"
+                            for="Paypal"
+                            style="
+                                font-weight: normal;
+                                vertical-align: middle;
+                                margin-right: 0.5em;
+                            "
+                        >
+                            Thanh toán Paypal
+                        </label>
+                        
+                        <input
+                            type="radio"
+                            id="Momo"
+                            name="thanh_toan"
+                            value="Thanh toán bằng Momo"
+                            class="thanh_toan"
+                        />
+                        <label
+                            for="Momo"
                             style="font-weight: normal; vertical-align: middle"
                         >
                             Thanh toán bằng MOMO
                         </label>
+                        @endif
+                    </div>
+                    <div class="container mt-5 " id="paypal" style="display: none;">
+                        
+                        @php $tien_usd=round((Cart::total(0,'','')/23512),2); Session::put('tien_usd', $tien_usd); @endphp
+                        <a href="{{ route('processTransaction') }}" class="btn btn-primary mt-3">Thanh toán {{Session::get('tien_usd')}}$ Paypal</a>
+                    </div>
+                    <div class="container mt-5 " id="momo" style="display: none;">
+                        <a href="{{ route('processTransaction') }}" class="btn btn-primary mt-3">Thanh toán Momo</a>
                     </div>
                 </div>
                 <div class="form-group">
@@ -287,6 +313,25 @@ $(document).ready(function(){
                 $('#'+kq).html(data);
             }
         })
+    });
+
+    $('.thanh_toan').on('change',function(){
+        var action = $(this).attr('id');
+        
+        var _token = $('input[name="_token"]').val();
+        
+        if(action=="Paypal"){
+            $("#paypal").css("display", "block");
+            $("#momo").css("display", "none");
+        }
+        else if(action=="Momo"){
+            $("#paypal").css("display", "none");
+            $("#momo").css("display", "block");
+        }
+        else{
+            $("#paypal").css("display", "none");
+            $("#momo").css("display", "none");
+        }
     });
    
 })

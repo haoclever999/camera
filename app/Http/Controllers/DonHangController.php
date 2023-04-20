@@ -10,9 +10,13 @@ use App\Components\Traits\DeleteModelTrait;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-use App\Exports\XuatDonHang;
+use App\Exports\XuatDonHangMultiple;
+use App\Mail\XacNhan;
+use App\Models\CauHinh;
 use App\Models\DonHangChiTiet;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Mail;
 use Maatwebsite\Excel\Facades\Excel;
 
 class DonHangController extends Controller
@@ -55,6 +59,10 @@ class DonHangController extends Controller
             $dhang->id = $id;
             $dhang->trang_thai = 'Đã xác nhận đơn';
             $dhang->save();
+            $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
+            $user = User::find($dhang->user_id);
+            $tieude = "Xác nhận";
+            Mail::to($user->email)->send(new XacNhan($dhang, $dt->cau_hinh_value, $tieude));
             DB::commit();
             Alert::success('Thành công', 'Xác nhận đơn hàng thành công');
             return redirect()->route('donhang.chitiet', ['id' => $id]);
@@ -77,6 +85,10 @@ class DonHangController extends Controller
             $dhang->id = $id;
             $dhang->trang_thai = 'Đã huỷ đơn';
             $dhang->save();
+            $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
+            $user = User::find($dhang->user_id);
+            $tieude = "Huỷ";
+            Mail::to($user->email)->send(new XacNhan($dhang, $dt->cau_hinh_value, $tieude));
             DB::commit();
             return response()->json([
                 'code' => 200,
@@ -195,7 +207,8 @@ class DonHangController extends Controller
         if (!Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
-        $dhang = DonHangChiTiet::all()->makeHidden(['id', 'updated_at']);
-        return Excel::download(new XuatDonHang($dhang), 'danhsachdonhang-' . Carbon::now()->format("His-dmY") . '.xlsx');
+        $dhang = DonHang::all()->makeHidden(['user_id', 'updated_at']);
+        $dhct = DonHangChiTiet::all()->makeHidden(['id', 'updated_at']);
+        return Excel::download(new XuatDonHangMultiple($dhang, $dhct), 'danhsachdonhang-' . Carbon::now()->format("His-dmY") . '.xlsx');
     }
 }

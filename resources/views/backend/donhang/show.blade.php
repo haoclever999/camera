@@ -40,7 +40,7 @@
                     >
                         Xác nhận
                     </a>
-                    @else
+                    @elseif($dhang->trang_thai=='Đã xác nhận đơn')
                     <a
                         target="_blank"
                         class="btn btn-primary float-right m-2"
@@ -48,6 +48,7 @@
                     >
                         In đơn hàng
                     </a>
+
                     @endif
                 </div>
             </div>
@@ -62,24 +63,39 @@
             <div class="row">
                 <div class="tbl-fixed">
                     <div class="col-md-12">
+                        <h4><b> Thông tin đơn hàng </b></h4>
+                        <h6 style="margin-left: 1em">
+                            <b> ID đơn hàng:</b> {{$dhang->id }}
+                        </h6>
+                        <h6 style="margin-left: 1em">
+                            <b> Họ tên:</b> {{$dhang->ten_kh }}
+                        </h6>
+                        <h6 style="margin-left: 1em">
+                            <b>Số điện thoại:</b> {{$dhang->sdt_kh }}
+                        </h6>
+                        <h6 style="margin-left: 1em">
+                            <b>Địa chỉ giao hàng:</b> {{$dhang->dia_chi_kh }}
+                        </h6>
+                        <br />
                         <table class="table" style="min-width: max-content">
-                            <tr>
+                            <tr
+                                style="
+                                    background-color: rgba(204, 204, 204, 0.8);
+                                "
+                            >
                                 <th>STT</th>
-                                <th>ID đơn hàng</th>
+
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
                                 <th>Số lượng</th>
                                 <th>Giá bán</th>
                                 <th>Thành tiền</th>
-                                <th>Ngày tạo</th>
                             </tr>
                             @php $count = 1; @endphp @foreach(
                             $dhang->DonHangChiTiet as $dhct)
                             <tr>
                                 <td>{{ $count++ }}</td>
-                                <td>
-                                    {{$dhct->don_hang_id }}
-                                </td>
+
                                 <td>{{ optional($dhct->SanPham)->ten_sp }}</td>
                                 <td>
                                     <img
@@ -96,10 +112,6 @@
                                 <td>
                                     {{number_format($dhct->thanh_tien,0,",",".")}}
                                     đ
-                                </td>
-
-                                <td>
-                                    {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dhct->created_at)->format('H:i:s d/m/Y')}}
                                 </td>
                             </tr>
                             @endforeach

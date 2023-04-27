@@ -40,7 +40,7 @@
                     >
                         Xác nhận
                     </a>
-                    @elseif($dhang->trang_thai=='Đã xác nhận đơn')
+                    @elseif($dhang->trang_thai!='Đã xoá')
                     <a
                         target="_blank"
                         class="btn btn-primary float-right m-2"
@@ -48,8 +48,21 @@
                     >
                         In đơn hàng
                     </a>
-
-                    @endif
+                    @if($dhang->trang_thai=='Đã xác nhận đơn')
+                    <a
+                        class="btn btn-primary float-right m-2"
+                        href="{{ route('donhang.DangVanChuyen', ['id' => $dhang->id]) }}"
+                    >
+                        Đang vận chuyển
+                    </a>
+                    @elseif($dhang->trang_thai=='Đang vận chuyển')
+                    <a
+                        class="btn btn-primary float-right m-2"
+                        href="{{ route('donhang.DaGiao', ['id' => $dhang->id]) }}"
+                    >
+                        Đã giao hàng
+                    </a>
+                    @endif @endif
                 </div>
             </div>
             <!-- /.row -->

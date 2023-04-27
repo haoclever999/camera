@@ -1246,3 +1246,29 @@ Shop Stype Buttons
 .btn {
     text-transform: uppercase;
 }
+
+/* thêm giỏ hàng*/
+
+.product-item .btn-them-gio-hang {
+    float: right;
+    width: 55% !important;
+    color: #fff !important;
+    background: rgba(38, 165, 240, 0.8) !important;
+}
+.product-item .btn-them-gio-hang:hover {
+    color: #fff !important;
+    background: rgb(38, 165, 240) !important;
+}
+
+/* so sánh sản phẩm*/
+.product-item .btn-so-sanh {
+    margin-top: 1px;
+    float: left;
+    width: 40% !important;
+    color: #fff !important;
+    background: rgba(38, 165, 240, 0.8) !important;
+}
+.product-item .btn-so-sanh:hover {
+    color: #fff !important;
+    background: rgb(38, 165, 240) !important;
+}

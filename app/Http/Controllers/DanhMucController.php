@@ -188,6 +188,7 @@ class DanhMucController extends Controller
             $hienthi = 6;
 
         $sx_sp = $request->sx_sp;
+        $loc_gia = $request->gia;
 
         $spham = (new LaySP)->getSanPham()->where('dm_id', $id_dm);
         switch ($sx_sp) {
@@ -202,6 +203,28 @@ class DanhMucController extends Controller
                 break;
             case 'cao_thap':
                 $spham->orderby('gia_ban', 'desc')->get();
+                break;
+            default:
+                $spham->get();
+        }
+        switch ($loc_gia) {
+            case '1':
+                $spham->where('gia_ban', '<', '1000000')->orderby('ten_sp')->get();
+                break;
+            case '1-3':
+                $spham->whereBetween('gia_ban', ['1000000', '3000000'])->orderby('ten_sp', 'desc')->get();
+                break;
+            case '3-5':
+                $spham->whereBetween('gia_ban', ['3000000', '5000000'])->orderby('gia_ban')->get();
+                break;
+            case '5-8':
+                $spham->whereBetween('gia_ban', ['5000000', '8000000'])->orderby('gia_ban', 'desc')->get();
+                break;
+            case '8-10':
+                $spham->whereBetween('gia_ban', ['8000000', '10000000'])->orderby('gia_ban', 'desc')->get();
+                break;
+            case '10':
+                $spham->where('gia_ban', '>', '10000000')->orderby('gia_ban', 'desc')->get();
                 break;
             default:
                 $spham->get();

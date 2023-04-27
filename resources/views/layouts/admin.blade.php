@@ -9,7 +9,12 @@
         />
         <meta name="description" content="" />
         <meta name="author" content="" />
-
+        <link
+            rel="icon"
+            href="{{ asset('frontend/img/Logo.png') }}"
+            type="image/gif"
+            sizes="32x32"
+        />
         @yield('title')
 
         <!-- Custom fonts for this template-->

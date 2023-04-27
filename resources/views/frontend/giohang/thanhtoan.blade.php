@@ -31,6 +31,16 @@
     <div class="col-md-12 col-sm-12">
         <h3>Vui lòng nhập đầy đủ thông tin</h3>
         <div class="col-sm-6">
+            @if(Session::has('error'))
+                <h5 style="color: red;  font-weight: bold">{{Session::get('error')}}</h5>
+                <br>
+            @elseif(Session::has('errorPaypal'))
+                <h5 style="color: red;  font-weight: bold">{{Session::get('errorPaypal')}}</h5>
+                <br>
+            @elseif(Session::has('errorVNPAY'))
+                <h5 style="color: red;  font-weight: bold">{{Session::get('errorVNPAY')}}</h5>
+                <br>
+            @endif
             <form method="post" action="{{ route('thanhtoan.postThanhToan') }}" id="myform">
                 @csrf
                 <div class="form-group">
@@ -143,25 +153,12 @@
                 <div class="form-group">
                     <label>Chọn hình thức thanh toán</label>
                     <div style="margin-top: 1em">
-                        @if(Session::has('successPaypal'))
-                            <h6 style="color: green; font-weight: bold">{{Session::get('successPaypal')}}</h6>
-                            <input
-                            type="hidden"
-                            id="Paypal"
-                            name="thanh_toan"
-                            value="Thanh toán bằng Paypal" 
-                            class="thanh_toan"
-                            
-                        />
-                        @elseif(Session::has('errorPaypal'))
-                            <h6 style="color: red;  font-weight: bold">{{Session::get('errorPaypal')}}</h6>
-                        @else
                         <input
                             type="radio"
                             id="tienmat"
                             name="thanh_toan"
                             class="thanh_toan"
-                            value="Thanh toán khi nhận hàng" checked
+                            value="0" checked
                         />
                         <label
                             for="tienmat"
@@ -177,8 +174,8 @@
                             type="radio"
                             id="Paypal"
                             name="thanh_toan"
-                            
                             class="thanh_toan"
+                            value="1"
                             required
                         />
                         <label
@@ -194,26 +191,18 @@
                         
                         <input
                             type="radio"
-                            id="Momo"
+                            id="VNPAY"
                             name="thanh_toan"
-                            value="Thanh toán bằng Momo"
                             class="thanh_toan"
+                            value="2"
                         />
                         <label
-                            for="Momo"
+                            for="VNPAY"
                             style="font-weight: normal; vertical-align: middle"
                         >
-                            Thanh toán bằng MOMO
+                            Thanh toán bằng VNPAY
                         </label>
-                        @endif
-                    </div>
-                    <div class="container mt-5 " id="paypal" style="display: none;">
-                        
-                        @php $tien_usd=round((Cart::total(0,'','')/23512),2); Session::put('tien_usd', $tien_usd); @endphp
-                        <a href="{{ route('processTransaction') }}" class="btn btn-primary mt-3">Thanh toán {{Session::get('tien_usd')}}$ Paypal</a>
-                    </div>
-                    <div class="container mt-5 " id="momo" style="display: none;">
-                        <a href="{{ route('processTransaction') }}" class="btn btn-primary mt-3">Thanh toán Momo</a>
+                        <input type="hidden" name="tien_usd" value="{{round((Cart::total(0,'','')/23512),2)}}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -227,7 +216,7 @@
                 <div class="form-group">
                     <input
                         type="submit"
-                        value="Hoàn tất đơn hàng"
+                        value="Thanh toán"
                         class="btn btn-primary"
                     />
                 </div>
@@ -264,9 +253,18 @@
                     </td>
                 </tr>
                 @endforeach
+                
+            </table>
+            <table style="float: right;">
                 <tr>
-                    <td colspan="3" align="right"><b>Thành tiền</b></td>
-                    <td style="font-size: 1.5rem">
+                    <td><b>Thuế:</b></td>
+                    <td style="width: 8em; font-size: 1.5rem; text-align: right;">
+                        <strong>{{Cart::tax(0,',','.') }} đ</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td ><b>Thành tiền:</b></td>
+                    <td style="width: 8em; font-size: 1.5rem; text-align: right;">
                         <strong>{{Cart::total(0,',','.') }} đ</strong>
                     </td>
                 </tr>
@@ -313,27 +311,7 @@ $(document).ready(function(){
                 $('#'+kq).html(data);
             }
         })
-    });
-
-    $('.thanh_toan').on('change',function(){
-        var action = $(this).attr('id');
-        
-        var _token = $('input[name="_token"]').val();
-        
-        if(action=="Paypal"){
-            $("#paypal").css("display", "block");
-            $("#momo").css("display", "none");
-        }
-        else if(action=="Momo"){
-            $("#paypal").css("display", "none");
-            $("#momo").css("display", "block");
-        }
-        else{
-            $("#paypal").css("display", "none");
-            $("#momo").css("display", "none");
-        }
-    });
-   
+    });  
 })
 
     function kiemTraSDT(event) {

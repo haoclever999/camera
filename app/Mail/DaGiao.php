@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class HuyDon extends Mailable
+class DaGiao extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -30,7 +30,7 @@ class HuyDon extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Huỷ đơn hàng',
+            subject: 'Giao hàng thành công',
         );
     }
 

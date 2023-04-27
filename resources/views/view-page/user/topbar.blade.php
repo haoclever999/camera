@@ -10,7 +10,6 @@
                             style="text-decoration: none"
                         >
                             <i class="fa fa-phone"></i>
-                            <!-- <span>{{$dt->cau_hinh_value}}</span> -->
                         </a>
                     </li>
                     <li>
@@ -19,7 +18,6 @@
                             style="text-decoration: none"
                         >
                             <i class="fa fa-envelope"></i>
-                            <!-- <span>{{$email->cau_hinh_value}}</span> -->
                         </a>
                     </li>
                     <li>
@@ -61,12 +59,9 @@
                             >
                                 {{Auth::user()->ho_ten}}
                             </span>
-                            <img
-                                src="{{
-                                    asset('frontend/img/undraw_profile.svg')
-                                }}"
-                                width="20px"
-                            />
+                            <span width="20px">
+                                <i class="fa fa-user fa-lg"></i>
+                            </span>
                         </a>
                         <!-- Dropdown - User Information -->
                         <div

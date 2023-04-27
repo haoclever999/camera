@@ -40,7 +40,7 @@ class XacNhan extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.xacnhan',
+            view: 'email.tinhtrang_donhang',
         );
     }
 

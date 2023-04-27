@@ -23,13 +23,13 @@
         <p>Thông tin giao hàng:</p>
 
         <p style="margin-left: 2em">
-            - Hình thức thanh toán: <strong>{{ $data->hinh_thuc }}</strong>
-        </p>
-        <p style="margin-left: 2em">
             - Điện thoại: <strong>{{ $data->sdt_kh }}</strong>
         </p>
         <p style="margin-left: 2em">
             - Địa chỉ giao hàng: <strong>{{ $data->dia_chi_kh }}</strong>
+        </p>
+        <p style="margin-left: 2em">
+            - Hình thức thanh toán: <strong>{{ $data->hinh_thuc }}</strong>
         </p>
         <p>Thông tin đơn hàng bao gồm:</p>
         <table border="1">

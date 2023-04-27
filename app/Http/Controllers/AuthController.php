@@ -10,7 +10,6 @@ use App\Rules\ReCaptcha;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Exception;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
@@ -34,8 +33,8 @@ class AuthController extends Controller
                 'email.max' => 'Email quá dài',
             ]
         );
-
-        if (auth()->attempt(['email' => $request->email, 'password' => $request->password])) {
+        $ghi_nho = $request->has('ghi_nho') ? true : false;
+        if (auth()->attempt(['email' => $request->email, 'password' => $request->password], $ghi_nho) && auth()->user()->trang_thai == 1) {
             if (auth()->user()->quyen != "Khách hàng")
                 return redirect()->route('admin.index');
             else
@@ -70,7 +69,10 @@ class AuthController extends Controller
         );
         $ghi_nho = $request->has('ghi_nho') ? true : false;
         if (auth()->attempt(['email' => $request->email, 'password' => $request->password], $ghi_nho)) {
-            return redirect()->route('home.index');
+            if (auth()->user()->quyen != "Khách hàng")
+                return redirect()->route('admin.index');
+            else
+                return redirect()->route('home.index');
         } else {
             Session::flash('mgs', 'Email hoặc mật khẩu không đúng.');
             return redirect()->route('getDangNhapUser');

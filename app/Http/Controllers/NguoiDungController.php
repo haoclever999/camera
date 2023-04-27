@@ -266,14 +266,6 @@ class NguoiDungController extends Controller
         }
     }
 
-    public function xoa($id)
-    {
-        if (!Gate::allows('quyen', "Khách hàng")) {
-            return redirect()->route('home.index');
-        }
-        return $this->deleteModelTrait($id, $this->user);
-    }
-
     public function timkiem(Request $request)
     {
         if (!Gate::allows('quyen', "Khách hàng")) {

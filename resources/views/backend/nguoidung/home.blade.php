@@ -56,7 +56,7 @@
                                     <th>Trạng thái</th>
                                     <th>Khóa</th>
                                     <th>Cập nhật quyền</th>
-                                    <th>Xóa</th>
+                                   
                                 </tr>
                             </thead> 
                             <tbody>
@@ -126,20 +126,6 @@
                                             </a>                       
                                         </td>
                                        
-                                        <td>
-                                            <a 
-                                                class="btn btn-danger action_del" 
-                                                style="
-                                                        min-width: max-content;
-                                                        padding: 3px 12px;
-                                                        margin: 3px;
-                                                    "
-                                                href="" 
-                                                data-url="{{ route('nguoidung.xoa', ['id' => $u->id]) }}" 
-                                                >
-                                                    Xóa
-                                            </a>
-                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

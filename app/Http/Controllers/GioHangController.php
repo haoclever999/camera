@@ -129,63 +129,71 @@ class GioHangController extends Controller
         try {
             DB::beginTransaction();
 
-            if (!empty($request->ghi_chu)) $ghi_chu = $request->ghi_chu;
-            else $ghi_chu = '';
-            $xa = XaPhuong::where('id', $request->opt_Xa)->first();
-            $huyen = QuanHuyen::where('id', $request->opt_Huyen)->first();
-            $tinh = TinhThanhPho::where('id', $request->opt_Tinh)->first();
+            session()->put('tt_donhang', $request->all());
+            if ($request->thanh_toan == 1) {
+                return redirect()->route('processTransaction_Paypal');
+            } elseif ($request->thanh_toan == 2) {
+                return redirect()->route('processTransaction_VNPAY');
+            } else {
+                if (!empty($request->ghi_chu)) $ghi_chu = $request->ghi_chu;
+                else $ghi_chu = '';
+                $xa = XaPhuong::where('id', $request->opt_Xa)->first();
+                $huyen = QuanHuyen::where('id', $request->opt_Huyen)->first();
+                $tinh = TinhThanhPho::where('id', $request->opt_Tinh)->first();
 
-            $diachi = $request->dia_chi . ', ' . $xa->ten_xa . ', ' . $huyen->ten_qh . ', ' . $tinh->ten_tp;
-            $dc = $this->u->where('email', Auth::user()->email)->first();
-            $user = $this->u->find($dc->id);
-            if ($dc->dia_chi == '')
-                $user->update(['dia_chi' =>  $diachi]);
-            if ($dc->sdt == '')
-                $user->update(['sdt' =>  $request->sdt]);
+                $diachi = $request->dia_chi . ', ' . $xa->ten_xa . ', ' . $huyen->ten_qh . ', ' . $tinh->ten_tp;
+                $tk = $this->u->where('email', Auth::user()->email)->first();
+                $user = $this->u->find($tk->id);
+                if ($tk->dia_chi == '')
+                    $user->update(['dia_chi' =>  $diachi]);
+                if ($tk->sdt == '')
+                    $user->update(['sdt' =>  $request->sdt]);
 
-            $dhang = $this->donhang->create([
-                'user_id' => auth()->id(),
-                'ten_kh' => $request->ho_ten,
-                'sdt_kh' => $request->sdt,
-                'dia_chi_kh' => $diachi,
-                'tong_so_luong' => Cart::count(),
-                'thue' => Cart::tax(0, '', ''),
-                'tong_tien' => Cart::total(0, '', ''),
-                'hinh_thuc' => $request->thanh_toan,
-                'ghi_chu' => $ghi_chu,
-                'trang_thai' => 'Đang chờ xử lý',
-            ]);
+                $dhang = $this->donhang->create([
+                    'user_id' => auth()->id(),
+                    'ten_kh' => $request->ho_ten,
+                    'sdt_kh' => $request->sdt,
+                    'dia_chi_kh' => $diachi,
+                    'tong_so_luong' => Cart::count(),
+                    'thue' => Cart::tax(0, '', ''),
+                    'tong_tien' => Cart::total(0, '', ''),
+                    'hinh_thuc' => "Thanh toán khi nhận hàng",
+                    'ghi_chu' => $ghi_chu,
+                    'trang_thai' => 'Đang chờ xử lý',
+                ]);
 
-            //thêm đơn hàng chi tiết
-            $tt_giohang = Cart::content();
-            if (count($tt_giohang) > 0) {
-                foreach ($tt_giohang as $item) {
-                    $dhang->DonHangChiTiet()->create([
-                        'sp_id' => $item->id,
-                        'so_luong_ban' => $item->qty,
-                        'gia' => $item->price,
-                        'thanh_tien' => $item->price * $item->qty,
-                    ]);
-                    $sanpham = $this->spham->find($item->id);
-                    $lmua = $sanpham->luot_mua;
+                //thêm đơn hàng chi tiết
+                $tt_giohang = Cart::content();
+                if (count($tt_giohang) > 0) {
+                    foreach ($tt_giohang as $item) {
+                        $dhang->DonHangChiTiet()->create([
+                            'sp_id' => $item->id,
+                            'so_luong_ban' => $item->qty,
+                            'gia' => $item->price,
+                            'thanh_tien' => $item->price * $item->qty,
+                        ]);
+                        $sanpham = $this->spham->find($item->id);
+                        $lmua = $sanpham->luot_mua;
 
-                    $sanpham->update([
-                        'luot_mua' => $lmua + $item->qty,
-                    ]);
+                        $sanpham->update([
+                            'luot_mua' => $lmua + $item->qty,
+                        ]);
+                    }
                 }
+                $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+
+                DB::commit();
+                Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->cau_hinh_value));
+
+                Cart::destroy();
+                session()->flash('success', 'Cảm ơn bạn đã đặt hàng. Đơn hàng đang chờ xử lý. Vui lòng chờ!');
+                return redirect()->route('giohang.chitiet_giohang');
             }
-            $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-
-            DB::commit();
-            Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->cau_hinh_value));
-
-            Cart::destroy();
-            session()->flash('success', 'Cảm ơn bạn đã đặt hàng. Đơn hàng đang chờ xử lý. Vui lòng chờ!');
-            return redirect()->route('giohang.chitiet_giohang');
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
-            return redirect()->route('giohang.chitiet_giohang');
+            session()->flash('error', 'Đặt hàng không thành công.');
+            return redirect()->route('thanhtoan.getThanhToan');
         }
     }
 

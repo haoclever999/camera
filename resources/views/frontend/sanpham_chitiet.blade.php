@@ -198,11 +198,7 @@
                                     class="form-control input-sm"
                                 />
                             </div>
-                            <button
-                                class="btn btn-primary"
-                                type="submit"
-                                id="btnThem"
-                            >
+                            <button class="btn btn-primary" type="submit">
                                 Thêm vào giỏ
                             </button>
                         </form>
@@ -313,40 +309,6 @@
                                         >
                                             {{number_format($lienquan->gia_ban,0,',','.')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                             }}đ
                                         </i>
                                     </del>
@@ -415,7 +377,6 @@
         $("form").submit(function () {
             var form = $(this);
             var actionUrl = form.attr("action");
-
             $.ajax({
                 type: "POST",
                 url: actionUrl,

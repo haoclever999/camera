@@ -1,9 +1,2 @@
--- Tích hợp thanh toán
-    + https://viblo.asia/p/tich-hop-cong-thanh-toan-vnpay-voi-laravel-Az45bGD6KxY
-    + https://sandbox.vnpayment.vn/apis/docs/huong-dan-tich-hop/
-    + momo   
 
--- Chia sẻ fb, đăng nhập fb, gg, chat zalo
-
--- so sanh sp
--- loc sp theo price
+-- Chia sẻ fb, đăng nhập fb, gg

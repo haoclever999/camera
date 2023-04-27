@@ -11,6 +11,7 @@ use App\Http\Controllers\SanPhamController;
 use App\Http\Controllers\ThuongHieuController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PayPalPaymentController;
+use App\Http\Controllers\VNPAYPaymentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -78,7 +79,6 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
         Route::post('doi-mat-khau/{id}', [NguoiDungController::class, 'postdoimatkhau'])->name('nguoidung.postdoimatkhau');
         Route::post('cap-nhat-quyen/{id}', [NguoiDungController::class, 'postcapnhatquyen'])->name('nguoidung.postcapnhatquyen');
         Route::post('cap-nhat-trang-thai/{id}', [NguoiDungController::class, 'trangthai'])->name('nguoidung.trangthai');
-        Route::get('xoa-nguoi-dung/{id}', [NguoiDungController::class, 'xoa'])->name('nguoidung.xoa');
         Route::get('tim-kiem', [NguoiDungController::class, 'timkiem'])->name('nguoidung.timkiem');
     });
 
@@ -88,6 +88,8 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
         Route::get('xem-don-hang/{id}', [DonHangController::class, 'chitiet'])->name('donhang.chitiet');
         Route::get('xac-nhan-don-hang/{id}', [DonHangController::class, 'xacnhan'])->name('donhang.xacnhan');
         Route::get('huy-don-hang/{id}', [DonHangController::class, 'huy'])->name('donhang.huy');
+        Route::get('dang-van-chuyen-don-hang/{id}', [DonHangController::class, 'dangvanchuyen'])->name('donhang.DangVanChuyen');
+        Route::get('da-giao-don-hang/{id}', [DonHangController::class, 'dagiao'])->name('donhang.DaGiao');
         Route::get('xoa-don-hang/{id}', [DonHangController::class, 'xoa'])->name('donhang.xoa');
         Route::get('tim-kiem', [DonHangController::class, 'timkiem'])->name('donhang.timkiem');
         Route::get('in-don-hang/{id}', [DonHangController::class, 'inDonHang'])->name('donhang.inDonHang');
@@ -153,10 +155,12 @@ Route::get('lich-su-mua-hang/{id}', [GioHangController::class, 'getLichSuMuaHang
 Route::get('thanh-toan', [GioHangController::class, 'getThanhToan'])->name('thanhtoan.getThanhToan')->middleware('CheckLogoutUser');
 Route::post('thanh-toan', [GioHangController::class, 'postThanhToan'])->name('thanhtoan.postThanhToan')->middleware('CheckLogoutUser');
 Route::post('dia-chi', [GioHangController::class, 'diachi'])->name('diachi');
-Route::get('tao-thanh-toan-paypal', [PayPalPaymentController::class, 'createTransaction'])->name('createTransaction');
-Route::get('xu-ly-thanh-toan-paypal', [PayPalPaymentController::class, 'processTransaction'])->name('processTransaction');
-Route::get('thanh-toan-paypal-thanh-cong', [PayPalPaymentController::class, 'successTransaction'])->name('successTransaction');
-Route::get('huy-thanh-toan-paypal', [PayPalPaymentController::class, 'cancelTransaction'])->name('cancelTransaction');
+Route::get('xu-ly-thanh-toan-paypal', [PayPalPaymentController::class, 'processTransaction_Paypal'])->name('processTransaction_Paypal');
+Route::get('thanh-toan-paypal-thanh-cong', [PayPalPaymentController::class, 'successTransaction_Paypal'])->name('successTransaction_Paypal');
+Route::get('huy-thanh-toan-paypal', [PayPalPaymentController::class, 'cancelTransaction_Paypal'])->name('cancelTransaction_Paypal');
+
+Route::get('xu-ly-thanh-toan-vnpay', [VNPAYPaymentController::class, 'processTransaction_VNPAY'])->name('processTransaction_VNPAY');
+Route::get('thanh-toan-vnpay-thanh-cong', [VNPAYPaymentController::class, 'successTransaction_VNPAY'])->name('successTransaction_VNPAY');
 
 //tìm kiếm
 Route::get('san-pham-tim-kiem', [SanPhamController::class, 'timKiemSanPham'])->name('sanpham.timkiemsp');

@@ -150,7 +150,7 @@
                 </div>
             </div>
             <div class="hotline-bar" style="width: 135px">
-                <a href="tel:0766917312" style="text-indent: 40px">
+                <a href="tel:{{$dt->cau_hinh_value}}" style="text-indent: 40px">
                     <span class="text-hotline">Gọi ngay</span>
                 </a>
             </div>

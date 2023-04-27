@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Exports\XuatDonHangMultiple;
 use App\Mail\XacNhan;
+use App\Mail\HuyDon;
+use App\Mail\DangVanChuyen;
+use App\Mail\DaGiao;
 use App\Models\CauHinh;
 use App\Models\DonHangChiTiet;
 use App\Models\User;
@@ -74,6 +77,54 @@ class DonHangController extends Controller
         }
     }
 
+    public function dangvanchuyen($id)
+    {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
+        try {
+            DB::beginTransaction();
+            $dhang = $this->donhang->find($id);
+            $dhang->id = $id;
+            $dhang->trang_thai = 'Đang vận chuyển';
+            $dhang->save();
+            $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
+            $user = User::find($dhang->user_id);
+            $tieude = "Đang vận chuyển";
+            Mail::to($user->email)->send(new DangVanChuyen($dhang, $dt->cau_hinh_value, $tieude));
+            DB::commit();
+            return redirect()->route('donhang.chitiet', ['id' => $id]);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            return redirect()->route('donhang.chitiet', ['id' => $id]);
+        }
+    }
+
+    public function dagiao($id)
+    {
+        if (!Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
+        try {
+            DB::beginTransaction();
+            $dhang = $this->donhang->find($id);
+            $dhang->id = $id;
+            $dhang->trang_thai = 'Giao hàng thành công';
+            $dhang->save();
+            $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
+            $user = User::find($dhang->user_id);
+            $tieude = "Giao hàng thành công";
+            Mail::to($user->email)->send(new DaGiao($dhang, $dt->cau_hinh_value, $tieude));
+            DB::commit();
+            return redirect()->route('donhang.chitiet', ['id' => $id]);
+        } catch (\Exception $exception) {
+            DB::rollBack();
+            Log::error('Message: ' . $exception->getMessage() . ' --- Line : ' . $exception->getLine());
+            return redirect()->route('donhang.chitiet', ['id' => $id]);
+        }
+    }
+
     public function huy($id)
     {
         if (!Gate::allows('quyen', "Khách hàng")) {
@@ -88,7 +139,7 @@ class DonHangController extends Controller
             $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
             $user = User::find($dhang->user_id);
             $tieude = "Huỷ";
-            Mail::to($user->email)->send(new XacNhan($dhang, $dt->cau_hinh_value, $tieude));
+            Mail::to($user->email)->send(new HuyDon($dhang, $dt->cau_hinh_value, $tieude));
             DB::commit();
             return response()->json([
                 'code' => 200,

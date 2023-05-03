@@ -37,8 +37,23 @@
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
-                <!-- /.col -->
-                <div class="col-sm-12" style="float: right">
+               
+                <div class="col-sm-4">
+                    <form>
+                        <div class="form-group">
+                            <select class="form-select input-sm" onchange="this.form.submit();" name="sapxep">
+                                <option {{request('sapxep') == 'mac_dinh' ? 'selected' : ''}} value="mac_dinh"> Mặc định </option>
+                                <option {{request('sapxep') == 'cho_xu_ly' ? 'selected' : ''}} value="cho_xu_ly"> Đang chờ xử lý </option>
+                                <option {{request('sapxep') == 'xac_nhan' ? 'selected' : ''}} value="xac_nhan"> Đã xác nhận </option>
+                                <option {{request('sapxep') == 'van_chuyen' ? 'selected' : ''}} value="van_chuyen"> Đang vận chuyển </option>
+                                <option {{request('sapxep') == 'giao' ? 'selected' : ''}} value="giao"> Đã giao </option>
+                                <option {{request('sapxep') == 'huy' ? 'selected' : ''}} value="huy"> Đã huỷ </option>
+                                <option {{request('sapxep') == 'xoa' ? 'selected' : ''}} value="xoa"> Đã xoá </option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-8" style="float: right">
                     <a
                         href="{{ route('donhang.xuatdonhnag') }}"
                         class="btn btn-success float-right m-2"
@@ -83,8 +98,13 @@
                                     <td>
                                         {{$dh->hinh_thuc}}
                                     </td>
-
+                                    @if($dh->trang_thai=="Đang chờ xử lý")
+                                    <td style="color: rgb(17, 136, 192);">{{$dh->trang_thai}}</td>
+                                    @elseif($dh->trang_thai=="Đã xoá")
+                                    <td style="color: rgba(255, 0, 0,0.8)">{{$dh->trang_thai}}</td>
+                                    @else
                                     <td>{{$dh->trang_thai}}</td>
+                                    @endif
                                     <td>
                                         {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dh->created_at)->format('H:i:s d/m/Y')}}
                                     </td>

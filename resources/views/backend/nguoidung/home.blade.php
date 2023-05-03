@@ -56,7 +56,6 @@
                                     <th>Trạng thái</th>
                                     <th>Khóa</th>
                                     <th>Cập nhật quyền</th>
-                                   
                                 </tr>
                             </thead> 
                             <tbody>

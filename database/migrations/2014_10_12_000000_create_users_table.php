@@ -19,13 +19,14 @@ return new class extends Migration
             $table->string('password');
             $table->string('sdt', 191)->nullable();
             $table->string('dia_chi', 191)->nullable();
-            $table->integer('trang_thai')->default(1);
+            $table->integer('trang_thai')->default(1)->length(2);
             $table->string('quyen', 15)->default('Khách hàng');
+            $table->string('facebook_id', 191)->nullable();
+            $table->string('google_id', 191)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-            $table->softDeletes();
         });
     }
 

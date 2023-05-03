@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Components\LaySP;
+
 use App\Models\ThuongHieu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -12,6 +12,7 @@ use App\Components\Traits\DeleteModelTrait;
 use App\Components\Traits\StorageImageTrait;
 use App\Models\CauHinh;
 use App\Models\DanhMuc;
+use App\Models\DonHang;
 use App\Models\SanPham;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
@@ -20,27 +21,26 @@ use Illuminate\Support\Facades\Gate;
 class ThuongHieuController extends Controller
 {
     use DeleteModelTrait, StorageImageTrait;
-    private $thuonghieu;
-    private $dmuc;
-    private $sanpham;
-    private $cauhinh;
-    public function __construct(DanhMuc $dmuc, SanPham $sanpham,  ThuongHieu $thuonghieu, CauHinh $cauhinh)
+    private $thuonghieu, $dmuc, $sanpham, $cauhinh, $dhang;
+    public function __construct(DanhMuc $dmuc, SanPham $sanpham, ThuongHieu $thuonghieu, CauHinh $cauhinh, DonHang $dhang)
     {
         $this->thuonghieu = $thuonghieu;
         $this->dmuc = $dmuc;
         $this->sanpham = $sanpham;
         $this->cauhinh = $cauhinh;
+        $this->dhang = $dhang;
     }
 
     // Bat dau trang admin
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $page = 5;
-        $th = $this->thuonghieu::orderBy('ten_thuong_hieu')->paginate($page);
-        return view('backend.thuonghieu.home', compact("th"))->with('i', (request()->input('page', 1) - 1) * $page);
+        $th = $this->thuonghieu::where('trang_thai', 1)->orderBy('ten_thuong_hieu')->paginate($page)->appends($request->query());
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.thuonghieu.home', compact("th", 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function postThem(Request $request)
@@ -80,7 +80,8 @@ class ThuongHieuController extends Controller
             return redirect()->route('home.index');
         }
         $th = $this->thuonghieu->find($id);
-        return view('backend.thuonghieu.sua', compact('th'));
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.thuonghieu.sua', compact('th', 'dh_moi'));
     }
 
     public function postSua(Request $request, $id)
@@ -138,7 +139,7 @@ class ThuongHieuController extends Controller
         }
         if ($request->ajax()) {
             $page = 5;
-            $timkiem =  $this->thuonghieu->where('ten_thuong_hieu', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_thuong_hieu')->paginate($page);
+            $timkiem =  $this->thuonghieu->where('trang_thai', 1)->where('ten_thuong_hieu', 'LIKE', '%' . $request->timkiem_th . '%')->orderby('ten_thuong_hieu')->paginate($page)->appends($request->query());
             if ($timkiem->count() > 0) {
                 $kq = '';
                 $i = (request()->input('page', 1) - 1) * $page;
@@ -189,9 +190,9 @@ class ThuongHieuController extends Controller
     // Bắt đầu trang người dùng
     public function getThuongHieuDanhMuc(Request $request, $id_dm, $slug, $id)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';
@@ -207,7 +208,7 @@ class ThuongHieuController extends Controller
 
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
-        $spham = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id)->where('dm_id', $id_dm);
+        $spham = $this->sanpham->where('trang_thai', 1)->where('thuong_hieu_id', $id)->where('dm_id', $id_dm);
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();
@@ -247,24 +248,24 @@ class ThuongHieuController extends Controller
                 $spham->get();
         }
 
-        $sp = $spham->paginate($hienthi);
+        $sp = $spham->paginate($hienthi)->appends($request->query());
 
-        $dm =  $this->dmuc->orderby('ten_dm')->get();
-        $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
-        $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $ten_th = $this->thuonghieu->where('trang_thai', 1)->where('id', $id)->limit(1)->get();
+        $ten_dm = $this->dmuc->where('trang_thai', 1)->where('id', $id_dm)->limit(1)->get();
 
-        $spham = (new LaySP)->getSanPham()->where('dm_id', $id_dm)->paginate(6);
+        $spham = $this->sanpham->where('trang_thai', 1)->where('dm_id', $id_dm)->paginate($hienthi)->appends($request->query());
         foreach ($spham as $value)
             $id_th[] = $value->thuong_hieu_id;
-        $th_sp = $this->thuonghieu->whereIn('id', $id_th)->distinct()->get();
+        $th_sp = $this->thuonghieu->where('trang_thai', 1)->whereIn('id', $id_th)->distinct()->get();
         return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
     public function getThuongHieuSanPham(Request $request, $slug, $id)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';
@@ -280,7 +281,7 @@ class ThuongHieuController extends Controller
 
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
-        $spham = (new LaySP)->getSanPham()->where('thuong_hieu_id', $id);
+        $spham = $this->sanpham->where('trang_thai', 1)->where('thuong_hieu_id', $id);
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();
@@ -320,11 +321,11 @@ class ThuongHieuController extends Controller
                 $spham->get();
         }
 
-        $sp = $spham->paginate($hienthi);
+        $sp = $spham->paginate($hienthi)->appends($request->query());
 
-        $dm =  $this->dmuc->orderby('ten_dm')->get();
-        $ten_th = $this->thuonghieu->where('id', $id)->limit(1)->get();
-        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $ten_th = $this->thuonghieu->where('trang_thai', 1)->where('id', $id)->limit(1)->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
 
         return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'th', 'ten_th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }

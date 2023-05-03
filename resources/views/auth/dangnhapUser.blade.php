@@ -190,7 +190,10 @@
 
                     <h4 style="text-align: center">hoặc</h4>
                     <div class="social">
-                        <a href="#" class="facebook">
+                        <a
+                            href="{{ route('getDangNhapFacebook') }}"
+                            class="facebook"
+                        >
                             <img
                                 src="{{
                                     asset('frontend/img/facebook-logo.png')
@@ -199,7 +202,10 @@
                             />
                         </a>
 
-                        <a href="#" class="google">
+                        <a
+                            href="{{ route('getDangNhapGoogle') }}"
+                            class="google"
+                        >
                             <img
                                 src="{{
                                     asset('frontend/img/google-plus-logo.png')

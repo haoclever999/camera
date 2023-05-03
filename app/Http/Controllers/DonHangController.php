@@ -32,14 +32,36 @@ class DonHangController extends Controller
         $this->donhang = $donhang;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
+        $sapxep = $request->sapxep;
+        if ($sapxep == 'cho_xu_ly')
+            $dh = $this->donhang->where('trang_thai', "Đang chờ xử lý");
+        elseif ($sapxep == 'xac_nhan')
+            $dh = $this->donhang->where('trang_thai', "Đã xác nhận đơn");
+
+        elseif ($sapxep == 'van_chuyen')
+            $dh = $this->donhang->where('trang_thai', "Đang vận chuyển");
+
+        elseif ($sapxep == 'giao')
+            $dh = $this->donhang->where('trang_thai', "Giao hàng thành công");
+
+        elseif ($sapxep == 'huy')
+            $dh = $this->donhang->where('trang_thai', "Đã huỷ đơn");
+
+        elseif ($sapxep == 'xoa')
+            $dh = $this->donhang->where('trang_thai', "Đã xoá");
+
+        else
+            $dh = $this->donhang->orderBy('created_at', 'desc');
+
         $page = 5;
-        $dhang = $this->donhang::orderBy('created_at', 'desc')->paginate($page);
-        return view('backend.donhang.home', compact("dhang"))->with('i', (request()->input('page', 1) - 1) * $page);
+        $dhang = $dh->paginate($page)->appends($request->query());
+        $dh_moi =  $this->donhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.donhang.home', compact("dhang", "dh_moi"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function chitiet($id)
@@ -48,7 +70,8 @@ class DonHangController extends Controller
             return redirect()->route('home.index');
         }
         $dhang = $this->donhang->find($id);
-        return view('backend.donhang.show', compact('dhang'));
+        $dh_moi =  $this->donhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.donhang.show', compact('dhang', "dh_moi"));
     }
 
     public function xacnhan($id)
@@ -62,10 +85,10 @@ class DonHangController extends Controller
             $dhang->id = $id;
             $dhang->trang_thai = 'Đã xác nhận đơn';
             $dhang->save();
-            $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
+            $dt = CauHinh::where('ten', 'Điện thoại')->first();
             $user = User::find($dhang->user_id);
             $tieude = "Xác nhận";
-            Mail::to($user->email)->send(new XacNhan($dhang, $dt->cau_hinh_value, $tieude));
+            Mail::to($user->email)->send(new XacNhan($dhang, $dt->gia_tri, $tieude));
             DB::commit();
             Alert::success('Thành công', 'Xác nhận đơn hàng thành công');
             return redirect()->route('donhang.chitiet', ['id' => $id]);
@@ -88,10 +111,10 @@ class DonHangController extends Controller
             $dhang->id = $id;
             $dhang->trang_thai = 'Đang vận chuyển';
             $dhang->save();
-            $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
+            $dt = CauHinh::where('ten', 'Điện thoại')->first();
             $user = User::find($dhang->user_id);
             $tieude = "Đang vận chuyển";
-            Mail::to($user->email)->send(new DangVanChuyen($dhang, $dt->cau_hinh_value, $tieude));
+            Mail::to($user->email)->send(new DangVanChuyen($dhang, $dt->gia_tri, $tieude));
             DB::commit();
             return redirect()->route('donhang.chitiet', ['id' => $id]);
         } catch (\Exception $exception) {
@@ -112,10 +135,10 @@ class DonHangController extends Controller
             $dhang->id = $id;
             $dhang->trang_thai = 'Giao hàng thành công';
             $dhang->save();
-            $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
+            $dt = CauHinh::where('ten', 'Điện thoại')->first();
             $user = User::find($dhang->user_id);
             $tieude = "Giao hàng thành công";
-            Mail::to($user->email)->send(new DaGiao($dhang, $dt->cau_hinh_value, $tieude));
+            Mail::to($user->email)->send(new DaGiao($dhang, $dt->gia_tri, $tieude));
             DB::commit();
             return redirect()->route('donhang.chitiet', ['id' => $id]);
         } catch (\Exception $exception) {
@@ -136,10 +159,10 @@ class DonHangController extends Controller
             $dhang->id = $id;
             $dhang->trang_thai = 'Đã huỷ đơn';
             $dhang->save();
-            $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
+            $dt = CauHinh::where('ten', 'Điện thoại')->first();
             $user = User::find($dhang->user_id);
             $tieude = "Huỷ";
-            Mail::to($user->email)->send(new HuyDon($dhang, $dt->cau_hinh_value, $tieude));
+            Mail::to($user->email)->send(new HuyDon($dhang, $dt->gia_tri, $tieude));
             DB::commit();
             return response()->json([
                 'code' => 200,
@@ -188,7 +211,7 @@ class DonHangController extends Controller
         }
         if ($request->ajax()) {
             $page = 5;
-            $timkiem =  $this->donhang->where('ten_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orwhere('sdt_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orwhere('dia_chi_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('ten_kh')->paginate($page);
+            $timkiem =  $this->donhang->where('ten_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orwhere('sdt_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orwhere('dia_chi_kh', 'LIKE', '%' . $request->timkiem_dh . '%')->orderby('ten_kh')->paginate($page)->appends($request->query());
             if ($timkiem->count() > 0) {
                 $kq = '';
                 $i = (request()->input('page', 1) - 1) * $page;

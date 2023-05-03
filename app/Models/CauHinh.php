@@ -10,6 +10,6 @@ class CauHinh extends Model
     use HasFactory;
     protected $table = 'cau_hinhs';
     protected $fillable = [
-        'cau_hinh_key', 'cau_hinh_value',
+        'ten', 'gia_tri',
     ];
 }

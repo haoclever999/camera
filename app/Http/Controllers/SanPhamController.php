@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Components\GetOption;
-use App\Components\LaySP;
 use App\Models\DanhMuc;
 use App\Models\HinhAnh;
 use App\Models\SanPham;
@@ -18,6 +17,7 @@ use App\Components\Traits\DeleteModelTrait;
 use App\Imports\NhapHinhAnhSP;
 use App\Imports\NhapSanPham;
 use App\Models\CauHinh;
+use App\Models\DonHang;
 use Maatwebsite\Excel\Facades\Excel;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
@@ -26,8 +26,8 @@ use Illuminate\Support\Facades\Gate;
 class SanPhamController extends Controller
 {
     use DeleteModelTrait, StorageImageTrait;
-    private $dmuc, $hanh, $tag, $spham, $thuonghieu, $cauhinh;
-    public function __construct(DanhMuc $dmuc, SanPham $spham, HinhAnh $hanh, Tag $tag, ThuongHieu $thuonghieu, CauHinh $cauhinh)
+    private $dmuc, $hanh, $tag, $spham, $thuonghieu, $cauhinh, $dhang;
+    public function __construct(DanhMuc $dmuc, SanPham $spham, HinhAnh $hanh, Tag $tag, ThuongHieu $thuonghieu, CauHinh $cauhinh, DonHang $dhang)
     {
         $this->dmuc = $dmuc;
         $this->hanh = $hanh;
@@ -35,30 +35,51 @@ class SanPhamController extends Controller
         $this->spham = $spham;
         $this->thuonghieu = $thuonghieu;
         $this->cauhinh = $cauhinh;
+        $this->dhang = $dhang;
     }
 
     // Bắt đầu trang admin
     public function getDanhMuc($id)
     {
-        $option = new GetOption($this->dmuc::all());
+        $option = new GetOption($this->dmuc::where('trang_thai', 1));
         $DmOpt = $option->OptionDanhMuc($id);
         return $DmOpt;
     }
     public function getThuongHieu($id)
     {
-        $option = new GetOption($this->thuonghieu::all());
+        $option = new GetOption($this->thuonghieu::where('trang_thai', 1));
         $ThOpt = $option->OptionThuongHieu($id);
         return $ThOpt;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
+        $sapxep = $request->sapxep;
+        $spham = $this->spham->where('trang_thai', 1);
+        switch ($sapxep) {
+            case 'a_z':
+                $spham->orderby('ten_sp');
+                break;
+            case 'z_a':
+                $spham->orderby('ten_sp', 'desc');
+                break;
+            case 'thap_cao':
+                $spham->orderby('gia_ban');
+                break;
+            case 'cao_thap':
+                $spham->orderby('gia_ban', 'desc');
+                break;
+            default:
+                $spham->orderby('id', 'desc');
+        }
+
         $page = 5;
-        $sp = (new LaySP)->getSanPham()->orderBy('ten_sp')->paginate($page);
-        return view('backend.sanpham.home', compact('sp'))->with('i', (request()->input('page', 1) - 1) * $page);
+        $sp = $spham->paginate($page)->appends($request->query());
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.sanpham.home', compact('sp', 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function chitiet($id)
@@ -67,7 +88,8 @@ class SanPhamController extends Controller
             return redirect()->route('home.index');
         }
         $sp = $this->spham->find($id);
-        return view('backend.sanpham.show', compact('sp'));
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.sanpham.show', compact('sp', 'dh_moi'));
     }
 
     public function getThem()
@@ -77,7 +99,8 @@ class SanPhamController extends Controller
         }
         $DmOpt = $this->getDanhMuc('0');
         $ThOpt = $this->getThuongHieu('0');
-        return view('backend.sanpham.them', compact('DmOpt', 'ThOpt'));
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.sanpham.them', compact('DmOpt', 'ThOpt', 'dh_moi'));
     }
 
     public function postThem(Request $request)
@@ -151,8 +174,8 @@ class SanPhamController extends Controller
         $sp = $this->spham->find($id);
         $DmOpt = $this->getDanhMuc($sp->dm_id);
         $ThOpt = $this->getThuongHieu($sp->thuong_hieu_id);
-
-        return view('backend.sanpham.sua', compact('sp', 'DmOpt', 'ThOpt'));
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.sanpham.sua', compact('sp', 'DmOpt', 'ThOpt', 'dh_moi'));
     }
 
     public function postSua(Request $request, $id)
@@ -263,8 +286,8 @@ class SanPhamController extends Controller
         }
         if ($request->ajax()) {
 
-            $page = 5;
-            $spham = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_sp . '%')->orderby('ten_sp')->paginate($page);
+            $page = 10;
+            $spham = $this->spham->where('trang_thai', 1)->where('ten_sp', 'LIKE', '%' . $request->timkiem_sp . '%')->orderby('ten_sp')->paginate($page)->appends($request->query());
             if ($spham->count() > 0) {
                 $kq = '';
                 $i = (request()->input('page', 1) - 1) * $page;
@@ -281,11 +304,11 @@ class SanPhamController extends Controller
                         <td>
                             <a
                                 style="
-                                    min-width: 110px;
-                                    padding: 3px 12px;
+                                    width: 100%;
+                                    padding: 3px 8px;
                                     margin: 3px;
                                 "
-                                class="btn btn-success"
+                                class="btn btn-primary"
                                 href="' . route("sanpham.chitiet", ["id" => $s->id]) . '"
                             >
                                 Chi tiết
@@ -293,8 +316,8 @@ class SanPhamController extends Controller
                             <br />
                             <a
                                 style="
-                                    min-width: 110px;
-                                    padding: 3px 12px;
+                                    width: 100%;
+                                    padding: 3px 8px;
                                     margin: 3px;
                                 "
                                 class="btn btn-warning"
@@ -308,8 +331,8 @@ class SanPhamController extends Controller
                         $kq .= '
                             <a
                                 style="
-                                    min-width: 110px;
-                                    padding: 3px 12px;
+                                    width: 100%;
+                                    padding: 3px 8px;
                                     margin: 3px;
                                 "
                                 class="btn btn-danger action_del"
@@ -366,16 +389,16 @@ class SanPhamController extends Controller
     // Bắt đầu trang người dùng
     public function getChiTietSanPham(Request $request, $id)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //tăng lượt xem
         $l_xem = $this->spham->find($id);
         $xem = $l_xem->luot_xem;
         $l_xem->update(['luot_xem' => $xem + 1]);
 
-        $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm', 'asc')->get();
         $sp_chitiet = $this->spham->where('id', $id)->limit(1)->get();
         foreach ($sp_chitiet as $value) {
             $id_dm = $value->dm_id;
@@ -386,17 +409,15 @@ class SanPhamController extends Controller
             $meta_title = $value->ten_sp;
         }
 
-        //SEO
-
-        $sp_lienquan = (new LaySP)->getSanPham()->where('dm_id', $id_dm)->whereNotIn('id', [$id])->get();
+        $sp_lienquan = $this->spham->where('trang_thai', 1)->where('dm_id', $id_dm)->whereNotIn('id', [$id])->get();
         return view('frontend.sanpham_chitiet', compact('dm', 'sp_chitiet', 'sp_lienquan', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
     public function getAllSanPham(Request $request)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';
@@ -412,7 +433,7 @@ class SanPhamController extends Controller
 
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
-        $spham = (new LaySP)->getSanPham();
+        $spham = $this->spham->where('trang_thai', 1);
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();
@@ -452,19 +473,19 @@ class SanPhamController extends Controller
                 $spham->get();
         }
 
-        $sp = $spham->paginate($hienthi);
+        $sp = $spham->paginate($hienthi)->appends($request->query());
 
-        $dm =  $this->dmuc->orderby('ten_dm')->get();
-        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
+        $dm =  $this->dmuc->where('trang_thai', 1)->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
 
         return view('frontend.sanpham_all', compact('dm', 'sp', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
     public function timKiemSanPham(Request $request)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';
@@ -479,7 +500,7 @@ class SanPhamController extends Controller
 
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
-        $spham = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%');
+        $spham = $this->spham->where('trang_thai', 1)->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%');
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();
@@ -520,16 +541,16 @@ class SanPhamController extends Controller
         }
 
         $url_canonical = $request->url();
-        $dm =  $this->dmuc->orderby('ten_dm')->get();
-        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
-        $timkiem = $spham->paginate($hienthi);
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
+        $timkiem = $spham->paginate($hienthi)->appends($request->query());
         return view('frontend.sanpham_timkiem', compact('dm', 'th', 'timkiem', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
     }
 
     public function timKiem_Header(Request $request)
     {
         if ($request->ajax()) {
-            $spham = (new LaySP)->getSanPham()->where('ten_sp', 'LIKE', '%' . $request->timkiem_header . '%')->orderby('ten_sp')->get();
+            $spham = $this->spham->where('trang_thai', 1)->where('ten_sp', 'LIKE', '%' . $request->timkiem_header . '%')->orderby('ten_sp')->get();
             if ($spham->count() > 0) {
                 $kq = '';
                 $kq .= '<ul style="text-align: left">';
@@ -546,9 +567,9 @@ class SanPhamController extends Controller
 
     public function getTagSanPham(Request $request, $tag)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $url_canonical = $request->url();
@@ -557,8 +578,8 @@ class SanPhamController extends Controller
         $meta_description = '';
         $meta_title = '';
 
-        $dm =  $this->dmuc->orderby('ten_dm')->get();
-        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
 
         $tags = $this->tag->where('ten_tag', $tag)->first();
         return view('frontend.sanpham_tag', compact('dm', 'tags', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));

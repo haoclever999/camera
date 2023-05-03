@@ -11,30 +11,18 @@
     <div class="carousel-inner" role="listbox">
         <div class="item active">
             <img src="{{ asset('frontend/img/sliders/slider1.jpg') }}" />
-            <div class="carousel-caption">
-                <h3>Sản phẩm chất lượng</h3>
-            </div>
         </div>
 
         <div class="item">
-            <img src="{{ asset('frontend/img/sliders/slider2.jpg') }}" />
-            <div class="carousel-caption">
-                <h3>Mẫu mã đa dạng</h3>
-            </div>
+            <img src="{{ asset('frontend/img/sliders/slider2.png') }}" />
         </div>
 
         <div class="item">
-            <img src="{{ asset('frontend/img/sliders/slider1.jpg') }}" />
-            <div class="carousel-caption">
-                <h3>Giá cả hợp lý</h3>
-            </div>
+            <img src="{{ asset('frontend/img/sliders/slider3.jpg') }}" />
         </div>
 
         <div class="item">
-            <img src="{{ asset('frontend/img/sliders/slider2.jpg') }}" />
-            <div class="carousel-caption">
-                <h3>Tận tâm phục vụ</h3>
-            </div>
+            <img src="{{ asset('frontend/img/sliders/slider4.jpg') }}" />
         </div>
     </div>
 

@@ -56,7 +56,16 @@
     <li class="nav-item">
         <a class="nav-link" href="{{ route('donhang.index') }}">
             <i class="fas fa-fw fa-chart-area"></i>
-            <span>Đơn đặt hàng</span></a
+            <span>Đơn đặt hàng</span>
+            <span class="badge badge-danger badge-counter">
+                {{ $dh_moi }}
+            </span>
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('cauhinh.index') }}">
+            <i class="fas fa-fw fa-chart-area"></i>
+            <span>Cấu hình</span></a
         >
     </li>
     <!-- Divider -->
@@ -72,14 +81,6 @@
     <!-- Divider -->
     <hr class="sidebar-divider" />
     @endif
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('cauhinh.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Cấu hình</span></a
-        >
-    </li>
-
-    <hr class="sidebar-divider d-none d-md-block" />
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">

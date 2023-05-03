@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
+use App\Models\DonHang;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
@@ -14,40 +15,42 @@ use Illuminate\Support\Facades\Gate;
 class CauHinhController extends Controller
 {
     use DeleteModelTrait;
-    private $cauhinh;
-    public function __construct(CauHinh $cauhinh)
+    private $cauhinh, $dhang;
+    public function __construct(CauHinh $cauhinh, DonHang $dhang)
     {
         $this->cauhinh = $cauhinh;
+        $this->dhang = $dhang;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $page = 5;
-        $cauhinh = $this->cauhinh::orderBy('cau_hinh_key')->paginate($page);
-        return view('backend.cauhinh.home', compact("cauhinh"))->with('i', (request()->input('page', 1) - 1) * $page);
+        $cauhinh = $this->cauhinh::where('trang_thai', 1)->orderBy('ten')->paginate($page)->appends($request->query());
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.cauhinh.home', compact("cauhinh", 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function postThem(Request $request)
     {
         $request->validate([
-            'cau_hinh_key' => 'required|max:191|unique:cau_hinhs',
-            'cau_hinh_value' => 'required|max:191',
+            'ten' => 'required|max:191|unique:cau_hinhs',
+            'gia_tri' => 'required|max:191',
         ], [
-            'cau_hinh_key.required' => 'Hãy nhập tên cấu hình',
-            'cau_hinh_key.max' => 'Tên cấu hình quá dài',
-            'cau_hinh_key.unique' => 'Tên cấu hình đã tồn tại',
-            'cau_hinh_value.required' => 'Hãy nhập giá trị của cấu hình',
-            'cau_hinh_value.max' => 'Giá trị của cấu hình quá dài',
+            'ten.required' => 'Hãy nhập tên cấu hình',
+            'ten.max' => 'Tên cấu hình quá dài',
+            'ten.unique' => 'Tên cấu hình đã tồn tại',
+            'gia_tri.required' => 'Hãy nhập giá trị của cấu hình',
+            'gia_tri.max' => 'Giá trị của cấu hình quá dài',
 
         ]);
         try {
             DB::beginTransaction();
             $this->cauhinh->firstOrCreate([
-                'cau_hinh_key' => trim($request->cau_hinh_key),
-                'cau_hinh_value' => trim($request->cau_hinh_value),
+                'ten' => trim($request->ten),
+                'gia_tri' => trim($request->gia_tri),
             ]);
             DB::commit();
             Alert::success('Thành công', 'Thêm cấu hình thành công');
@@ -66,44 +69,45 @@ class CauHinhController extends Controller
             return redirect()->route('home.index');
         }
         $cauhinh = $this->cauhinh->find($id);
-        return view('backend.cauhinh.sua', compact('cauhinh'));
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.cauhinh.sua', compact('cauhinh', 'dh_moi'));
     }
 
     public function postSua(Request $request, $id)
     {
-        if ($request->has('cau_hinh_key')) {
+        if ($request->has('ten')) {
             $request->validate([
-                'cau_hinh_key' => 'required||unique:cau_hinhs',
-                'cau_hinh_value' => 'required|max:191',
+                'ten' => 'required||unique:cau_hinhs',
+                'gia_tri' => 'required|max:191',
             ], [
-                'cau_hinh_key.required' => 'Hãy nhập tên cấu hình',
-                'cau_hinh_key.max' => 'Tên cấu hình quá dài',
-                'cau_hinh_key.unique' => 'Tên cấu hình đã tồn tại',
-                'cau_hinh_value.required' => 'Hãy nhập giá trị của cấu hình',
-                'cau_hinh_value.max' => 'Giá trị của cấu hình quá dài',
+                'ten.required' => 'Hãy nhập tên cấu hình',
+                'ten.max' => 'Tên cấu hình quá dài',
+                'ten.unique' => 'Tên cấu hình đã tồn tại',
+                'gia_tri.required' => 'Hãy nhập giá trị của cấu hình',
+                'gia_tri.max' => 'Giá trị của cấu hình quá dài',
 
             ]);
         } else {
             $request->validate([
-                'cau_hinh_key' => 'required|max:191',
-                'cau_hinh_value' => 'required|max:191',
+                'ten' => 'required|max:191',
+                'gia_tri' => 'required|max:191',
             ], [
-                'cau_hinh_key.required' => 'Hãy nhập tên cấu hình',
-                'cau_hinh_key.max' => 'Tên cấu hình quá dài',
-                'cau_hinh_value.required' => 'Hãy nhập giá trị của cấu hình',
-                'cau_hinh_value.max' => 'Giá trị của cấu hình quá dài',
+                'ten.required' => 'Hãy nhập tên cấu hình',
+                'ten.max' => 'Tên cấu hình quá dài',
+                'gia_tri.required' => 'Hãy nhập giá trị của cấu hình',
+                'gia_tri.max' => 'Giá trị của cấu hình quá dài',
 
             ]);
         }
         try {
             DB::beginTransaction();
-            if ($request->has('cau_hinh_key2')) $cau_hinh_key = $request->cau_hinh_key2;
-            else $cau_hinh_key = $request->cau_hinh_key;
+            if ($request->has('ten2')) $cau_hitennh_key = $request->ten2;
+            else $ten = $request->ten;
 
             $ch = $this->cauhinh->find($id);
             $ch->id = $request->id;
-            $ch->cau_hinh_key = trim($cau_hinh_key);
-            $ch->cau_hinh_value = trim($request->cau_hinh_value);
+            $ch->ten = trim($ten);
+            $ch->gia_tri = trim($request->gia_tri);
             $ch->save();
             DB::commit();
             Alert::success('Thành công', 'Cập nhật cấu hình thành công');
@@ -131,15 +135,15 @@ class CauHinhController extends Controller
         }
         if ($request->ajax()) {
             $page = 5;
-            $timkiem = $this->cauhinh->where('cau_hinh_key', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orwhere('cau_hinh_value', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orderby('cau_hinh_key')->paginate($page);
+            $timkiem = $this->cauhinh->where('trang_thai', 1)->where('ten', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orwhere('gia_tri', 'LIKE', '%' . $request->timkiem_cauhinh . '%')->orderby('ten')->paginate($page)->appends($request->query());
             if ($timkiem->count() > 0) {
                 $kq = '';
                 $i = (request()->input('page', 1) - 1) * $page;
                 foreach ($timkiem as $ch) {
                     $kq .= '<tr>
                         <td>' . ++$i . '</td>
-                        <td style="text-align: left">' . $ch->cau_hinh_key . '</td>
-                        <td style="text-align: left">' . $ch->cau_hinh_value . '</td>
+                        <td style="text-align: left">' . $ch->ten . '</td>
+                        <td style="text-align: left">' . $ch->gia_tri . '</td>
                         <td>' . Carbon::createFromFormat("Y-m-d H:i:s", $ch->updated_at)->format("H:i:s d/m/Y") . '</td>
                         <td>
                             <a

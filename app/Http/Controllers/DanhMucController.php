@@ -11,33 +11,35 @@ use App\Components\Traits\DeleteModelTrait;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\SanPham;
 use App\Models\ThuongHieu;
-use App\Components\LaySP;
 use App\Models\CauHinh;
+use App\Models\DonHang;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 
 class DanhMucController extends Controller
 {
     use DeleteModelTrait;
-    private $dmuc, $sanpham, $thuonghieu, $cauhinh;
-    public function __construct(DanhMuc $dmuc, SanPham $sanpham, ThuongHieu $thuonghieu, CauHinh $cauhinh)
+    private $dmuc, $sanpham, $thuonghieu, $cauhinh, $dhang;
+    public function __construct(DanhMuc $dmuc, SanPham $sanpham, ThuongHieu $thuonghieu, CauHinh $cauhinh, DonHang $dhang)
     {
         $this->dmuc = $dmuc;
         $this->sanpham = $sanpham;
         $this->thuonghieu = $thuonghieu;
         $this->cauhinh = $cauhinh;
+        $this->dhang = $dhang;
     }
 
     // Bắt đầu trang admin
 
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $page = 5;
-        $dm = $this->dmuc::orderBy('ten_dm')->paginate($page);
-        return view('backend.danhmuc.home', compact('dm'))->with('i', (request()->input('page', 1) - 1) * $page);
+        $dm = $this->dmuc::where('trang_thai', 1)->orderBy('ten_dm')->paginate($page)->appends($request->query());
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.danhmuc.home', compact('dm', 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function postThem(Request $request)
@@ -73,7 +75,8 @@ class DanhMucController extends Controller
             return redirect()->route('home.index');
         }
         $dm = $this->dmuc->find($id);
-        return view('backend.danhmuc.sua', compact('dm'));
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.danhmuc.sua', compact('dm', 'dh_moi'));
     }
 
     public function postSua(Request $request, $id)
@@ -122,7 +125,7 @@ class DanhMucController extends Controller
         }
         if ($request->ajax()) {
             $page = 5;
-            $timkiem =  $this->dmuc->where('ten_dm', 'LIKE', '%' . $request->timkiem_dm . '%')->orderby('ten_dm')->paginate($page);
+            $timkiem =  $this->dmuc->where('trang_thai', 1)->where('ten_dm', 'LIKE', '%' . $request->timkiem_dm . '%')->orderby('ten_dm')->paginate($page)->appends($request->query());
             if ($timkiem->count() > 0) {
                 $kq = '';
                 $i = (request()->input('page', 1) - 1) * $page;
@@ -171,9 +174,9 @@ class DanhMucController extends Controller
     // Bắt đầu trang người dùng
     public function getDanhMucSanPham(Request $request, $slug, $id_dm)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';
@@ -190,7 +193,7 @@ class DanhMucController extends Controller
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
 
-        $spham = (new LaySP)->getSanPham()->where('dm_id', $id_dm);
+        $spham = $this->sanpham->where('trang_thai', 1)->where('dm_id', $id_dm);
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();
@@ -230,10 +233,10 @@ class DanhMucController extends Controller
                 $spham->get();
         }
 
-        $sp = $spham->paginate($hienthi);
+        $sp = $spham->paginate($hienthi)->appends($request->query());
 
-        $dm =  $this->dmuc->orderby('ten_dm')->get();
-        $ten_dm = $this->dmuc->where('id', $id_dm)->limit(1)->get();
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $ten_dm = $this->dmuc->where('trang_thai', 1)->where('id', $id_dm)->limit(1)->get();
         if (count($sp) > 0) {
             foreach ($sp as $value)
                 $id_th[] = $value->thuong_hieu_id;

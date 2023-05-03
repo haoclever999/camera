@@ -14,8 +14,9 @@ return new class extends Migration
     {
         Schema::create('cau_hinhs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('cau_hinh_key');
-            $table->string('cau_hinh_value');
+            $table->string('ten');
+            $table->string('gia_tri');
+            $table->integer('trang_thai')->default(1)->length(2);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });

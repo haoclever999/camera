@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use App\Components\Traits\DeleteModelTrait;
 use App\Models\DanhMuc;
+use App\Models\DonHang;
 use App\Models\QuanHuyen;
 use App\Models\ThuongHieu;
 use App\Models\TinhThanhPho;
@@ -21,17 +22,18 @@ use Illuminate\Support\Facades\Gate;
 class NguoiDungController extends Controller
 {
     use DeleteModelTrait;
-    private $user, $cauhinh, $dmuc, $thuonghieu;
-    public function __construct(User $user, CauHinh $cauhinh, DanhMuc $dmuc, ThuongHieu $thuonghieu)
+    private $user, $cauhinh, $dmuc, $thuonghieu, $dhang;
+    public function __construct(User $user, CauHinh $cauhinh, DanhMuc $dmuc, ThuongHieu $thuonghieu, DonHang $dhang)
     {
         $this->user = $user;
         $this->cauhinh = $cauhinh;
         $this->dmuc = $dmuc;
         $this->thuonghieu = $thuonghieu;
+        $this->dhang = $dhang;
     }
 
     //Bắt đầu trang admin
-    public function index()
+    public function index(Request $request)
     {
         if (!Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
@@ -39,8 +41,9 @@ class NguoiDungController extends Controller
         $id_sua = '0';
         $capnhatquyen = '';
         $page = 5;
-        $users = $this->user::orderBy('quyen', 'desc')->paginate($page);
-        return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua"))->with('i', (request()->input('page', 1) - 1) * $page);
+        $users = $this->user::orderBy('quyen', 'desc')->paginate($page)->appends($request->query());
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.nguoidung.home', compact("users", "capnhatquyen", "id_sua", "dh_moi"))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function getThem()
@@ -48,7 +51,8 @@ class NguoiDungController extends Controller
         if (!Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
-        return view('backend.nguoidung.them');
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.nguoidung.them', compact('dh_moi'));
     }
 
     public function postThem(Request $request)
@@ -99,7 +103,8 @@ class NguoiDungController extends Controller
 
         $user = $this->user->find($id);
         $dc = explode(', ', $user->dia_chi);
-        return view('backend.nguoidung.capnhathoso', compact('user', 'dc', 'tinh_tp', 'huyen', 'xa'));
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.nguoidung.capnhathoso', compact('user', 'dc', 'tinh_tp', 'huyen', 'xa', 'dh_moi'));
     }
 
     public function posthoso(Request $request, $id)
@@ -188,7 +193,8 @@ class NguoiDungController extends Controller
             return redirect()->route('home.index');
         }
         $user = $this->user->find($id);
-        return view('backend.nguoidung.doimatkhau', compact('user'));
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.nguoidung.doimatkhau', compact('user', 'dh_moi'));
     }
 
     public function postdoimatkhau(Request $request,  $id)
@@ -275,7 +281,7 @@ class NguoiDungController extends Controller
             $id_sua = '0';
             $capnhatquyen = '';
             $page = 5;
-            $timkiem =  $this->user->where('ho_ten', 'LIKE', '%' . $request->timkiem_nd . '%')->orwhere('email', 'LIKE', '%' . $request->timkiem_nd . '%')->orderby('quyen', 'desc')->paginate($page);
+            $timkiem =  $this->user->where('ho_ten', 'LIKE', '%' . $request->timkiem_nd . '%')->orwhere('email', 'LIKE', '%' . $request->timkiem_nd . '%')->orderby('quyen', 'desc')->paginate($page)->appends($request->query());
             if ($timkiem->count() > 0) {
                 $kq = '';
                 $i = (request()->input('page', 1) - 1) * $page;
@@ -379,9 +385,9 @@ class NguoiDungController extends Controller
     //Bắt đầu trang user
     public function gethosoUser(Request $request, $id)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';
@@ -484,9 +490,9 @@ class NguoiDungController extends Controller
 
     public function getdoimatkhauUser(Request $request, $id)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';

@@ -38,7 +38,23 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <!-- /.col -->
-                <div class="col-sm-12" style="float: right">
+                <div class="col-sm-4">
+                    <form>
+                        <div class="form-group">
+                            <select class="form-select input-sm" onchange="this.form.submit();" name="sapxep">
+                                <option {{request('sapxep') == 'mac_dinh' ? 'selected' : ''}} value="mac_dinh"> Mặc định
+                                </option>
+                                <option {{request('sapxep') == 'a_z' ? 'selected' : ''}} value="a_z"> Tên sản phẩm (A - Z) </option>
+                                <option {{request('sapxep') == 'z_a' ? 'selected' : ''}} value="z_a"> Tên sản phẩm (Z - A) </option>
+                                <option {{request('sapxep') == 'thap_cao' ? 'selected' : ''}} value="thap_cao"> Giá sản phẩm (Thấp &gt; Cao)
+                                </option>
+                                <option {{request('sapxep')=='cao_thap'?'selected' : ''}} value="cao_thap"> Giá sản phẩm (Cao &gt; Thấp)
+                                </option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-sm-8" style="float: right">
                     <form
                         action="{{ route('sanpham.nhapsp') }}"
                         method="post"
@@ -103,17 +119,22 @@
             <div class="row">
                 <div class="tbl-fixed">
                     <div class="col-md-12">
-                        <table class="table" style="min-width: max-content">
+                        <table
+                            class="table"
+                            style="min-width: max-content; margin-left: -2em"
+                        >
                             <thead>
                                 <tr>
-                                    <th>STT</th>
-                                    <th>Tên sản phẩm</th>
-                                    <th>Hình ảnh</th>
-                                    <th>Giá bán</th>
-                                    <th>Danh mục</th>
-                                    <th>Thương hiệu</th>
-                                    <th>Ngày cập nhật</th>
-                                    <th>Hành động</th>
+                                    <th style="width: 3em">STT</th>
+                                    <th style="width: 18em">Tên sản phẩm</th>
+                                    <th style="width: 8em">Hình ảnh</th>
+                                    <th style="width: 7.5em">Giá bán</th>
+                                    <th style="width: 6.2em">Danh mục</th>
+                                    <th style="width: 7.5em">Thương hiệu</th>
+                                    <th style="width: 8.2em">Ngày cập nhật</th>
+                                    <th style="width: 6.8em; padding-right: 0">
+                                        Hành động
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -143,8 +164,8 @@
                                     <td>
                                         <a
                                             style="
-                                                min-width: 90px;
-                                                padding: 3px 12px;
+                                                width: 100%;
+                                                padding: 3px 8px;
                                                 margin: 3px;
                                             "
                                             class="btn btn-primary"
@@ -155,8 +176,8 @@
                                         <br />
                                         <a
                                             style="
-                                                min-width: 90px;
-                                                padding: 3px 12px;
+                                                width: 100%;
+                                                padding: 3px 8px;
                                                 margin: 3px;
                                             "
                                             class="btn btn-warning"
@@ -169,8 +190,8 @@
                                         auth()->user()->quyen=='Quản trị')
                                         <a
                                             style="
-                                                min-width: 90px;
-                                                padding: 3px 12px;
+                                                width: 100%;
+                                                padding: 3px 8px;
                                                 margin: 3px;
                                             "
                                             class="btn btn-danger action_del"

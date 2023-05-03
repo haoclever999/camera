@@ -40,42 +40,42 @@
                     >
                         @csrf
                         <div class="form-group">
-                            <label for="cau_hinh_key" class="form-label">
+                            <label for="ten" class="form-label">
                                 <b>Tên cấu hình</b>
                             </label>
                             <input
                                 type="text"
-                                class="form-control @error('cau_hinh_key') is-invalid @enderror"
-                                id="cau_hinh_key"
-                                name="cau_hinh_key2"
-                                value="{{ $cauhinh->cau_hinh_key}}"
+                                class="form-control @error('ten') is-invalid @enderror"
+                                id="ten"
+                                name="ten2"
+                                value="{{ $cauhinh->ten}}"
                                 onchange="changeName()"
                                 placeholder="Nhập tên cấu hình"
                                 required
                             />
-                            @if ($errors->has('cau_hinh_key'))
+                            @if ($errors->has('ten'))
                             <span class="help-block" style="color: #ff3f3f">
-                                <b>{{ $errors->first('cau_hinh_key') }}</b>
+                                <b>{{ $errors->first('ten') }}</b>
                             </span>
                             @endif
                         </div>
 
                         <div class="form-group">
-                            <label for="cau_hinh_value" class="form-label">
+                            <label for="gia_tri" class="form-label">
                                 <b>Giá trị của cấu hình</b>
                             </label>
                             <input
                                 type="text"
-                                class="form-control @error('cau_hinh_value') is-invalid @enderror"
-                                id="cau_hinh_value"
-                                name="cau_hinh_value"
-                                value="{{ $cauhinh->cau_hinh_value}}"
+                                class="form-control @error('gia_tri') is-invalid @enderror"
+                                id="gia_tri"
+                                name="gia_tri"
+                                value="{{ $cauhinh->gia_tri}}"
                                 placeholder="Nhập giá trị của cấu hình"
                                 required
                             />
-                            @if ($errors->has('cau_hinh_value'))
+                            @if ($errors->has('gia_tri'))
                             <span class="help-block" style="color: #ff3f3f">
-                                <b>{{ $errors->first('cau_hinh_value') }}</b>
+                                <b>{{ $errors->first('gia_tri') }}</b>
                             </span>
                             @endif
                         </div>
@@ -96,9 +96,7 @@
 @endsection @section('js')
 <script>
     function changeName() {
-        document
-            .getElementById("cau_hinh_key")
-            .setAttribute("name", "cau_hinh_key");
+        document.getElementById("ten").setAttribute("name", "ten");
     }
 </script>
 @endsection

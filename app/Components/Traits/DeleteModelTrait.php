@@ -9,7 +9,9 @@ trait DeleteModelTrait
     public function deleteModelTrait($id, $model)
     {
         try {
-            $model->find($id)->delete();
+            $data = $model->find($id);
+            $data->trang_thai = 0;
+            $data->save();
             return response()->json([
                 'code' => 200,
                 'message' => 'success'

@@ -49,9 +49,9 @@ class GioHangController extends Controller
 
     public function chitiet(Request $request)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';
@@ -74,7 +74,7 @@ class GioHangController extends Controller
     public function xoa_sp($rowId)
     {
         Cart::remove($rowId);
-        return redirect()->route('giohang.chitiet_giohang');
+        return redirect()->back();
     }
 
     public function xoatatca()
@@ -85,9 +85,9 @@ class GioHangController extends Controller
 
     public function getThanhToan(Request $request)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //địa chỉ
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
@@ -180,10 +180,10 @@ class GioHangController extends Controller
                         ]);
                     }
                 }
-                $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
+                $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
 
                 DB::commit();
-                Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->cau_hinh_value));
+                Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->gia_tri));
 
                 Cart::destroy();
                 session()->flash('success', 'Cảm ơn bạn đã đặt hàng. Đơn hàng đang chờ xử lý. Vui lòng chờ!');
@@ -221,9 +221,9 @@ class GioHangController extends Controller
 
     public function getLichSuMuaHang(Request $request)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';
@@ -239,9 +239,9 @@ class GioHangController extends Controller
 
     public function getLichSuMuaHangChiTiet($id, Request $request)
     {
-        $dt = $this->cauhinh->where('cau_hinh_key', 'Điện thoại')->first();
-        $fb = $this->cauhinh->where('cau_hinh_key', 'Facebook')->first();
-        $email = $this->cauhinh->where('cau_hinh_key', 'Email')->first();
+        $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
+        $fb = $this->cauhinh->where('ten', 'Facebook')->first();
+        $email = $this->cauhinh->where('ten', 'Email')->first();
 
         //SEO
         $meta_keyword = '';

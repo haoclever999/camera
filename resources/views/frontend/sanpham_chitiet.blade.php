@@ -102,6 +102,7 @@
                         <div class="price">
                             <strong>
                                 {{number_format(($spct->gia_ban-($spct->gia_ban*$spct->giam_gia/100)),0,',','.')
+
                                 }}đ
                             </strong>
                             @if($spct->giam_gia!=0)
@@ -109,6 +110,7 @@
                                 <del>
                                     <i>
                                         {{number_format(($spct->gia_ban),0,',','.')
+
                                         }}đ
                                     </i>
                                 </del>
@@ -292,26 +294,103 @@
                                         </b>
                                     </a>
                                 </h3>
-                                <div class="pi-price">
-                                    {{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')
-                                    }}
-                                    đ
-                                </div>
-                                <div class="price">
-                                    <del>
-                                        <i
-                                            style="
-                                                margin-left: 1em;
-                                                height: 25px;
-                                                line-height: 2;
-                                                vertical-align: middle;
-                                            "
-                                        >
-                                            {{number_format($lienquan->gia_ban,0,',','.')
+                                @if($lienquan->giam_gia !=0)
+                                <div style="display: inline">
+                                    <div class="pi-price">
+                                        {{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')
 
-                                            }}đ
-                                        </i>
-                                    </del>
+                                        }}đ
+                                    </div>
+                                    <div class="price">
+                                        <del>
+                                            <i
+                                                style="
+                                                    margin-left: 1em;
+                                                    height: 25px;
+                                                    line-height: 2;
+                                                    vertical-align: middle;
+                                                "
+                                            >
+                                                {{number_format($lienquan->gia_ban,0,',','.')
+
+
+                                                }}đ
+                                            </i>
+                                        </del>
+                                    </div>
+                                </div>
+                                @else
+                                <div style="display: inline-block">
+                                    <div class="pi-price">
+                                        {{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')
+
+                                        }}đ
+                                    </div>
+                                </div>
+                                @endif
+                                <div>
+                                    <p
+                                        class="btn btn-so-sanh"
+                                        onclick="ThemSoSanh('{{$lienquan->id}}')"
+                                    >
+                                        So sánh
+                                    </p>
+                                    <form>
+                                        @csrf
+                                        <input
+                                            type="hidden"
+                                            id="id_sp"
+                                            value="{{$lienquan->id}}"
+                                        />
+                                        <input
+                                            type="hidden"
+                                            id="tensp_{{$lienquan->id}}"
+                                            value="{{$lienquan->ten_sp}}"
+                                        />
+                                        <input
+                                            type="hidden"
+                                            id="hinhanh_{{$lienquan->id}}"
+                                            value="{{$lienquan->hinh_anh_chinh}}"
+                                        />
+                                        <input
+                                            type="hidden"
+                                            id="giaban_{{$lienquan->id}}"
+                                            value="{{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')}}"
+                                        />
+                                        <input
+                                            type="hidden"
+                                            id="tinhnang_{{$lienquan->id}}"
+                                            value="{{$lienquan->tinh_nang}}"
+                                        />
+                                        <a
+                                            id="url_{{$lienquan->id}}"
+                                            href="{{route('sanpham.chitiet_sp', [$lienquan->id])}}"
+                                        ></a>
+                                    </form>
+                                    <form
+                                        action="{{
+                                            route('giohang.them_giohang')
+                                        }}"
+                                        method="post"
+                                    >
+                                        @csrf
+                                        <input
+                                            type="hidden"
+                                            name="id_sp"
+                                            value="{{$lienquan->id}}"
+                                        />
+                                        <input
+                                            type="hidden"
+                                            name="num_so_luong"
+                                            value="1"
+                                        />
+                                        <button
+                                            class="btn btn-them-gio-hang"
+                                            type="submit"
+                                        >
+                                            Thêm vào giỏ
+                                        </button>
+                                    </form>
                                 </div>
                                 @if($lienquan->giam_gia !=0)
                                 <div class="giamgia">
@@ -373,24 +452,8 @@
             next = next.nextElementSibling;
         }
     });
-    $(document).ready(function (event) {
-        $("form").submit(function () {
-            var form = $(this);
-            var actionUrl = form.attr("action");
-            $.ajax({
-                type: "POST",
-                url: actionUrl,
-                data: form.serialize(),
-                success: function (data) {
-                    if (data.status === "Thêm thành công") {
-                        alert("Đã thêm vào giỏ hàng");
-                        location.reload(false);
-                    } else alert("Thêm vào giỏ hàng thất bại");
-                },
-            });
-        });
-    });
 </script>
+<script src="{{ asset('frontend/js/sosanhsp.js') }}"></script>
 <script
     async
     defer

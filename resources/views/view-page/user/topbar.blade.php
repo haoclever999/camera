@@ -6,7 +6,7 @@
                 <ul class="list-unstyled list-inline">
                     <li>
                         <a
-                            href="tel:{{$dt->cau_hinh_value}}"
+                            href="tel:{{$dt->gia_tri}}"
                             style="text-decoration: none"
                         >
                             <i class="fa fa-phone"></i>
@@ -14,7 +14,7 @@
                     </li>
                     <li>
                         <a
-                            href="mailto:{{$email->cau_hinh_value}}"
+                            href="mailto:{{$email->gia_tri}}"
                             style="text-decoration: none"
                         >
                             <i class="fa fa-envelope"></i>
@@ -23,7 +23,7 @@
                     <li>
                         <a
                             target="_blank"
-                            href="{{$fb->cau_hinh_value}}"
+                            href="{{$fb->gia_tri}}"
                             style="text-decoration: none"
                         >
                             <i class="fa fa-facebook"></i>

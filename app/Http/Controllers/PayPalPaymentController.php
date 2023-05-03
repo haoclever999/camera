@@ -126,10 +126,10 @@ class PayPalPaymentController extends Controller
                         ]);
                     }
                 }
-                $dt = CauHinh::where('cau_hinh_key', 'Điện thoại')->first();
+                $dt = CauHinh::where('ten', 'Điện thoại')->first();
 
                 DB::commit();
-                Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->cau_hinh_value));
+                Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->gia_tri));
 
                 Cart::destroy();
                 session()->flash('success', 'Cảm ơn bạn đã đặt hàng. Đơn hàng đang chờ xử lý. Vui lòng chờ!');

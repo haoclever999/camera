@@ -224,8 +224,41 @@ class AuthController extends Controller
             } else {
                 $newUser = User::updateOrCreate(['email' => $user->email], [
                     'ho_ten' => $user->name,
+                    'facebook_id' => $user->id,
                     'password' => bcrypt($user->password),
-                    // 'facebook_id' => $user->id, //xem laij
+                ]);
+
+                auth()->attempt(['email' => $newUser->email, 'password' => $newUser->password]);
+                return redirect()->route('home.index');
+            }
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function getDangNhapGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function postDangNhapGoogle()
+    {
+        try {
+
+            $user = Socialite::driver('google')->user();
+
+            $finduser = User::where('google_id', $user->id)->first();
+
+            if ($finduser) {
+
+                // Auth::login($finduser);
+                auth()->attempt(['email' => $user->email, 'password' => $user->password]);
+                return redirect()->route('home.index');
+            } else {
+                $newUser = User::updateOrCreate(['email' => $user->email], [
+                    'ho_ten' => $user->name,
+                    'google_id' => $user->id,
+                    'password' => bcrypt($user->password),
                 ]);
 
                 auth()->attempt(['email' => $newUser->email, 'password' => $newUser->password]);

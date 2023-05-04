@@ -52,7 +52,7 @@
                             <tbody>
                                 @foreach($dm as $d)
                                 <tr>
-                                    <td>{{ +(+$i) }}</td>
+                                    <td>{{ ++$i }}</td>
                                     <td>{{ $d-> ten_dm }}</td>
                                     <td>
                                         {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $d->updated_at)->format('H:i:s d/m/Y') }}

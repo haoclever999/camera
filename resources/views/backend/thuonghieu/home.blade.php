@@ -53,7 +53,7 @@
                             <tbody>
                                 @foreach($th as $t)
                                 <tr>
-                                    <td>{{ +(+$i) }}</td>
+                                    <td>{{ ++$i }}</td>
                                     <td>
                                         {{ $t->ten_thuong_hieu}}
                                     </td>

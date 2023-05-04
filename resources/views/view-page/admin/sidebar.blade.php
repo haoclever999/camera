@@ -27,7 +27,7 @@
     <li class="nav-item active">
         <a class="nav-link" href="{{ route('admin.index') }}">
             <i class="fas fa-fw fa-tachometer-alt"></i>
-            <span>Trang quản trị</span></a
+            <span>Trang chủ</span></a
         >
     </li>
 
@@ -37,25 +37,25 @@
     <!-- Nav Item - Pages Collapse Menu -->
     <li class="nav-item">
         <a class="nav-link" href="{{ route('thuonghieu.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
-            <span>Thương hiệu</span></a
-        >
+            <i class="fas fa-fw fa-camera"></i>
+            <span>Thương hiệu</span>
+        </a>
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{ route('danhmuc.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-list-alt"></i>
             <span>Danh mục sản phẩm</span></a
         >
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{ route('sanpham.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-camera"></i>
             <span>Sản phẩm</span></a
         >
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{ route('donhang.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-shopping-cart"></i>
             <span>Đơn đặt hàng</span>
             <span class="badge badge-danger badge-counter">
                 {{ $dh_moi }}
@@ -64,7 +64,7 @@
     </li>
     <li class="nav-item">
         <a class="nav-link" href="{{ route('cauhinh.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-cog"></i>
             <span>Cấu hình</span></a
         >
     </li>
@@ -74,7 +74,7 @@
     <!-- Nav Item - Charts -->
     <li class="nav-item">
         <a class="nav-link" href="{{ route('nguoidung.index') }}">
-            <i class="fas fa-fw fa-chart-area"></i>
+            <i class="fas fa-fw fa-user"></i>
             <span>Quản lý người dùng</span></a
         >
     </li>

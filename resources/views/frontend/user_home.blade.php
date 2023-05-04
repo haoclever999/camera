@@ -52,6 +52,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
                         }}đ
                     </div>
                     <div class="price">
@@ -77,6 +89,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
                                 }}đ
                             </i>
                         </del>
@@ -86,6 +110,18 @@
                 <div style="display: inline-block">
                     <div class="pi-price">
                         {{number_format(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),0,',','.')
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -204,6 +240,18 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
                         }}đ
                     </div>
                     <div class="price">
@@ -225,6 +273,18 @@
                 <div style="display: inline-block">
                     <div class="pi-price">
                         {{number_format(($sp_nb->gia_ban-($sp_nb->gia_ban*$sp_nb->giam_gia/100)),0,',','.')
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                         }}đ
@@ -296,6 +356,28 @@
             </div>
         </div>
         @endforeach
+    </div>
+</div>
+
+<div class="row margin-bottom-40">
+    <div class="col-md-12 sale-product">
+        <h2><b>Các thương hiệu</b></h2>
+
+        <ul id="thuonghieu" style="margin-top: 2em">
+            @foreach ($th as $t)
+            <li>
+                <a
+                    href="{{route('thuonghieu.sanpham_all',
+                [
+                'slug'=>$t->slug,'id'=>$t->id
+                ]
+                )}}"
+                >
+                    <img src="{{$t->logo}}" />
+                </a>
+            </li>
+            @endforeach
+        </ul>
     </div>
 </div>
 <!-- Modal so sánh sản phẩm -->

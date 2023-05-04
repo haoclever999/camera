@@ -7,16 +7,18 @@ use App\Models\DanhMuc;
 use Illuminate\Http\Request;
 use App\Mail\LienHe;
 use App\Models\SanPham;
+use App\Models\ThuongHieu;
 use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
-    private $dmuc, $cauhinh, $sanpham;
-    public function __construct(SanPham $sanpham, DanhMuc $dmuc, CauHinh $cauhinh)
+    private $dmuc, $cauhinh, $sanpham, $thuonghieu;
+    public function __construct(SanPham $sanpham, DanhMuc $dmuc, CauHinh $cauhinh, ThuongHieu $thuonghieu)
     {
         $this->dmuc = $dmuc;
         $this->cauhinh = $cauhinh;
         $this->sanpham = $sanpham;
+        $this->thuonghieu = $thuonghieu;
     }
 
     public function home(Request $request)
@@ -24,6 +26,7 @@ class HomeController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -33,9 +36,11 @@ class HomeController extends Controller
         $url_canonical = $request->url();
 
         $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm', 'asc')->get();
-        $sp_moi = $this->sanpham->where('trang_thai', 1)->orderBy('created_at', 'desc')->take(8)->get();
-        $sp_noi_bat = $this->sanpham->where('trang_thai', 1)->orderBy('luot_xem', 'desc')->take(8)->get();
-        return view('frontend.user_home', compact('dm', 'sp_moi', 'sp_noi_bat', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        $sp_moi = $this->sanpham->where('trang_thai', 1)->orderBy('created_at', 'desc')->take(4)->get();
+        $sp_noi_bat = $this->sanpham->where('trang_thai', 1)->orderBy('luot_xem', 'desc')->take(4)->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->take(10)->get();
+
+        return view('frontend.user_home', compact('dm', 'sp_moi', 'sp_noi_bat', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function getLienHe(Request $request)
@@ -43,6 +48,7 @@ class HomeController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -52,7 +58,7 @@ class HomeController extends Controller
         $url_canonical = $request->url();
 
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
-        return view('frontend.lienhe', compact('dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.lienhe', compact('dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function postLienHe(Request $request)

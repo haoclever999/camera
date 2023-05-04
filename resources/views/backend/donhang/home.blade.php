@@ -89,7 +89,7 @@
                             <tbody>
                                 @foreach($dhang as $dh)
                                 <tr>
-                                    <td>{{ +(+$i) }}</td>
+                                    <td>{{ ++$i }}</td>
                                     <td>{{$dh->ten_kh}}</td>
                                     <td>{{$dh->tong_so_luong}}</td>
                                     <td>

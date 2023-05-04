@@ -388,6 +388,7 @@ class NguoiDungController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -405,7 +406,7 @@ class NguoiDungController extends Controller
 
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
-        return view('auth.hosonguoidung', compact('user', 'dc', 'tinh_tp', 'huyen', 'xa', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('auth.hosonguoidung', compact('user', 'dc', 'tinh_tp', 'huyen', 'xa', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function posthosoUser(Request $request, $id)
@@ -493,6 +494,7 @@ class NguoiDungController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -504,7 +506,7 @@ class NguoiDungController extends Controller
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
         $user = $this->user->find($id);
-        return view('auth.doimatkhaunguoidung', compact('user', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('auth.doimatkhaunguoidung', compact('user', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function postdoimatkhauUser(Request $request,  $id)

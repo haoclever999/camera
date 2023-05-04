@@ -5,12 +5,6 @@
     height: 150px;
     object-fit: contain;
 }
-.banner_qc > img {
-    max-width: 100%;
-    height: auto;
-    object-fit: contain;
-    vertical-align: middle;
-}
 .dropdown:hover .dropdown-menu {
     display: block;
 }
@@ -84,4 +78,33 @@
 }
 .giamgia > .phantram {
     top: 0 !important;
+}
+
+ul#thuonghieu {
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+}
+
+ul#thuonghieu > li {
+    width: 100px;
+    float: left;
+    list-style: none;
+    padding: 5px;
+    margin-right: 1em;
+}
+
+#thuonghieu > li > a {
+    margin: 0;
+    display: inline-block;
+    word-break: break-all;
+}
+#thuonghieu > li > a:hover {
+    transition-duration: 0.5s;
+    transform: scale(1.1);
+}
+#thuonghieu > li > a > img {
+    width: 100%;
+    display: block;
+    min-height: 3em;
 }

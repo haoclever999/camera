@@ -193,6 +193,7 @@ class ThuongHieuController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -258,7 +259,7 @@ class ThuongHieuController extends Controller
         foreach ($spham as $value)
             $id_th[] = $value->thuong_hieu_id;
         $th_sp = $this->thuonghieu->where('trang_thai', 1)->whereIn('id', $id_th)->distinct()->get();
-        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'ten_dm', 'ten_th', 'th_sp', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function getThuongHieuSanPham(Request $request, $slug, $id)
@@ -266,6 +267,7 @@ class ThuongHieuController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -327,6 +329,6 @@ class ThuongHieuController extends Controller
         $ten_th = $this->thuonghieu->where('trang_thai', 1)->where('id', $id)->limit(1)->get();
         $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
 
-        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'th', 'ten_th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'th', 'ten_th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 }

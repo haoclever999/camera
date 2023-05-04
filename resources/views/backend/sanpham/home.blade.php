@@ -138,7 +138,7 @@
                             <tbody>
                                 @foreach($sp as $s)
                                 <tr>
-                                    <td>{{ +(+$i) }}</td>
+                                    <td>{{ ++$i }}</td>
                                     <td>{{$s->ten_sp}}</td>
                                     <td>
                                         <img

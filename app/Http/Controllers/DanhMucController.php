@@ -177,6 +177,7 @@ class DanhMucController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -245,7 +246,7 @@ class DanhMucController extends Controller
             $th_sp = [];
         }
 
-        return view('frontend.danhmuc_sanpham', compact('dm', 'sp', 'ten_dm', 'th_sp', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.danhmuc_sanpham', compact('dm', 'sp', 'ten_dm', 'th_sp', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
     // Kết thúc trang người dùng
 }

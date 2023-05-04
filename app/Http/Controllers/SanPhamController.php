@@ -392,6 +392,7 @@ class SanPhamController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //tăng lượt xem
         $l_xem = $this->spham->find($id);
@@ -410,7 +411,7 @@ class SanPhamController extends Controller
         }
 
         $sp_lienquan = $this->spham->where('trang_thai', 1)->where('dm_id', $id_dm)->whereNotIn('id', [$id])->get();
-        return view('frontend.sanpham_chitiet', compact('dm', 'sp_chitiet', 'sp_lienquan', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.sanpham_chitiet', compact('dm', 'sp_chitiet', 'sp_lienquan', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function getAllSanPham(Request $request)
@@ -418,6 +419,7 @@ class SanPhamController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -478,7 +480,7 @@ class SanPhamController extends Controller
         $dm =  $this->dmuc->where('trang_thai', 1)->where('trang_thai', 1)->orderby('ten_dm')->get();
         $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
 
-        return view('frontend.sanpham_all', compact('dm', 'sp', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.sanpham_all', compact('dm', 'sp', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function timKiemSanPham(Request $request)
@@ -486,6 +488,7 @@ class SanPhamController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -544,7 +547,7 @@ class SanPhamController extends Controller
         $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
         $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
         $timkiem = $spham->paginate($hienthi)->appends($request->query());
-        return view('frontend.sanpham_timkiem', compact('dm', 'th', 'timkiem', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.sanpham_timkiem', compact('dm', 'th', 'timkiem', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function timKiem_Header(Request $request)
@@ -570,6 +573,7 @@ class SanPhamController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $url_canonical = $request->url();
@@ -582,7 +586,7 @@ class SanPhamController extends Controller
         $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
 
         $tags = $this->tag->where('ten_tag', $tag)->first();
-        return view('frontend.sanpham_tag', compact('dm', 'tags', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.sanpham_tag', compact('dm', 'tags', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
     // Kết thúc trang người dùng
 }

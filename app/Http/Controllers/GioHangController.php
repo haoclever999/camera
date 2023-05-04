@@ -52,6 +52,7 @@ class GioHangController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -61,7 +62,7 @@ class GioHangController extends Controller
         $url_canonical = $request->url();
 
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
-        return view('frontend.giohang.giohang_show', compact('dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.giohang.giohang_show', compact('dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function capnhat_soluong(Request $request)
@@ -88,6 +89,8 @@ class GioHangController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
+
 
         //địa chỉ
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
@@ -96,7 +99,7 @@ class GioHangController extends Controller
         $u = User::where('id', Auth()->user()->id)->get();
         foreach ($u as $value)
             $d_c = $value->dia_chi;
-        $dc = explode(', ', $d_c);
+        $dchi = explode(', ', $d_c);
         //SEO
         $meta_keyword = '';
         $meta_image = '';
@@ -107,7 +110,7 @@ class GioHangController extends Controller
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $tt_giohang = Cart::content();
         if (count($tt_giohang) > 0) {
-            return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'tinh_tp', 'huyen', 'xa', 'dc', 'dt', 'fb', 'email'));
+            return view('frontend.giohang.thanhtoan', compact('dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'tinh_tp', 'huyen', 'xa', 'dchi', 'dc', 'dt', 'fb', 'email'));
         }
         return redirect()->route('giohang.chitiet_giohang');
     }
@@ -224,6 +227,7 @@ class GioHangController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -234,7 +238,7 @@ class GioHangController extends Controller
 
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $lichsu = $this->donhang->where('user_id', auth()->user()->id)->orderby('created_at', 'desc')->get();
-        return view('frontend.giohang.lichsu_muahang', compact('lichsu', 'dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.giohang.lichsu_muahang', compact('lichsu', 'dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function getLichSuMuaHangChiTiet($id, Request $request)
@@ -242,6 +246,7 @@ class GioHangController extends Controller
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
+        $dc = $this->cauhinh->where('ten', 'Địa chỉ')->first();
 
         //SEO
         $meta_keyword = '';
@@ -252,6 +257,6 @@ class GioHangController extends Controller
 
         $dm =  $this->dmuc->orderby('ten_dm')->get();
         $lichsu = $this->donhang->find($id);
-        return view('frontend.giohang.lichsu_muahang_chitiet', compact('lichsu', 'dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dt', 'fb', 'email'));
+        return view('frontend.giohang.lichsu_muahang_chitiet', compact('lichsu', 'dm', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 }

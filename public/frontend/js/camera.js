@@ -14,7 +14,7 @@ function Delete(even) {
     let urlRequest = $(this).data("url"); //lấy đường dẫn url
     let that = $(this);
     Swal.fire({
-        title: "Bạn có chắc chắn?",
+        title: "Bạn có chắc chắn xóa?",
         text: "Dữ liệu khác có thể bị xoá theo",
         type: "warning",
         showCancelButton: true,
@@ -48,7 +48,7 @@ function Huy(even) {
     even.preventDefault();
     let urlRequest = $(this).data("url"); //lấy đường dẫn url
     Swal.fire({
-        title: "Bạn có chắc chắn?",
+        title: "Bạn có chắc chắn hủy?",
         text: "Nó không thể khôi phục lại.",
         type: "warning",
         showCancelButton: true,
@@ -65,7 +65,7 @@ function Huy(even) {
                     if (data.code == 200) {
                         Swal.fire(
                             "Đã huỷ!",
-                            "Đơn hàng đã được huỷ.",
+                            "Hủy đơn hàng thành công.",
                             "success"
                         ).then(function () {
                             location.reload();

@@ -11,7 +11,7 @@ class AdminController extends Controller
 
     public function index()
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $tong_sp = SanPham::where('trang_thai', 1)->count();

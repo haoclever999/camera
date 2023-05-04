@@ -24,7 +24,7 @@ class CauHinhController extends Controller
 
     public function index(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $page = 5;
@@ -65,7 +65,7 @@ class CauHinhController extends Controller
 
     public function getSua($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $cauhinh = $this->cauhinh->find($id);
@@ -122,7 +122,7 @@ class CauHinhController extends Controller
 
     public function xoa($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         return $this->deleteModelTrait($id, $this->cauhinh);
@@ -130,7 +130,7 @@ class CauHinhController extends Controller
 
     public function timkiem(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         if ($request->ajax()) {

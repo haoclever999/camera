@@ -33,7 +33,7 @@ class DanhMucController extends Controller
 
     public function index(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $page = 5;
@@ -71,7 +71,7 @@ class DanhMucController extends Controller
 
     public function getSua($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $dm = $this->dmuc->find($id);
@@ -112,7 +112,7 @@ class DanhMucController extends Controller
 
     public function xoa($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         return $this->deleteModelTrait($id, $this->dmuc);
@@ -120,7 +120,7 @@ class DanhMucController extends Controller
 
     public function timkiem(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         if ($request->ajax()) {

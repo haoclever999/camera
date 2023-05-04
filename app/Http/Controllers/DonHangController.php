@@ -34,7 +34,7 @@ class DonHangController extends Controller
 
     public function index(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $sapxep = $request->sapxep;
@@ -66,7 +66,7 @@ class DonHangController extends Controller
 
     public function chitiet($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $dhang = $this->donhang->find($id);
@@ -76,7 +76,7 @@ class DonHangController extends Controller
 
     public function xacnhan($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         try {
@@ -102,7 +102,7 @@ class DonHangController extends Controller
 
     public function dangvanchuyen($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         try {
@@ -126,7 +126,7 @@ class DonHangController extends Controller
 
     public function dagiao($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         try {
@@ -150,7 +150,7 @@ class DonHangController extends Controller
 
     public function huy($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         try {
@@ -180,7 +180,7 @@ class DonHangController extends Controller
 
     public function xoa($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         try {
@@ -206,7 +206,7 @@ class DonHangController extends Controller
 
     public function timkiem(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         if ($request->ajax()) {
@@ -268,7 +268,7 @@ class DonHangController extends Controller
     // in đơn hàng
     public function inDonHang($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $dhang = $this->donhang->where('id', $id)->first();
@@ -278,7 +278,7 @@ class DonHangController extends Controller
 
     public function xuat_excel()
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $dhang = DonHang::all()->makeHidden(['user_id', 'updated_at']);

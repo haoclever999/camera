@@ -34,7 +34,7 @@ class ThuongHieuController extends Controller
     // Bat dau trang admin
     public function index(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $page = 5;
@@ -76,7 +76,7 @@ class ThuongHieuController extends Controller
 
     public function getSua($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $th = $this->thuonghieu->find($id);
@@ -126,7 +126,7 @@ class ThuongHieuController extends Controller
 
     public function xoa($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         return $this->deleteModelTrait($id, $this->thuonghieu);
@@ -134,7 +134,7 @@ class ThuongHieuController extends Controller
 
     public function timkiem(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         if ($request->ajax()) {

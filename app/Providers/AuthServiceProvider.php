@@ -22,7 +22,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::define('quyen', function ($user,  $quyen) {
-            return $user->quyen != $quyen;
+            return $user->quyen == $quyen;
         });
     }
 }

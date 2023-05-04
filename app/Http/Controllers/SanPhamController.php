@@ -54,7 +54,7 @@ class SanPhamController extends Controller
 
     public function index(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $sapxep = $request->sapxep;
@@ -84,7 +84,7 @@ class SanPhamController extends Controller
 
     public function chitiet($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $sp = $this->spham->find($id);
@@ -94,7 +94,7 @@ class SanPhamController extends Controller
 
     public function getThem()
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $DmOpt = $this->getDanhMuc('0');
@@ -168,7 +168,7 @@ class SanPhamController extends Controller
 
     public function getSua($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $sp = $this->spham->find($id);
@@ -273,7 +273,7 @@ class SanPhamController extends Controller
 
     public function xoa($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         return $this->deleteModelTrait($id, $this->spham);
@@ -281,7 +281,7 @@ class SanPhamController extends Controller
 
     public function timkiem(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         if ($request->ajax()) {

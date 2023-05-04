@@ -132,9 +132,7 @@
                                     <th style="width: 6.2em">Danh mục</th>
                                     <th style="width: 7.5em">Thương hiệu</th>
                                     <th style="width: 8.2em">Ngày cập nhật</th>
-                                    <th style="width: 6.8em; padding-right: 0">
-                                        Hành động
-                                    </th>
+                                    <th style="width: 6.8em; padding-right: 0"> Hành động </th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -35,7 +35,7 @@ class NguoiDungController extends Controller
     //Bắt đầu trang admin
     public function index(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $id_sua = '0';
@@ -48,7 +48,7 @@ class NguoiDungController extends Controller
 
     public function getThem()
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
@@ -94,7 +94,7 @@ class NguoiDungController extends Controller
 
     public function gethoso($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
@@ -189,7 +189,7 @@ class NguoiDungController extends Controller
 
     public function getdoimatkhau($id)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         $user = $this->user->find($id);
@@ -274,7 +274,7 @@ class NguoiDungController extends Controller
 
     public function timkiem(Request $request)
     {
-        if (!Gate::allows('quyen', "Khách hàng")) {
+        if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
         if ($request->ajax()) {

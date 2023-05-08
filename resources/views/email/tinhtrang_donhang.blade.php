@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     </head>
     <body>
-        @if($tieude=="Xác nhận" )
+        @if($tieude=="Xác nhận")
         <h2>{{ $tieude }} đơn hàng</h2>
         <h4>
             Đơn hàng của bạn đã được "<b> {{ $tieude }} </b>" bởi cửa hàng
@@ -14,8 +14,7 @@
         @elseif($tieude=="Huỷ")
         <h2>{{ $tieude }} đơn hàng</h2>
         <h4>
-            Đơn hàng của bạn đã được "<b style="color: red"> {{ $tieude }} </b>"
-            bởi cửa hàng
+            Đơn hàng của bạn đã được "<b style="color: red"> {{ $tieude }} </b>" bởi cửa hàng
         </h4>
         @elseif($tieude=="Đang vận chuyển")
         <h2>{{ $tieude }}</h2>
@@ -41,9 +40,7 @@
             <hr />
             <p>
                 Mọi thắc mắc vui lòng liên hệ số điện thoại:
-                <a style="text-decoration: none" href="tel:{{ $dt }}">{{
-                    $dt
-                }}</a>
+                <a style="text-decoration: none" href="tel:{{ $dt }}"> {{ $dt }}</a>
             </p>
             <p>Trân trọng,</p>
         </div>

@@ -96,10 +96,13 @@ class GioHangController extends Controller
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
         $huyen = QuanHuyen::orderby('ten_qh')->get();
         $xa = XaPhuong::orderby('ten_xa')->get();
-        $u = User::where('id', Auth()->user()->id)->get();
-        foreach ($u as $value)
-            $d_c = $value->dia_chi;
-        $dchi = explode(', ', $d_c);
+        if (Auth::check()) {
+            $u = User::where('id', Auth()->user()->id)->get();
+            foreach ($u as $value)
+                $d_c = $value->dia_chi;
+            $dchi = explode(', ', $d_c);
+        }
+        $dchi = '';
         //SEO
         $meta_keyword = '';
         $meta_image = '';
@@ -145,15 +148,20 @@ class GioHangController extends Controller
                 $tinh = TinhThanhPho::where('id', $request->opt_Tinh)->first();
 
                 $diachi = $request->dia_chi . ', ' . $xa->ten_xa . ', ' . $huyen->ten_qh . ', ' . $tinh->ten_tp;
-                $tk = $this->u->where('email', Auth::user()->email)->first();
-                $user = $this->u->find($tk->id);
-                if ($tk->dia_chi == '')
-                    $user->update(['dia_chi' =>  $diachi]);
-                if ($tk->sdt == '')
-                    $user->update(['sdt' =>  $request->sdt]);
+                if (Auth::check()) {
+                    $tk = $this->u->where('email', Auth::user()->email)->first();
+                    $user = $this->u->find($tk->id);
+                    if ($tk->dia_chi == '')
+                        $user->update(['dia_chi' =>  $diachi]);
+                    if ($tk->sdt == '')
+                        $user->update(['sdt' =>  $request->sdt]);
+                    $user_id = auth()->id();
+                } else {
+                    $user_id = 1;
+                }
 
                 $dhang = $this->donhang->create([
-                    'user_id' => auth()->id(),
+                    'user_id' => $user_id,
                     'ten_kh' => $request->ho_ten,
                     'sdt_kh' => $request->sdt,
                     'dia_chi_kh' => $diachi,
@@ -186,7 +194,8 @@ class GioHangController extends Controller
                 $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
 
                 DB::commit();
-                Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->gia_tri));
+                if (Auth::check())
+                    Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->gia_tri));
 
                 Cart::destroy();
                 session()->flash('success', 'Cảm ơn bạn đã đặt hàng. Đơn hàng đang chờ xử lý. Vui lòng chờ!');

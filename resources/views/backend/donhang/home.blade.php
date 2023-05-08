@@ -38,7 +38,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                
-                <div class="col-sm-4">
+                <div class="col-sm-2">
                     <form>
                         <div class="form-group">
                             <select class="form-select input-sm" onchange="this.form.submit();" name="sapxep">
@@ -53,7 +53,22 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-sm-8" style="float: right">
+                <div class="col-sm-8">
+                    <form>
+                        <div class="form-group row">
+                            <label style="padding-top: 1%; width: 12%;" class=" control-label" for="tu_ngay">Từ ngày</label>
+                            <input type="date" class="col-md-3 form-control" name="tu_ngay" id="tu_ngay" value="{{request('tu_ngay') ?? ''}}">
+                            
+                            <label style="padding-top: 1%; width: 14%;" class="control-label" for="den_ngay">Đến ngày</label>
+                            <input type="date" class="col-md-3 form-control" name="den_ngay" id="den_ngay" value="{{request('den_ngay') ?? ''}}">
+
+                            <button type="submit" class="col-md-1 btn btn-primary" style="margin-left: 2%; width: max-content;">
+                                Lọc
+                            </button>
+                        </div>                        
+                    </form>
+                </div>
+                <div class="col-sm-2" style="float: right; margin-top: -1%;">
                     <a
                         href="{{ route('donhang.xuatdonhnag') }}"
                         class="btn btn-success float-right m-2"
@@ -100,7 +115,7 @@
                                     </td>
                                     @if($dh->trang_thai=="Đang chờ xử lý")
                                     <td style="color: rgb(17, 136, 192);">{{$dh->trang_thai}}</td>
-                                    @elseif($dh->trang_thai=="Đã xoá")
+                                    @elseif($dh->trang_thai=="Đã xoá" || $dh->trang_thai=="Đã huỷ đơn")
                                     <td style="color: rgba(255, 0, 0,0.8)">{{$dh->trang_thai}}</td>
                                     @else
                                     <td>{{$dh->trang_thai}}</td>
@@ -161,6 +176,24 @@
 @endsection @section('js')
 <script>
     $(document).ready(function () {
+        
+        let now = new Date();
+        let y = now.getFullYear();
+        let m = now.getMonth() + 1;
+        let d = now.getDate();
+
+        m = m < 10 ? "0" + m : m;
+        d = d < 10 ? "0" + d : d;
+        let today=y + "-" + m + "-" + d;
+        if($("input[type=date]").val()=='')
+            $("input[type=date]").val(today);
+        $("input[type=date]").change(function(){
+            let tu_ngay = $("input#tu_ngay").val();
+            let den_ngay = $("input#den_ngay").val();
+            if($den_ngay < $tu_ngay)
+                alert("đến ngày phải lớn hơn");
+        })
+       
         $("#timkiem_dh").val("");
 
         $("#timkiem_dh").on("keyup", function (e) {

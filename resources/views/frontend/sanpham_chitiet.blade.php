@@ -179,6 +179,7 @@
                     <div class="product-page-cart" style="margin-top: 30px">
                         <form
                             action="{{ route('giohang.them_giohang') }}"
+                            class="them_giohang"
                             method="post"
                         >
                             @csrf
@@ -313,7 +314,6 @@
                                             >
                                                 {{number_format($lienquan->gia_ban,0,',','.')
 
-
                                                 }}đ
                                             </i>
                                         </del>
@@ -371,6 +371,7 @@
                                         action="{{
                                             route('giohang.them_giohang')
                                         }}"
+                                        class="them_giohang"
                                         method="post"
                                     >
                                         @csrf

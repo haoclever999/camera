@@ -37,26 +37,25 @@ class DonHangController extends Controller
         if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
+        $dh = $this->donhang->orderBy('created_at', 'desc');
         $sapxep = $request->sapxep;
-        if ($sapxep == 'cho_xu_ly')
-            $dh = $this->donhang->where('trang_thai', "Đang chờ xử lý");
-        elseif ($sapxep == 'xac_nhan')
-            $dh = $this->donhang->where('trang_thai', "Đã xác nhận đơn");
-
-        elseif ($sapxep == 'van_chuyen')
-            $dh = $this->donhang->where('trang_thai', "Đang vận chuyển");
-
-        elseif ($sapxep == 'giao')
-            $dh = $this->donhang->where('trang_thai', "Giao hàng thành công");
-
-        elseif ($sapxep == 'huy')
-            $dh = $this->donhang->where('trang_thai', "Đã huỷ đơn");
-
-        elseif ($sapxep == 'xoa')
-            $dh = $this->donhang->where('trang_thai', "Đã xoá");
-
-        else
-            $dh = $this->donhang->orderBy('created_at', 'desc');
+        if ($sapxep) {
+            if ($sapxep == 'cho_xu_ly')
+                $dh = $this->donhang->where('trang_thai', "Đang chờ xử lý");
+            elseif ($sapxep == 'xac_nhan')
+                $dh = $this->donhang->where('trang_thai', "Đã xác nhận đơn");
+            elseif ($sapxep == 'van_chuyen')
+                $dh = $this->donhang->where('trang_thai', "Đang vận chuyển");
+            elseif ($sapxep == 'giao')
+                $dh = $this->donhang->where('trang_thai', "Giao hàng thành công");
+            elseif ($sapxep == 'huy')
+                $dh = $this->donhang->where('trang_thai', "Đã huỷ đơn");
+            elseif ($sapxep == 'xoa')
+                $dh = $this->donhang->where('trang_thai', "Đã xoá");
+        }
+        if ($request->tu_ngay && $request->den_ngay) {
+            $dh = $this->donhang->whereBetween('created_at', [$request->tu_ngay, $request->den_ngay]);
+        }
 
         $page = 5;
         $dhang = $dh->paginate($page)->appends($request->query());

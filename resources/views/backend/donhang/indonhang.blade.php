@@ -179,17 +179,7 @@
                             <em>Thành tiền:</em>
 
                             <strong class="price" style="float: right">
-                                {{number_format($dhang->tong_tien, 0, ",", ".")
-
-
-
-
-
-
-
-
-
-                                }}đ
+                                {{number_format($dhang->tong_tien, 0, ",", ".")}}đ
                             </strong>
                         </li>
                     </ul>

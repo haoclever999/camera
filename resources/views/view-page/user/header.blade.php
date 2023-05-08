@@ -51,9 +51,7 @@
                                 </a>
                             </strong>
                             <em>
-                                {{number_format(($nd->price*$nd->qty),0,',','.')
-                                }}
-                                đ
+                                {{number_format(($nd->price*$nd->qty),0,',','.')}}đ
                             </em>
 
                             <a

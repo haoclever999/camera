@@ -68,7 +68,7 @@ class AuthController extends Controller
             ]
         );
         $ghi_nho = $request->has('ghi_nho') ? true : false;
-        if (auth()->attempt(['email' => $request->email, 'password' => $request->password], $ghi_nho)) {
+        if (auth()->attempt(['email' => $request->email, 'password' => $request->password], $ghi_nho) && auth()->user()->trang_thai == 1) {
             if (auth()->user()->quyen != "Khách hàng")
                 return redirect()->route('admin.index');
             else

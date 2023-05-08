@@ -20,7 +20,7 @@ class AdminController extends Controller
         $tong_dm = DanhMuc::where('trang_thai', 1)->count();
         $tong_th = ThuongHieu::where('trang_thai', 1)->count();
         $dh_moi = DonHang::where('trang_thai', "Đang chờ xử lý")->count();
-        $tong_dh = DonHang::where('trang_thai', '!=', "Đã xoá")->count();
+        $tong_dh = DonHang::whereNotIn('trang_thai', ["Đã xoá", 'Đã huỷ đơn'])->count();
         return view('backend.home', compact('tong_sp', 'dh_moi', 'tong_dh', 'tong_dm', 'tong_th'));
     }
 }

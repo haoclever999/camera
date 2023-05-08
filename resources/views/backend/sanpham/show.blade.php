@@ -81,19 +81,15 @@
 
                         <div class="form-group">
                             <label class="form-label">
-                                <b>Giá bán: </b
-                                ><span
-                                    >{{number_format($sp->gia_ban,0,",",".")}}</span
-                                >
-                                đ
+                                <b>Giá bán: </b> 
+								<span> {{number_format($sp->gia_ban,0,",",".")}} </span> đ
                             </label>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label">
                                 <b>Giảm giá: </b>
-                                <span>{{$sp->giam_gia}}</span
-                                >%
+                                <span>{{$sp->giam_gia}}</span >%
                             </label>
                         </div>
                     </div>
@@ -101,8 +97,7 @@
                     <div class="col-md-6" style="float: right">
                         <div class="form-group">
                             <label class="form-label">
-                                <b>Bảo hành: </b
-                                ><span>{{$sp->bao_hanh}}</span> tháng
+                                <b>Bảo hành: </b> <span>{{$sp->bao_hanh}}</span> tháng
                             </label>
                         </div>
 

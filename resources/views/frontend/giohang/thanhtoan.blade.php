@@ -43,16 +43,18 @@
             @endif
             <form method="post" action="{{ route('thanhtoan.postThanhToan') }}" id="myform">
                 @csrf
+                @if(Auth::check())
                 <div class="form-group">
                     <label>Email</label>
                     <input
                         type="email"
                         class="form-control"
                         name="email"
-                        value="{{Auth::user()->email}}"
+                        value="{{Auth::user()->email ??''}}"
                         disabled
                     />
                 </div>
+                @endif
                 <div class="form-group">
                     <label for="ho_ten">Họ tên</label>
                     <input
@@ -60,7 +62,7 @@
                         class="form-control"
                         name="ho_ten"
                         id="ho_ten"
-                        value="{{ Auth::user()->ho_ten }}"
+                        value="{{ Auth::user()->ho_ten ??''}}"
                         placeholder="Nhập họ tên"
                         required
                     />
@@ -73,7 +75,7 @@
                         name="sdt"
                         id="sdt"
                         maxlength="10"
-                        value="{{ Auth::user()->sdt }}"
+                        value="{{ Auth::user()->sdt ??''}}"
                         placeholder="Nhập số điện thoại"
                         onblur="kiemTraSDT(event)"
                         required
@@ -239,17 +241,14 @@
                     </td>
 
                     <td>
-                        {{number_format($nd->price,0,',','.')}}
-                        đ
+                        {{number_format($nd->price,0,',','.')}} đ
                     </td>
 
                     <td>
                         {{$nd->qty}}
                     </td>
                     <td>
-                        {{number_format(($nd->price*$nd->qty),0,',','.')
-                        }}
-                        đ
+                        {{number_format(($nd->price*$nd->qty),0,',','.') }} đ
                     </td>
                 </tr>
                 @endforeach

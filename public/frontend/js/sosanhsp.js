@@ -1,18 +1,4 @@
 $(document).ready(function (event) {
-    $("form").submit(function () {
-        var form = $(this);
-        var actionUrl = form.attr("action");
-        $.ajax({
-            type: "POST",
-            url: actionUrl,
-            data: form.serialize(),
-            success: function (data) {
-                if (data.status === "Thêm thành công") {
-                    location.reload(false);
-                }
-            },
-        });
-    });
     $("form.them_giohang").submit(function () {
         var form = $(this);
         var actionUrl = form.attr("action");
@@ -22,7 +8,21 @@ $(document).ready(function (event) {
             data: form.serialize(),
             success: function (data) {
                 if (data.status === "Thêm thành công") {
-                    location.reload(false);
+                    location.reload();
+                }
+            },
+        });
+    });
+    $("form.them_giohang_nb").submit(function () {
+        var form = $(this);
+        var actionUrl = form.attr("action");
+        $.ajax({
+            type: "POST",
+            url: actionUrl,
+            data: form.serialize(),
+            success: function (data) {
+                if (data.status === "Thêm thành công") {
+                    location.reload();
                 }
             },
         });

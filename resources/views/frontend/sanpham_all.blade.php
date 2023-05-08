@@ -76,8 +76,7 @@
                         <div class="price">
                             <del>
                                 <i style="margin-left: 1em; height: 25px; line-height: 2; vertical-align: middle;">
-                                    {{number_format($s->gia_ban,0,',','.')
-                                    }}đ
+                                    {{number_format($s->gia_ban,0,',','.')}}đ
                                 </i>
                             </del>
                         </div>
@@ -130,6 +129,7 @@
                         </form>
                         <form
                             action="{{ route('giohang.them_giohang') }}"
+                            class="them_giohang"
                             method="post"
                         >
                             @csrf

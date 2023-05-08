@@ -112,7 +112,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home.index');
 
 Route::get('dang-nhap', [AuthController::class, 'getDangNhapUser'])->name('getDangNhapUser')->middleware('CheckLoginUser');
 Route::post('dang-nhap', [AuthController::class, 'postDangNhapUser'])->name('postDangNhapUser');
-Route::get('dang-xuat', [AuthController::class, 'DangXuatUser'])->name('DangXuatUser');
+Route::get('dang-xuat', [AuthController::class, 'DangXuatUser'])->name('DangXuatUser')->middleware('CheckLoginUser');
 
 Route::get('dang-nhap/quen-mat-khau', [AuthController::class, 'getQuenMatKhauUser'])->name('getQuenMatKhauUser');
 Route::post('dang-nhap/quen-mat-khau', [AuthController::class, 'postQuenMatKhauUser'])->name('postQuenMatKhauUser');
@@ -152,8 +152,8 @@ Route::get('lich-su-mua-hang', [GioHangController::class, 'getLichSuMuaHang'])->
 Route::get('lich-su-mua-hang/{id}', [GioHangController::class, 'getLichSuMuaHangChiTiet'])->name('getLichSuMuaHangChiTiet');
 
 //thanh toán
-Route::get('thanh-toan', [GioHangController::class, 'getThanhToan'])->name('thanhtoan.getThanhToan')->middleware('CheckLogoutUser');
-Route::post('thanh-toan', [GioHangController::class, 'postThanhToan'])->name('thanhtoan.postThanhToan')->middleware('CheckLogoutUser');
+Route::get('thanh-toan', [GioHangController::class, 'getThanhToan'])->name('thanhtoan.getThanhToan');
+Route::post('thanh-toan', [GioHangController::class, 'postThanhToan'])->name('thanhtoan.postThanhToan');
 Route::post('dia-chi', [GioHangController::class, 'diachi'])->name('diachi');
 Route::get('xu-ly-thanh-toan-paypal', [PayPalPaymentController::class, 'processTransaction_Paypal'])->name('processTransaction_Paypal');
 Route::get('thanh-toan-paypal-thanh-cong', [PayPalPaymentController::class, 'successTransaction_Paypal'])->name('successTransaction_Paypal');

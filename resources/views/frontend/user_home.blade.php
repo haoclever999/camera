@@ -30,10 +30,7 @@
                     </div>
                 </div>
                 <h3>
-                    <a
-                        href="{{route('sanpham.chitiet_sp',[$sp_m->id])}}"
-                        style="text-decoration: none"
-                    >
+                    <a href="{{route('sanpham.chitiet_sp',[$sp_m->id])}}">
                         <b> {{$sp_m->ten_sp}} </b>
                     </a>
                 </h3>
@@ -41,28 +38,6 @@
                 <div style="display: inline">
                     <div class="pi-price">
                         {{number_format(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),0,',','.')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                         }}đ
                     </div>
@@ -76,32 +51,7 @@
                                     vertical-align: middle;
                                 "
                             >
-                                {{number_format($sp_m->gia_ban,0,',','.')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                }}đ
+                                {{number_format($sp_m->gia_ban,0,',','.')}}đ
                             </i>
                         </del>
                     </div>
@@ -110,28 +60,6 @@
                 <div style="display: inline-block">
                     <div class="pi-price">
                         {{number_format(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),0,',','.')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                         }}đ
                     </div>
@@ -240,18 +168,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
                         }}đ
                     </div>
                     <div class="price">
@@ -273,17 +189,6 @@
                 <div style="display: inline-block">
                     <div class="pi-price">
                         {{number_format(($sp_nb->gia_ban-($sp_nb->gia_ban*$sp_nb->giam_gia/100)),0,',','.')
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -332,7 +237,7 @@
                     </form>
                     <form
                         action="{{ route('giohang.them_giohang') }}"
-                        class="them_giohang"
+                        class="them_giohang_nb"
                         method="post"
                     >
                         @csrf

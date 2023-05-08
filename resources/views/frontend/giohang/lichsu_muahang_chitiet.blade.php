@@ -72,12 +72,7 @@
                             </td>
                             <td style="text-align: right">
                                 <strong>
-                                    {{number_format($dhct->thanh_tien,0,",",".")
-
-
-
-
-                                    }}đ
+                                    {{number_format($dhct->thanh_tien,0,",",".")}}đ
                                 </strong>
                             </td>
                         </tr>

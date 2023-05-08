@@ -52,7 +52,7 @@
                             <tbody>
                                 @foreach($cauhinh as $ch)
                                 <tr>
-                                    <td>{{ +(+$i) }}</td>
+                                    <td>{{ ++$i }}</td>
                                     <td style="text-align: left">
                                         {{ $ch-> ten }}
                                     </td>

@@ -103,6 +103,7 @@
                             <strong>
                                 {{number_format(($spct->gia_ban-($spct->gia_ban*$spct->giam_gia/100)),0,',','.')
 
+
                                 }}đ
                             </strong>
                             @if($spct->giam_gia!=0)
@@ -110,6 +111,7 @@
                                 <del>
                                     <i>
                                         {{number_format(($spct->gia_ban),0,',','.')
+
 
                                         }}đ
                                     </i>
@@ -179,7 +181,6 @@
                     <div class="product-page-cart" style="margin-top: 30px">
                         <form
                             action="{{ route('giohang.them_giohang') }}"
-                            class="them_giohang"
                             method="post"
                         >
                             @csrf
@@ -300,6 +301,7 @@
                                     <div class="pi-price">
                                         {{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')
 
+
                                         }}đ
                                     </div>
                                     <div class="price">
@@ -314,6 +316,7 @@
                                             >
                                                 {{number_format($lienquan->gia_ban,0,',','.')
 
+
                                                 }}đ
                                             </i>
                                         </del>
@@ -323,6 +326,7 @@
                                 <div style="display: inline-block">
                                     <div class="pi-price">
                                         {{number_format(($lienquan->gia_ban-($lienquan->gia_ban*$lienquan->giam_gia/100)),0,',','.')
+
 
                                         }}đ
                                     </div>
@@ -371,7 +375,6 @@
                                         action="{{
                                             route('giohang.them_giohang')
                                         }}"
-                                        class="them_giohang"
                                         method="post"
                                     >
                                         @csrf

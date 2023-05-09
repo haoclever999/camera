@@ -129,7 +129,6 @@
                         </form>
                         <form
                             action="{{ route('giohang.them_giohang') }}"
-                            class="them_giohang"
                             method="post"
                         >
                             @csrf

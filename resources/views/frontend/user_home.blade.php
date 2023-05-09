@@ -39,6 +39,7 @@
                     <div class="pi-price">
                         {{number_format(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),0,',','.')
 
+
                         }}đ
                     </div>
                     <div class="price">
@@ -60,6 +61,7 @@
                 <div style="display: inline-block">
                     <div class="pi-price">
                         {{number_format(($sp_m->gia_ban-($sp_m->gia_ban*$sp_m->giam_gia/100)),0,',','.')
+
 
                         }}đ
                     </div>
@@ -102,7 +104,6 @@
                     </form>
                     <form
                         action="{{ route('giohang.them_giohang') }}"
-                        class="them_giohang"
                         method="post"
                     >
                         @csrf
@@ -168,6 +169,7 @@
 
 
 
+
                         }}đ
                     </div>
                     <div class="price">
@@ -189,6 +191,7 @@
                 <div style="display: inline-block">
                     <div class="pi-price">
                         {{number_format(($sp_nb->gia_ban-($sp_nb->gia_ban*$sp_nb->giam_gia/100)),0,',','.')
+
 
 
 
@@ -237,7 +240,6 @@
                     </form>
                     <form
                         action="{{ route('giohang.them_giohang') }}"
-                        class="them_giohang_nb"
                         method="post"
                     >
                         @csrf

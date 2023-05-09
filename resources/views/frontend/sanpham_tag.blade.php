@@ -46,6 +46,7 @@
                     <div style="display: inline">
                         <div class="pi-price">
                             {{number_format(($s->gia_ban-($s->gia_ban*$s->giam_gia/100)),0,',','.')
+
                             }}đ
                         </div>
                         <div class="price">
@@ -67,6 +68,7 @@
                     <div style="display: inline-block">
                         <div class="pi-price">
                             {{number_format(($s->gia_ban-($s->gia_ban*$s->giam_gia/100)),0,',','.')
+
                             }}đ
                         </div>
                     </div>
@@ -112,7 +114,6 @@
                         </form>
                         <form
                             action="{{ route('giohang.them_giohang') }}"
-                            class="them_giohang"
                             method="post"
                         >
                             @csrf

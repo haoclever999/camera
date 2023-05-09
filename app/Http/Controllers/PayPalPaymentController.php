@@ -79,7 +79,6 @@ class PayPalPaymentController extends Controller
         if (isset($response['status']) && $response['status'] == 'COMPLETED') {
             DB::beginTransaction();
             try {
-
                 $tt_donhang = Session::get('tt_donhang');
                 if (!empty($tt_donhang['ghi_chu'])) $ghi_chu = $tt_donhang['ghi_chu'];
                 else $ghi_chu = '';
@@ -88,15 +87,19 @@ class PayPalPaymentController extends Controller
                 $tinh = TinhThanhPho::where('id', $tt_donhang['opt_Tinh'])->first();
 
                 $diachi = $tt_donhang['dia_chi'] . ', ' . $xa->ten_xa . ', ' . $huyen->ten_qh . ', ' . $tinh->ten_tp;
-                $tk = User::where('email', Auth::user()->email)->first();
-                $user = User::find($tk->id);
-                if ($tk->dia_chi == '')
-                    $user->update(['dia_chi' =>  $diachi]);
-                if ($tk->sdt == '')
-                    $user->update(['sdt' =>  $tt_donhang['sdt']]);
-
+                if (Auth::check()) {
+                    $tk = User::where('email', Auth::user()->email)->first();
+                    $user = User::find($tk->id);
+                    if ($tk->dia_chi == '')
+                        $user->update(['dia_chi' =>  $diachi]);
+                    if ($tk->sdt == '')
+                        $user->update(['sdt' =>  $tt_donhang['sdt']]);
+                    $user_id = auth()->id();
+                } else {
+                    $user_id = 1;
+                }
                 $dhang = DonHang::create([
-                    'user_id' => auth()->id(),
+                    'user_id' => $user_id,
                     'ten_kh' => $tt_donhang['ho_ten'],
                     'sdt_kh' => $tt_donhang['sdt'],
                     'dia_chi_kh' => $diachi,
@@ -129,7 +132,8 @@ class PayPalPaymentController extends Controller
                 $dt = CauHinh::where('ten', 'Điện thoại')->first();
 
                 DB::commit();
-                Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->gia_tri));
+                if (Auth::check())
+                    Mail::to(Auth::user()->email)->send(new ThanhToan($dhang, $dt->gia_tri));
 
                 Cart::destroy();
                 session()->flash('success', 'Cảm ơn bạn đã đặt hàng. Đơn hàng đang chờ xử lý. Vui lòng chờ!');

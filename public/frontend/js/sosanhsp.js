@@ -1,34 +1,3 @@
-$(document).ready(function (event) {
-    $("form.them_giohang").submit(function () {
-        var form = $(this);
-        var actionUrl = form.attr("action");
-        $.ajax({
-            type: "POST",
-            url: actionUrl,
-            data: form.serialize(),
-            success: function (data) {
-                if (data.status === "Thêm thành công") {
-                    location.reload();
-                }
-            },
-        });
-    });
-    $("form.them_giohang_nb").submit(function () {
-        var form = $(this);
-        var actionUrl = form.attr("action");
-        $.ajax({
-            type: "POST",
-            url: actionUrl,
-            data: form.serialize(),
-            success: function (data) {
-                if (data.status === "Thêm thành công") {
-                    location.reload();
-                }
-            },
-        });
-    });
-});
-
 XemSoSanh();
 function XemSoSanh() {
     if (localStorage.getItem("sosanh_sp") != null) {

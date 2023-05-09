@@ -140,7 +140,7 @@
                 <div class="hotline-phone-ring-circle"></div>
                 <div class="hotline-phone-ring-circle-fill"></div>
                 <div class="hotline-phone-ring-img-circle">
-                    <a href="tel:0766917312" class="pps-btn-img">
+                    <a href="tel:{{$dt->gia_tri}}" class="pps-btn-img">
                         <img
                             src="{{ asset('frontend/img/icon-call.png') }}"
                             alt="Gọi ngay"

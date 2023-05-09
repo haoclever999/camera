@@ -415,11 +415,11 @@ class NguoiDungController extends Controller
         $xa = XaPhuong::orderby('ten_xa')->get();
 
         $user = $this->user->find($id);
-        $dc = explode(', ', $user->dia_chi);
+        $d_c = explode(', ', $user->dia_chi);
 
         $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
         $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
-        return view('auth.hosonguoidung', compact('user', 'dc', 'tinh_tp', 'huyen', 'xa', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
+        return view('auth.hosonguoidung', compact('user', 'd_c', 'tinh_tp', 'huyen', 'xa', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
     public function posthosoUser(Request $request, $id)

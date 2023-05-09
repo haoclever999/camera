@@ -91,14 +91,14 @@
                                     <b>Địa chỉ</b>
                                 </label>
                                 
-                                @if($dc[0]!="")
+                                @if($d_c[0]!="")
                                 <div class="form-group col-md-12 col-sm-12 " style="padding-left: 10px;">
                                     <div class="col-md-4 col-sm-4" style="padding-left: 0;">
                                         <label for="opt_Tinh"> Chọn Tỉnh/Thành phố </label><br>
                                         <select class="opt_select opt_Tinh" name="opt_Tinh" id="opt_Tinh" style="width: 100%; " required  >
                                             <option value="">--Tỉnh/Thành phố--</option>
                                             @foreach($tinh_tp as $tinh)
-                                            <option value="{{$tinh->id}}" {{$tinh->ten_tp==$dc[3] ?'selected':''}}>{{$tinh->ten_tp}}</option>
+                                            <option value="{{$tinh->id}}" {{$tinh->ten_tp==$d_c[3] ?'selected':''}}>{{$tinh->ten_tp}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -107,7 +107,7 @@
                                         
                                         <select class="opt_select opt_Huyen" name="opt_Huyen" id="opt_Huyen" style="width: 100%; margin-left: 0; " required>
                                             @foreach($huyen as $h)
-                                            <option value="{{$h->id}}"{{$h->ten_qh==$dc[2]?'selected':''}}>{{$h->ten_qh}}</option>
+                                            <option value="{{$h->id}}"{{$h->ten_qh==$d_c[2]?'selected':''}}>{{$h->ten_qh}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -115,7 +115,7 @@
                                         <label for="opt_Xa"> Chọn Xã phường/Thị trấn </label><br>
                                         <select class="opt_Xa" name="opt_Xa" id="opt_Xa" style="width: 100%; " required>
                                             @foreach($xa as $x)
-                                            <option value="{{$x->id}}"{{$x->ten_xa==$dc[1]?'selected':''}}>{{$x->ten_xa}}</option>
+                                            <option value="{{$x->id}}"{{$x->ten_xa==$d_c[1]?'selected':''}}>{{$x->ten_xa}}</option>
                                             @endforeach
                                         </select>
                                     </div> 
@@ -153,7 +153,7 @@
                                         class="form-control"
                                         name="dia_chi"
                                         id="dia_chi"
-                                        value="{{$dc[0]}}"
+                                        value="{{$d_c[0]}}"
                                         placeholder="Nhập số nhà, khóm/ấp"
                                         required
                                     >

@@ -10,6 +10,7 @@ use App\Rules\ReCaptcha;
 use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
@@ -203,38 +204,38 @@ class AuthController extends Controller
         }
     }
 
-    public function getDangNhapFacebook()
-    {
-        return Socialite::driver('facebook')->redirect();
-    }
+    // public function getDangNhapFacebook()
+    // {
+    //     return Socialite::driver('facebook')->redirect();
+    // }
 
-    public function postDangNhapFacebook()
-    {
-        try {
+    // public function postDangNhapFacebook()
+    // {
+    //     try {
 
-            $user = Socialite::driver('facebook')->user();
+    //         $user = Socialite::driver('facebook')->user();
 
-            $finduser = User::where('facebook_id', $user->id)->first();
+    //         $finduser = User::where('facebook_id', $user->id)->first();
 
-            if ($finduser) {
+    //         if ($finduser) {
 
-                // Auth::login($finduser);
-                auth()->attempt(['email' => $user->email, 'password' => $user->password]);
-                return redirect()->route('home.index');
-            } else {
-                $newUser = User::updateOrCreate(['email' => $user->email], [
-                    'ho_ten' => $user->name,
-                    'facebook_id' => $user->id,
-                    'password' => bcrypt($user->password),
-                ]);
-
-                auth()->attempt(['email' => $newUser->email, 'password' => $newUser->password]);
-                return redirect()->route('home.index');
-            }
-        } catch (Exception $e) {
-            dd($e->getMessage());
-        }
-    }
+    //             Auth::login($finduser);
+    //           
+    //             return redirect()->route('home.index');
+    //         } else {
+    //             $newUser = User::updateOrCreate(['email' => $user->email], [
+    //                 'ho_ten' => $user->name,
+    //                 'facebook_id' => $user->id,
+    //                 'password' => bcrypt($user->password),
+    //             ]);
+    //              Auth::login($newUser);
+    //             
+    //             return redirect()->route('home.index');
+    //         }
+    //     } catch (Exception $e) {
+    //         dd($e->getMessage());
+    //     }
+    // }
 
     public function getDangNhapGoogle()
     {
@@ -246,22 +247,20 @@ class AuthController extends Controller
         try {
 
             $user = Socialite::driver('google')->user();
-
             $finduser = User::where('google_id', $user->id)->first();
 
-            if ($finduser) {
-
-                // Auth::login($finduser);
-                auth()->attempt(['email' => $user->email, 'password' => $user->password]);
+            if (!empty($finduser)) {
+                Auth::login($finduser);
                 return redirect()->route('home.index');
             } else {
-                $newUser = User::updateOrCreate(['email' => $user->email], [
+                $newUser = User::create([
+                    'email' => $user->email,
                     'ho_ten' => $user->name,
                     'google_id' => $user->id,
                     'password' => bcrypt($user->password),
                 ]);
 
-                auth()->attempt(['email' => $newUser->email, 'password' => $newUser->password]);
+                Auth::login($newUser);
                 return redirect()->route('home.index');
             }
         } catch (Exception $e) {

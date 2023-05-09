@@ -38,6 +38,9 @@ class NguoiDungController extends Controller
         if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
+        if (Gate::allows('quyen', "Nhân viên")) {
+            return redirect()->route('admin.index');
+        }
         $id_sua = '0';
         $capnhatquyen = '';
         $page = 5;
@@ -51,12 +54,18 @@ class NguoiDungController extends Controller
         if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
+        if (Gate::allows('quyen', "Nhân viên")) {
+            return redirect()->route('admin.index');
+        }
         $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
         return view('backend.nguoidung.them', compact('dh_moi'));
     }
 
     public function postThem(Request $request)
     {
+        if (Gate::allows('quyen', "Nhân viên")) {
+            return redirect()->route('admin.index');
+        }
         $request->validate([
             'ho_ten' => 'required|max:191|unique:users',
             'email' => 'required|max:191|regex:/^([a-z0-9\+_\-]+)(\.[a-z0-9\+_\-]+)*@([a-z0-9\-]+\.)+[a-z]{2,6}$/ix|unique:users',
@@ -94,9 +103,6 @@ class NguoiDungController extends Controller
 
     public function gethoso($id)
     {
-        if (Gate::allows('quyen', "Khách hàng")) {
-            return redirect()->route('home.index');
-        }
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
         $huyen = QuanHuyen::orderby('ten_qh')->get();
         $xa = XaPhuong::orderby('ten_xa')->get();
@@ -234,7 +240,9 @@ class NguoiDungController extends Controller
 
     public function postcapnhatquyen(Request $request,  $id)
     {
-
+        if (Gate::allows('quyen', "Nhân viên")) {
+            return redirect()->route('admin.index');
+        }
         try {
             DB::beginTransaction();
             $u = $this->user->find($id);
@@ -254,7 +262,9 @@ class NguoiDungController extends Controller
 
     public function trangthai(Request $request,  $id)
     {
-
+        if (Gate::allows('quyen', "Nhân viên")) {
+            return redirect()->route('admin.index');
+        }
         try {
             DB::beginTransaction();
             $u = $this->user->find($id);
@@ -274,6 +284,9 @@ class NguoiDungController extends Controller
 
     public function timkiem(Request $request)
     {
+        if (Gate::allows('quyen', "Nhân viên")) {
+            return redirect()->route('admin.index');
+        }
         if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }

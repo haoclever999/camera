@@ -88,6 +88,7 @@
             <div class="row">
                 <div class="tbl-fixed">
                     <div class="col-md-12">
+                        @if(count($dhang)>0)
                         <table class="table" style="min-width: max-content">
                             <thead>
                                 <tr>
@@ -158,6 +159,11 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        @else
+                        <div>
+                            <h4>Không có đơn hàng cần tìm</h4>
+                        </div>
+                        @endif
                         <div id="khongtimthay"></div>
                     </div>
                 </div>
@@ -190,8 +196,8 @@
         $("input[type=date]").change(function(){
             let tu_ngay = $("input#tu_ngay").val();
             let den_ngay = $("input#den_ngay").val();
-            if($den_ngay < $tu_ngay)
-                alert("đến ngày phải lớn hơn");
+            if(den_ngay < tu_ngay)
+                alert("từ ngày phải nhỏ hơn đến ngày ");
         })
        
         $("#timkiem_dh").val("");

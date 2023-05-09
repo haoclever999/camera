@@ -104,13 +104,6 @@
                 asset('frontend/vendor/chart.js/Chart.min.js')
             }} "></script>
 
-        <!-- Page level custom scripts -->
-        <script src="{{
-                asset('frontend/js/demo/chart-area-demo.js')
-            }} "></script>
-        <script src="{{
-                asset('frontend/js/demo/chart-pie-demo.js')
-            }} "></script>
         <!-- hiển thị alert thông báo  -->
         <script src="{{ asset('frontend/js/sweetalert2@11.js') }}"></script>
         <script src="{{ asset('frontend/js/sweetalert2.all.js') }}"></script>

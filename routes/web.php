@@ -112,7 +112,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home.index');
 
 Route::get('dang-nhap', [AuthController::class, 'getDangNhapUser'])->name('getDangNhapUser')->middleware('CheckLoginUser');
 Route::post('dang-nhap', [AuthController::class, 'postDangNhapUser'])->name('postDangNhapUser');
-Route::get('dang-xuat', [AuthController::class, 'DangXuatUser'])->name('DangXuatUser')->middleware('CheckLoginUser');
+Route::get('dang-xuat', [AuthController::class, 'DangXuatUser'])->name('DangXuatUser');
 
 Route::get('dang-nhap/quen-mat-khau', [AuthController::class, 'getQuenMatKhauUser'])->name('getQuenMatKhauUser');
 Route::post('dang-nhap/quen-mat-khau', [AuthController::class, 'postQuenMatKhauUser'])->name('postQuenMatKhauUser');
@@ -122,8 +122,8 @@ Route::post('dang-nhap/dat-lai-mat-khau/{id}', [AuthController::class, 'postDatL
 Route::get('dang-ky', [AuthController::class, 'getDangKy'])->name('getDangKy');
 Route::post('dang-ky', [AuthController::class, 'postDangKy'])->name('postDangKy');
 
-Route::get('dang-nhap-facebook', [AuthController::class, 'getDangNhapFacebook'])->name('getDangNhapFacebook');
-Route::get('dang-nhap-facebook/xu-ly', [AuthController::class, 'postDangNhapFacebook'])->name('postDangNhapFacebook');
+// Route::get('dang-nhap-facebook', [AuthController::class, 'getDangNhapFacebook'])->name('getDangNhapFacebook');
+// Route::get('dang-nhap-facebook/xu-ly', [AuthController::class, 'postDangNhapFacebook'])->name('postDangNhapFacebook');
 
 Route::get('dang-nhap-google', [AuthController::class, 'getDangNhapGoogle'])->name('getDangNhapGoogle');
 Route::get('dang-nhap-google/xu-ly', [AuthController::class, 'postDangNhapGoogle'])->name('postDangNhapGoogle');

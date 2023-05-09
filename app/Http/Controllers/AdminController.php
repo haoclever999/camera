@@ -6,6 +6,7 @@ use App\Models\DanhMuc;
 use App\Models\DonHang;
 use App\Models\SanPham;
 use App\Models\ThuongHieu;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
 
 class AdminController extends Controller
@@ -21,6 +22,7 @@ class AdminController extends Controller
         $tong_th = ThuongHieu::where('trang_thai', 1)->count();
         $dh_moi = DonHang::where('trang_thai', "Đang chờ xử lý")->count();
         $tong_dh = DonHang::whereNotIn('trang_thai', ["Đã xoá", 'Đã huỷ đơn'])->count();
+
         return view('backend.home', compact('tong_sp', 'dh_moi', 'tong_dh', 'tong_dm', 'tong_th'));
     }
 }

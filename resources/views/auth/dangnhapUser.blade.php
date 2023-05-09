@@ -183,36 +183,29 @@
                                 id="dangky"
                                 style="text-decoration: none; color: #2713cf"
                             >
-                                Đăng ký</a
-                            >
+                                Đăng ký
+                            </a>
                         </p>
                     </div>
 
                     <h4 style="text-align: center">hoặc</h4>
                     <div class="social">
-                        <a
-                            href="{{ route('getDangNhapFacebook') }}"
-                            class="facebook"
-                        >
-                            <img
-                                src="{{
-                                    asset('frontend/img/facebook-logo.png')
-                                }}"
-                                width="40px"
-                            />
-                        </a>
-
-                        <a
-                            href="{{ route('getDangNhapGoogle') }}"
-                            class="google"
-                        >
-                            <img
-                                src="{{
-                                    asset('frontend/img/google-plus-logo.png')
-                                }}"
-                                width="40px"
-                            />
-                        </a>
+                        <div class="google-btn">
+                            <a
+                                href="{{ route('getDangNhapGoogle') }}"
+                                class="google"
+                            >
+                                <div class="google-icon-wrapper">
+                                    <img
+                                        class="google-icon"
+                                        src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                                    />
+                                </div>
+                                <p class="btn-text">
+                                    <b>Đăng nhập bằng google</b>
+                                </p>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

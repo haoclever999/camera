@@ -30,7 +30,7 @@
             Cập nhật hồ sơ thất bại!
         </div>
         @endif
-        <div class="container-fluid">
+        <div class="container-fluid"> 
             <div class="row">
                 <div class="col-md-8">
                     <form

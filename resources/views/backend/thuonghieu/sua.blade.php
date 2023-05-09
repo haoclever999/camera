@@ -40,9 +40,9 @@
                     >
                         @csrf
                         <div class="form-group">
-                            <label for="ten_thuong_hieu" class="form-label"
-                                >Tên thương hiệu</label
-                            >
+                            <label for="ten_thuong_hieu" class="form-label">
+                                Tên thương hiệu
+                            </label>
                             <input
                                 type="text"
                                 class="form-control @error('ten_thuong_hieu') is-invalid @enderror"

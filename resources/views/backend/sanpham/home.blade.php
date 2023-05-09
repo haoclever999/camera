@@ -70,7 +70,7 @@
                         </button>
                     </form>
                     <a class="btn btn-success float-right m-2" id="nhapexcel">
-                        Nhập excel
+                        Nhập sản phẩm
                     </a>
                     <form
                         action="{{ route('sanpham.nhap_hinhanh') }}"

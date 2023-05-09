@@ -41,13 +41,13 @@ class SanPhamController extends Controller
     // Bắt đầu trang admin
     public function getDanhMuc($id)
     {
-        $option = new GetOption($this->dmuc::where('trang_thai', 1));
+        $option = new GetOption($this->dmuc::where('trang_thai', 1)->get());
         $DmOpt = $option->OptionDanhMuc($id);
         return $DmOpt;
     }
     public function getThuongHieu($id)
     {
-        $option = new GetOption($this->thuonghieu::where('trang_thai', 1));
+        $option = new GetOption($this->thuonghieu::where('trang_thai', 1)->get());
         $ThOpt = $option->OptionThuongHieu($id);
         return $ThOpt;
     }

@@ -155,7 +155,6 @@
                                     name="opt_tagsp[]"
                                     class="form-control @error('opt_tagsp') is-invalid @enderror tag_select"
                                     multiple="multiple"
-                                    required
                                 ></select>
                             </div>
 

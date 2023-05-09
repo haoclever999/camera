@@ -923,7 +923,7 @@ div.radio.disabled.active span.checked {
     margin-bottom: 20px;
 }
 .product-main-image img {
-    width: 100%;
+    width: 60%;
 }
 .product-other-images {
     text-align: left;

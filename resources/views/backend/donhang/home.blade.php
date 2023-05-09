@@ -161,7 +161,7 @@
                         </table>
                         @else
                         <div>
-                            <h4>Không có đơn hàng cần tìm</h4>
+                            <h4>Không có đơn hàng</h4>
                         </div>
                         @endif
                         <div id="khongtimthay"></div>

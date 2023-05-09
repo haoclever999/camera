@@ -10,7 +10,7 @@
     </button>
     @yield('title-action')
     <!-- Topbar Navbar -->
-    <ul class="navbar-nav ml-auto" style="max-width: 24rem">
+    <ul class="navbar-nav ml-auto" style="max-width: 26rem">
         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
         <li class="nav-item dropdown no-arrow d-sm-none">
             <a

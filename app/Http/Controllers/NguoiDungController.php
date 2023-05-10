@@ -417,8 +417,8 @@ class NguoiDungController extends Controller
         $user = $this->user->find($id);
         $d_c = explode(', ', $user->dia_chi);
 
-        $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
-        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm', 'asc')->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
         return view('auth.hosonguoidung', compact('user', 'd_c', 'tinh_tp', 'huyen', 'xa', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
@@ -516,8 +516,8 @@ class NguoiDungController extends Controller
         $meta_title = '';
         $url_canonical = $request->url();
 
-        $dm =  $this->dmuc->orderby('ten_dm', 'asc')->get();
-        $th = $this->thuonghieu->orderby('ten_thuong_hieu')->get();
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm', 'asc')->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
         $user = $this->user->find($id);
         return view('auth.doimatkhaunguoidung', compact('user', 'dm', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }

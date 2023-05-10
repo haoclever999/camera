@@ -18,6 +18,7 @@ use App\Models\XaPhuong;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class NguoiDungController extends Controller
 {
@@ -103,6 +104,11 @@ class NguoiDungController extends Controller
 
     public function gethoso($id)
     {
+        if (Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
+        if (!Auth::check())
+            return redirect()->route('admin.index');
         $tinh_tp = TinhThanhPho::orderby('ten_tp')->get();
         $huyen = QuanHuyen::orderby('ten_qh')->get();
         $xa = XaPhuong::orderby('ten_xa')->get();
@@ -198,6 +204,8 @@ class NguoiDungController extends Controller
         if (Gate::allows('quyen', "Khách hàng")) {
             return redirect()->route('home.index');
         }
+        if (!Auth::check())
+            return redirect()->route('admin.index');
         $user = $this->user->find($id);
         $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
         return view('backend.nguoidung.doimatkhau', compact('user', 'dh_moi'));
@@ -398,6 +406,8 @@ class NguoiDungController extends Controller
     //Bắt đầu trang user
     public function gethosoUser(Request $request, $id)
     {
+        if (!Auth::check())
+            return redirect()->route('home.index');
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();
@@ -504,6 +514,8 @@ class NguoiDungController extends Controller
 
     public function getdoimatkhauUser(Request $request, $id)
     {
+        if (!Auth::check())
+            return redirect()->route('home.index');
         $dt = $this->cauhinh->where('ten', 'Điện thoại')->first();
         $fb = $this->cauhinh->where('ten', 'Facebook')->first();
         $email = $this->cauhinh->where('ten', 'Email')->first();

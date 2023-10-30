@@ -33,7 +33,7 @@
         @endif
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <form
                         action="{{ route('cauhinh.postSua', ['id' => $cauhinh->id] ) }}"
                         method="post"

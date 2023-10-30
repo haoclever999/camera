@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
+use App\Components\Traits\RestoreModelTrait;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\SanPham;
 use App\Models\ThuongHieu;
@@ -18,7 +19,7 @@ use Illuminate\Support\Facades\Gate;
 
 class DanhMucController extends Controller
 {
-    use DeleteModelTrait;
+    use DeleteModelTrait, RestoreModelTrait;
     private $dmuc, $sanpham, $thuonghieu, $cauhinh, $dhang;
     public function __construct(DanhMuc $dmuc, SanPham $sanpham, ThuongHieu $thuonghieu, CauHinh $cauhinh, DonHang $dhang)
     {
@@ -39,7 +40,8 @@ class DanhMucController extends Controller
         $page = 5;
         $dm = $this->dmuc::where('trang_thai', 1)->orderBy('ten_dm')->paginate($page)->appends($request->query());
         $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
-        return view('backend.danhmuc.home', compact('dm', 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
+        $dm_daxoa = $this->dmuc::where('trang_thai', 0)->get();
+        return view('backend.danhmuc.home', compact('dm', 'dh_moi', 'dm_daxoa'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function postThem(Request $request)
@@ -118,6 +120,27 @@ class DanhMucController extends Controller
         return $this->deleteModelTrait($id, $this->dmuc);
     }
 
+    public function daxoa(Request $request)
+    {
+        if (Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
+        if (Gate::allows('quyen', "Nhân viên")) {
+            return redirect()->route('admin.index');
+        }
+        $page = 5;
+        $dm = $this->dmuc::where('trang_thai', 0)->orderBy('ten_dm')->paginate($page)->appends($request->query());
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.danhmuc.deleted', compact('dm', 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
+    }
+    public function restore($id)
+    {
+        if (Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
+        return $this->restoreModelTrait($id, $this->dmuc);
+    }
+
     public function timkiem(Request $request)
     {
         if (Gate::allows('quyen', "Khách hàng")) {
@@ -194,7 +217,10 @@ class DanhMucController extends Controller
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
 
-        $spham = $this->sanpham->where('trang_thai', 1)->where('dm_id', $id_dm);
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $th = $this->thuonghieu::where('trang_thai', 1)->get();
+
+        $spham = $this->sanpham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'))->where('dm_id', $id_dm);
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();

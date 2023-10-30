@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-use App\Components\Traits\DeleteModelTrait;
 use App\Models\DanhMuc;
 use App\Models\DonHang;
 use App\Models\QuanHuyen;
@@ -22,7 +21,6 @@ use Illuminate\Support\Facades\Auth;
 
 class NguoiDungController extends Controller
 {
-    use DeleteModelTrait;
     private $user, $cauhinh, $dmuc, $thuonghieu, $dhang;
     public function __construct(User $user, CauHinh $cauhinh, DanhMuc $dmuc, ThuongHieu $thuonghieu, DonHang $dhang)
     {
@@ -537,11 +535,9 @@ class NguoiDungController extends Controller
     public function postdoimatkhauUser(Request $request,  $id)
     {
         $request->validate([
-            'password' => 'required',
             'password_new' => 'required|different:password|regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/',
             'password_confirm' => 'required|same:password_new',
         ], [
-            'password.required' => 'Hãy nhập mật khẩu cũ',
             'password_new.required' => 'Hãy nhập mật khẩu mới',
             'password_new.different' => 'Mật khẩu mới phải khác mật khẩu cũ',
             'password_new.regex' => 'Mật khẩu có ít nhất 1 số, 1 chữ hoa, 1 chữ thường và 1 ký tự đặc biệt',
@@ -551,7 +547,7 @@ class NguoiDungController extends Controller
         try {
             DB::beginTransaction();
             $u = $this->user->find($id);
-            if (Hash::check($request->password, $u->password)) {
+            if (Hash::check($request->password, $u->password) || $u->password == null) {
                 $u->update([
                     'password' => Hash::make($request->password_new)
                 ]);

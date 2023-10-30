@@ -5,6 +5,12 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
+            rel="icon"
+            href="{{ asset('frontend/img/Logo.png') }}"
+            type="image/gif"
+            sizes="32x32"
+        />
+        <link
             rel="stylesheet"
             type="text/css"
             href="{{
@@ -174,21 +180,8 @@
                             </div>
                         </div>
                     </form>
-                    <br />
-                    <div class="login_message">
-                        <p style="text-align: center">
-                            Không có tài khoản?
-                            <a
-                                href="{{ route('getDangKy') }}"
-                                id="dangky"
-                                style="text-decoration: none; color: #2713cf"
-                            >
-                                Đăng ký
-                            </a>
-                        </p>
-                    </div>
 
-                    <h4 style="text-align: center">hoặc</h4>
+                    <h4 style="text-align: center; margin: 6px 0">hoặc</h4>
                     <div class="social">
                         <div class="google-btn">
                             <a
@@ -206,6 +199,19 @@
                                 </p>
                             </a>
                         </div>
+                    </div>
+
+                    <div class="login_message" style="margin: 10px 0">
+                        <p style="text-align: center">
+                            Không có tài khoản?
+                            <a
+                                href="{{ route('getDangKy') }}"
+                                id="dangky"
+                                style="text-decoration: none; color: #2713cf"
+                            >
+                                <b>Đăng ký</b>
+                            </a>
+                        </p>
                     </div>
                 </div>
             </div>

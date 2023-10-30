@@ -5,6 +5,12 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
+            rel="icon"
+            href="{{ asset('frontend/img/Logo.png') }}"
+            type="image/gif"
+            sizes="32x32"
+        />
+        <link
             rel="stylesheet"
             type="text/css"
             href="{{
@@ -178,7 +184,6 @@
                                 href="{{ route('getDangNhapUser') }}"
                                 style="text-decoration: none; float: left"
                             >
-                                <!-- http://haongan.com/dang-nhap/dat-lai-mat-khau/5/7H2203GxLLdOxvzSLxTxFfDs6A2lixNFck2MVz6VjeKjJRQbES -->
                                 Quay về đăng nhập
                                 <img
                                     src="{{ asset('frontend/img/logout.png') }}"

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
 use App\Components\Traits\StorageImageTrait;
+use App\Components\Traits\RestoreModelTrait;
 use App\Models\CauHinh;
 use App\Models\DanhMuc;
 use App\Models\DonHang;
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Gate;
 
 class ThuongHieuController extends Controller
 {
-    use DeleteModelTrait, StorageImageTrait;
+    use DeleteModelTrait, StorageImageTrait, RestoreModelTrait;
     private $thuonghieu, $dmuc, $sanpham, $cauhinh, $dhang;
     public function __construct(DanhMuc $dmuc, SanPham $sanpham, ThuongHieu $thuonghieu, CauHinh $cauhinh, DonHang $dhang)
     {
@@ -40,7 +41,9 @@ class ThuongHieuController extends Controller
         $page = 5;
         $th = $this->thuonghieu::where('trang_thai', 1)->orderBy('ten_thuong_hieu')->paginate($page)->appends($request->query());
         $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
-        return view('backend.thuonghieu.home', compact("th", 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
+        $th_daxoa = $this->thuonghieu::where('trang_thai', 0)->get();
+
+        return view('backend.thuonghieu.home', compact("th", 'dh_moi', 'th_daxoa'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function postThem(Request $request)
@@ -132,6 +135,28 @@ class ThuongHieuController extends Controller
         return $this->deleteModelTrait($id, $this->thuonghieu);
     }
 
+    public function daxoa(Request $request)
+    {
+        if (Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
+        if (Gate::allows('quyen', "Nhân viên")) {
+            return redirect()->route('admin.index');
+        }
+
+        $page = 5;
+        $th = $this->thuonghieu::where('trang_thai', 0)->orderBy('ten_thuong_hieu')->paginate($page)->appends($request->query());
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.thuonghieu.deleted', compact("th", 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
+    }
+    public function restore($id)
+    {
+        if (Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
+        return $this->restoreModelTrait($id, $this->thuonghieu);
+    }
+
     public function timkiem(Request $request)
     {
         if (Gate::allows('quyen', "Khách hàng")) {
@@ -209,7 +234,10 @@ class ThuongHieuController extends Controller
 
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
-        $spham = $this->sanpham->where('trang_thai', 1)->where('thuong_hieu_id', $id)->where('dm_id', $id_dm);
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $th = $this->thuonghieu::where('trang_thai', 1)->get();
+
+        $spham = $this->sanpham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'))->where('thuong_hieu_id', $id)->where('dm_id', $id_dm);
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();
@@ -251,7 +279,6 @@ class ThuongHieuController extends Controller
 
         $sp = $spham->paginate($hienthi)->appends($request->query());
 
-        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('trang_thai', 1)->where('id', $id)->limit(1)->get();
         $ten_dm = $this->dmuc->where('trang_thai', 1)->where('id', $id_dm)->limit(1)->get();
 
@@ -283,7 +310,10 @@ class ThuongHieuController extends Controller
 
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
-        $spham = $this->sanpham->where('trang_thai', 1)->where('thuong_hieu_id', $id);
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
+
+        $spham = $this->sanpham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'))->where('thuong_hieu_id', $id);
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();
@@ -325,9 +355,7 @@ class ThuongHieuController extends Controller
 
         $sp = $spham->paginate($hienthi)->appends($request->query());
 
-        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
         $ten_th = $this->thuonghieu->where('trang_thai', 1)->where('id', $id)->limit(1)->get();
-        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
 
         return view('frontend.thuonghieu_sanpham', compact('dm', 'sp', 'th', 'ten_th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }

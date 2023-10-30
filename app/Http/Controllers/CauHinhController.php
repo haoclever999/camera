@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
+use App\Components\Traits\RestoreModelTrait;
 use App\Models\DonHang;
 use RealRashid\SweetAlert\Facades\Alert;
 use Carbon\Carbon;
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Gate;
 
 class CauHinhController extends Controller
 {
-    use DeleteModelTrait;
+    use DeleteModelTrait, RestoreModelTrait;
     private $cauhinh, $dhang;
     public function __construct(CauHinh $cauhinh, DonHang $dhang)
     {
@@ -30,6 +31,7 @@ class CauHinhController extends Controller
         $page = 5;
         $cauhinh = $this->cauhinh::where('trang_thai', 1)->orderBy('ten')->paginate($page)->appends($request->query());
         $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+
         return view('backend.cauhinh.home', compact("cauhinh", 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
@@ -118,14 +120,6 @@ class CauHinhController extends Controller
             Alert::error('Thất bại', 'Cập nhật cấu hình thất bại');
             return redirect()->route('cauhinh.getSua', ['id' => $id]);
         }
-    }
-
-    public function xoa($id)
-    {
-        if (Gate::allows('quyen', "Khách hàng")) {
-            return redirect()->route('home.index');
-        }
-        return $this->deleteModelTrait($id, $this->cauhinh);
     }
 
     public function timkiem(Request $request)

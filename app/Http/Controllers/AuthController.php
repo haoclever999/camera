@@ -257,7 +257,6 @@ class AuthController extends Controller
                     'email' => $user->email,
                     'ho_ten' => $user->name,
                     'google_id' => $user->id,
-                    'password' => bcrypt($user->password),
                 ]);
 
                 Auth::login($newUser);

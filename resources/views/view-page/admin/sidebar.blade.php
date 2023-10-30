@@ -57,9 +57,11 @@
         <a class="nav-link" href="{{ route('donhang.index') }}">
             <i class="fas fa-fw fa-shopping-cart"></i>
             <span>Đơn đặt hàng</span>
+            @if($dh_moi>0)
             <span class="badge badge-danger badge-counter">
                 {{ $dh_moi }}
             </span>
+            @endif
         </a>
     </li>
     <li class="nav-item">

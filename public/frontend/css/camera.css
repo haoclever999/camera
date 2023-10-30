@@ -29,6 +29,7 @@ div.row > div#pre_Multiple {
 }
 td {
     word-break: break-word;
+    vertical-align: middle !important;
 }
 
 .fdaidien_container,

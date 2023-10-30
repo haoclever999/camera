@@ -36,9 +36,9 @@ class HomeController extends Controller
         $url_canonical = $request->url();
 
         $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm', 'asc')->get();
-        $sp_moi = $this->sanpham->where('trang_thai', 1)->orderBy('created_at', 'desc')->take(4)->get();
-        $sp_noi_bat = $this->sanpham->where('trang_thai', 1)->orderBy('luot_xem', 'desc')->take(4)->get();
         $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->take(10)->get();
+        $sp_moi = $this->sanpham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'))->orderBy('created_at', 'desc')->take(4)->get();
+        $sp_noi_bat = $this->sanpham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'))->orderBy('luot_xem', 'desc')->take(4)->get();
 
         return view('frontend.user_home', compact('dm', 'sp_moi', 'sp_noi_bat', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }

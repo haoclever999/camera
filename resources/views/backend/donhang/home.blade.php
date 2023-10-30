@@ -32,12 +32,11 @@
 
 @endsection @section('content')
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrapper" style="padding-left: 10px; padding-right: 10px">
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <div class="content-header" style="padding:0">
         <div class="container-fluid">
             <div class="row mb-2">
-               
                 <div class="col-sm-2">
                     <form>
                         <div class="form-group">
@@ -83,98 +82,93 @@
     </div>
     <!-- /.content-header -->
     <!-- Main content -->
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="tbl-fixed">
-                    <div class="col-md-12">
-                        @if(count($dhang)>0)
-                        <table class="table" style="min-width: max-content">
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên khách hàng</th>
-                                    <th>Tổng số lượng</th>
-                                    <th>Tổng tiền</th>
-                                    <th>Hình thức</th>
-                                    <th>Trạng thái</th>
-                                    <th>Ngày tạo</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($dhang as $dh)
-                                <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td>{{$dh->ten_kh}}</td>
-                                    <td>{{$dh->tong_so_luong}}</td>
-                                    <td>
-                                        {{number_format($dh->tong_tien,0,",",".")}}
-                                    </td>
-                                    <td>
-                                        {{$dh->hinh_thuc}}
-                                    </td>
-                                    @if($dh->trang_thai=="Đang chờ xử lý")
-                                    <td style="color: rgb(17, 136, 192);">{{$dh->trang_thai}}</td>
-                                    @elseif($dh->trang_thai=="Đã xoá" || $dh->trang_thai=="Đã huỷ đơn")
-                                    <td style="color: rgba(255, 0, 0,0.8)">{{$dh->trang_thai}}</td>
-                                    @else
-                                    <td>{{$dh->trang_thai}}</td>
-                                    @endif
-                                    <td>
-                                        {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dh->created_at)->format('H:i:s d/m/Y')}}
-                                    </td>
+    <div class="content container-fluid" style="padding-left:0">
+        <div class="row">
+            <div class="tbl-fixed" style="padding-left:0">
+                <div class="col-md-12">
+                    @if(count($dhang)>0)
+                    <table class="table" style="min-width: max-content">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên khách hàng</th>
+                                <th>Tổng tiền</th>
+                                <th>Hình thức</th>
+                                <th>Trạng thái</th>
+                                <th>Ngày tạo</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($dhang as $dh)
+                            <tr>
+                                <td>{{ ++$i }}</td>
+                                <td>{{$dh->ten_kh}}</td>
+                                <td>
+                                    {{number_format($dh->tong_tien,0,",",".")}}
+                                </td>
+                                <td>
+                                    {{$dh->hinh_thuc}}
+                                </td>
+                                @if($dh->trang_thai=="Đang chờ xử lý")
+                                <td style="color: rgb(17, 136, 192);">{{$dh->trang_thai}}</td>
+                                @elseif($dh->trang_thai=="Đã xoá" || $dh->trang_thai=="Đã huỷ đơn")
+                                <td style="color: rgba(255, 0, 0,0.8)">{{$dh->trang_thai}}</td>
+                                @else
+                                <td>{{$dh->trang_thai}}</td>
+                                @endif
+                                <td>
+                                    {{Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $dh->created_at)->format('H:i:s d/m/Y')}}
+                                </td>
 
-                                    <td>
-                                        <a
-                                            style="
-                                                min-width: 80px;
-                                                padding: 3px 12px;
-                                                margin: 3px;
-                                            "
-                                            class="btn btn-primary"
-                                            href="{{ route('donhang.chitiet', ['id' => $dh->id]) }}"
-                                        >
-                                            Chi tiết
-                                        </a>
-                                        <br />
-                                        @if(auth()->check() &&
-                                        auth()->user()->quyen=='Quản trị' &&
-                                        $dh->trang_thai!='Đã xoá')
-                                        <a
-                                            style="
-                                                min-width: 80px;
-                                                padding: 3px 12px;
-                                                margin: 3px;
-                                            "
-                                            class="btn btn-danger action_del"
-                                            href=""
-                                            data-url="{{ route('donhang.xoa', ['id' => $dh->id]) }}"
-                                        >
-                                            Xóa
-                                        </a>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        @else
-                        <div>
-                            <h4>Không có đơn hàng</h4>
-                        </div>
-                        @endif
-                        <div id="khongtimthay"></div>
+                                <td>
+                                    <a
+                                        style="
+                                            min-width: 80px;
+                                            padding: 3px 12px;
+                                            margin: 3px;
+                                        "
+                                        class="btn btn-primary"
+                                        href="{{ route('donhang.chitiet', ['id' => $dh->id]) }}"
+                                    >
+                                        Chi tiết
+                                    </a>
+                                    <br />
+                                    @if(auth()->check() &&
+                                    auth()->user()->quyen=='Quản trị' &&
+                                    $dh->trang_thai!='Đã xoá')
+                                    <a
+                                        style="
+                                            min-width: 80px;
+                                            padding: 3px 12px;
+                                            margin: 3px;
+                                        "
+                                        class="btn btn-danger action_del"
+                                        href=""
+                                        data-url="{{ route('donhang.xoa', ['id' => $dh->id]) }}"
+                                    >
+                                        Xóa
+                                    </a>
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    @else
+                    <div>
+                        <h4>Không có đơn hàng</h4>
                     </div>
+                    @endif
+                    <div id="khongtimthay"></div>
                 </div>
-                <div class="col-md-12 phantrang" style="margin-top: 1rem">
-                    {!! $dhang->links()!!}
-                </div>
-                <div style="margin-bottom: 1rem"></div>
             </div>
-            <!-- /.row -->
+            <div class="col-md-12 phantrang" style="margin-top: 1rem">
+                {!! $dhang->links()!!}
+            </div>
+            <div style="margin-bottom: 1rem"></div>
         </div>
-        <!-- /.container-fluid -->
+        <!-- /.row -->
     </div>
     <!-- /.content -->
 </div>

@@ -4,13 +4,13 @@ namespace App\Components\Traits;
 
 use Illuminate\Support\Facades\Log;
 
-trait DeleteModelTrait
+trait RestoreModelTrait
 {
-    public function deleteModelTrait($id, $model)
+    public function restoreModelTrait($id, $model)
     {
         try {
             $data = $model->find($id);
-            $data->trang_thai = 0;
+            $data->trang_thai = 1;
             $data->save();
             return response()->json([
                 'code' => 200,

@@ -15,7 +15,9 @@
     style="padding: 8px 16px; margin: 12px auto; height: 1%"
 >
     <li class="breadcrumb-item">
-        <a href="{{ route('donhang.index') }}">Đơn hàng</a>
+        <a href="{{ route('donhang.index') }}" style="text-decoration: none">
+            Đơn hàng
+        </a>
     </li>
     <li class="breadcrumb-item active">Chi tiết</li>
 </ol>
@@ -88,6 +90,9 @@
                         </h6>
                         <h6 style="margin-left: 1em">
                             <b>Địa chỉ giao hàng:</b> {{$dhang->dia_chi_kh }}
+                        </h6>
+                        <h6 style="margin-left: 1em">
+                            <b>Tổng số lượng:</b> {{$dhang->tong_so_luong }}
                         </h6>
                         <br />
                         <table class="table" style="min-width: max-content">

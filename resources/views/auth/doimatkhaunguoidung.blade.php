@@ -54,7 +54,6 @@
                                     id="password"
                                     name="password"
                                     placeholder="Nhập mật khẩu cũ"
-                                    required
                                 />
                                 <span
                                     class="fa fa-fw fa-eye field-icon toggle-password"

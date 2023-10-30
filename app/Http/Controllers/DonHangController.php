@@ -6,7 +6,6 @@ use App\Models\DonHang;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Components\Traits\DeleteModelTrait;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -24,7 +23,6 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class DonHangController extends Controller
 {
-    use DeleteModelTrait;
     private $donhang;
 
     public function __construct(DonHang $donhang)

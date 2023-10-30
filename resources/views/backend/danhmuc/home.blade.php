@@ -32,109 +32,114 @@
 
 @endsection @section('content')
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-    <!-- Main content -->
-    <div class="content">
-        <div class="container-fluid">
-            <br />
-            <div class="row">
-                <div>
-                    <div class="col-md-8" style="float: left">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên danh mục</th>
-                                    <th>Ngày cập nhật</th>
-                                    <th>Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($dm as $d)
-                                <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td>{{ $d-> ten_dm }}</td>
-                                    <td>
-                                        {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $d->updated_at)->format('H:i:s d/m/Y') }}
-                                    </td>
-                                    <td>
-                                        <a
-                                            style="
-                                                width: 88px;
-                                                padding: 3px 10px;
-                                                margin: 3px;
-                                            "
-                                            class="btn btn-warning"
-                                            href="{{ route('danhmuc.getSua', ['id' => $d->id]) }}"
-                                        >
-                                            Cập nhật
-                                        </a>
-                                        @if(auth()->check() &&
-                                        auth()->user()->quyen=='Quản trị')
-                                        <a
-                                            style="
-                                                width: 88px;
-                                                padding: 3px 10px;
-                                                margin: 3px;
-                                            "
-                                            class="btn btn-danger action_del"
-                                            href=""
-                                            data-url="{{ route('danhmuc.xoa', ['id' => $d->id]) }}"
-                                        >
-                                            Xóa
-                                        </a>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div id="khongtimthay"></div>
-                    </div>
-                    <div class="col-md-4" style="float: right">
-                        <h2 class="m-0"><b>Thêm danh mục </b></h2>
-                        <br />
-                        <form
-                            action="{{ route('danhmuc.postThem') }}"
-                            method="post"
-                        >
-                            @csrf
-                            <div class="form-group">
-                                <label for="ten_dm" class="form-label">
-                                    <b>Tên danh mục</b>
-                                </label>
-                                <input
-                                    type="text"
-                                    class="form-control @error('ten_dm') is-invalid @enderror"
-                                    id="ten_dm"
-                                    name="ten_dm"
-                                    value="{{ old('ten_dm') }}"
-                                    placeholder="Nhập tên danh mục"
-                                    required
-                                />
-                                @if ($errors->has('ten_dm'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('ten_dm') }}</b>
-                                </span>
-                                @endif
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">
-                                Thêm danh mục
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-md-12 phantrang" style="margin-top: 1rem">
-                    {!! $dm->links()!!}
-                </div>
-                <div style="margin-bottom: 1rem"></div>
-            </div>
-            <!-- /.row -->
+<div
+    class="content-wrapper content container-fluid"
+    style="padding-left: 10px; padding-right: 10px"
+>
+    <br />
+    <div class="row">
+        @if(auth()->check() && auth()->user()->quyen=='Quản trị')
+        @if($dm_daxoa->count()>0)
+        <div>
+            <a
+                href="{{ route('danhmuc.daxoa') }}"
+                class="btn btn-danger float-left m-2"
+                id="delete"
+            >
+                Đã xóa
+            </a>
         </div>
-        <!-- /.container-fluid -->
+        @endif @endif
+        <div>
+            <div class="col-md-8" style="float: left">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Tên danh mục</th>
+                            <th>Ngày cập nhật</th>
+                            <th>Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($dm as $d)
+                        <tr>
+                            <td>{{ +(+$i) }}</td>
+                            <td>{{ $d-> ten_dm }}</td>
+                            <td>
+                                {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $d->updated_at)->format('H:i:s d/m/Y') }}
+                            </td>
+                            <td>
+                                <a
+                                    style="
+                                        width: 88px;
+                                        padding: 3px 10px;
+                                        margin: 3px;
+                                    "
+                                    class="btn btn-warning"
+                                    href="{{ route('danhmuc.getSua', ['id' => $d->id]) }}"
+                                >
+                                    Cập nhật
+                                </a>
+                                @if(auth()->check() &&
+                                auth()->user()->quyen=='Quản trị')
+                                <a
+                                    style="
+                                        width: 88px;
+                                        padding: 3px 10px;
+                                        margin: 3px;
+                                    "
+                                    class="btn btn-danger action_del"
+                                    href=""
+                                    data-url="{{ route('danhmuc.xoa', ['id' => $d->id]) }}"
+                                >
+                                    Xóa
+                                </a>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div id="khongtimthay"></div>
+            </div>
+            <div class="col-md-4" style="float: right">
+                <h2 class="m-0"><b>Thêm danh mục </b></h2>
+                <br />
+                <form action="{{ route('danhmuc.postThem') }}" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <label for="ten_dm" class="form-label">
+                            <b>Tên danh mục</b>
+                        </label>
+                        <input
+                            type="text"
+                            class="form-control @error('ten_dm') is-invalid @enderror"
+                            id="ten_dm"
+                            name="ten_dm"
+                            value="{{ old('ten_dm') }}"
+                            placeholder="Nhập tên danh mục"
+                            required
+                        />
+                        @if ($errors->has('ten_dm'))
+                        <span class="help-block" style="color: #ff3f3f">
+                            <b>{{ $errors->first('ten_dm') }}</b>
+                        </span>
+                        @endif
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Thêm danh mục
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-12 phantrang" style="margin-top: 1rem">
+            {!! $dm->links()!!}
+        </div>
+        <div style="margin-bottom: 1rem"></div>
     </div>
-    <!-- /.content -->
+    <!-- /.row -->
 </div>
 <!-- /.content-wrapper -->
 @endsection @section('js')

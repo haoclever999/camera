@@ -5,6 +5,12 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
+            rel="icon"
+            href="{{ asset('frontend/img/Logo.png') }}"
+            type="image/gif"
+            sizes="32x32"
+        />
+        <link
             rel="stylesheet"
             type="text/css"
             href="{{

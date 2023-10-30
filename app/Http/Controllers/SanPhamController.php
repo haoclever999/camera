@@ -14,6 +14,7 @@ use App\Components\Traits\StorageImageTrait;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
 use App\Components\Traits\DeleteModelTrait;
+use App\Components\Traits\RestoreModelTrait;
 use App\Imports\NhapHinhAnhSP;
 use App\Imports\NhapSanPham;
 use App\Models\CauHinh;
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Gate;
 
 class SanPhamController extends Controller
 {
-    use DeleteModelTrait, StorageImageTrait;
+    use DeleteModelTrait, StorageImageTrait, RestoreModelTrait;
     private $dmuc, $hanh, $tag, $spham, $thuonghieu, $cauhinh, $dhang;
     public function __construct(DanhMuc $dmuc, SanPham $spham, HinhAnh $hanh, Tag $tag, ThuongHieu $thuonghieu, CauHinh $cauhinh, DonHang $dhang)
     {
@@ -51,6 +52,32 @@ class SanPhamController extends Controller
         $ThOpt = $option->OptionThuongHieu($id);
         return $ThOpt;
     }
+    public function CheckExsistRestore($id)
+    {
+        $sanpham = $this->spham->find($id);
+        $dm = $this->dmuc::where('trang_thai', 0)->get();
+        $th = $this->thuonghieu::where('trang_thai', 0)->get();
+        $err1 = "";
+        $err2 = "";
+        foreach ($dm as $d) {
+            if ($sanpham->dm_id == $d->id) {
+                $err1 = "Danh mục không tồn tại!!";
+            }
+        }
+        foreach ($th as $t) {
+            if ($sanpham->thuong_hieu_id == $t->id) {
+                $err2 = "Thương hiệu không tồn tại!!";
+            }
+        }
+        if ($err1 != "" || $err2 != "")
+            return response()->json([
+                'success' =>  true,
+                'message' => $err1 != "" ? $err1 : $err2,
+                'Content-type' => 'application/json; charset=utf-8'
+            ], JSON_UNESCAPED_UNICODE);
+        else
+            return $this->restoreModelTrait($id, $this->spham);
+    }
 
     public function index(Request $request)
     {
@@ -58,7 +85,9 @@ class SanPhamController extends Controller
             return redirect()->route('home.index');
         }
         $sapxep = $request->sapxep;
-        $spham = $this->spham->where('trang_thai', 1);
+        $dm = $this->dmuc::where('trang_thai', 1)->get();
+        $th = $this->thuonghieu::where('trang_thai', 1)->get();
+        $spham = $this->spham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'));
         switch ($sapxep) {
             case 'a_z':
                 $spham->orderby('ten_sp');
@@ -79,7 +108,8 @@ class SanPhamController extends Controller
         $page = 5;
         $sp = $spham->paginate($page)->appends($request->query());
         $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
-        return view('backend.sanpham.home', compact('sp', 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
+        $sp_daxoa = $this->spham->where('trang_thai', 0)->get();
+        return view('backend.sanpham.home', compact('sp', 'dh_moi', 'sp_daxoa'))->with('i', (request()->input('page', 1) - 1) * $page);
     }
 
     public function chitiet($id)
@@ -278,6 +308,27 @@ class SanPhamController extends Controller
         }
         return $this->deleteModelTrait($id, $this->spham);
     }
+    public function daxoa(Request $request)
+    {
+        if (Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
+        if (Gate::allows('quyen', "Nhân viên")) {
+            return redirect()->route('admin.index');
+        }
+
+        $page = 5;
+        $sp = $this->spham->where('trang_thai', 0)->paginate($page)->appends($request->query());
+        $dh_moi =  $this->dhang->where('trang_thai', "Đang chờ xử lý")->count();
+        return view('backend.sanpham.deleted', compact('sp', 'dh_moi'))->with('i', (request()->input('page', 1) - 1) * $page);
+    }
+    public function restore($id)
+    {
+        if (Gate::allows('quyen', "Khách hàng")) {
+            return redirect()->route('home.index');
+        }
+        return  $this->CheckExsistRestore($id);
+    }
 
     public function timkiem(Request $request)
     {
@@ -285,9 +336,10 @@ class SanPhamController extends Controller
             return redirect()->route('home.index');
         }
         if ($request->ajax()) {
-
+            $dm = $this->dmuc::where('trang_thai', 1)->get();
+            $th = $this->thuonghieu::where('trang_thai', 1)->get();
             $page = 10;
-            $spham = $this->spham->where('trang_thai', 1)->where('ten_sp', 'LIKE', '%' . $request->timkiem_sp . '%')->orderby('ten_sp')->paginate($page)->appends($request->query());
+            $spham = $this->spham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'))->where('ten_sp', 'LIKE', '%' . $request->timkiem_sp . '%')->orderby('ten_sp')->paginate($page)->appends($request->query());
             if ($spham->count() > 0) {
                 $kq = '';
                 $i = (request()->input('page', 1) - 1) * $page;
@@ -435,7 +487,9 @@ class SanPhamController extends Controller
 
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
-        $spham = $this->spham->where('trang_thai', 1);
+        $dm = $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
+        $spham = $this->spham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'));
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();
@@ -477,9 +531,6 @@ class SanPhamController extends Controller
 
         $sp = $spham->paginate($hienthi)->appends($request->query());
 
-        $dm =  $this->dmuc->where('trang_thai', 1)->where('trang_thai', 1)->orderby('ten_dm')->get();
-        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
-
         return view('frontend.sanpham_all', compact('dm', 'sp', 'th', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
 
@@ -500,10 +551,12 @@ class SanPhamController extends Controller
             $hienthi = $request->hienthi;
         else
             $hienthi = 6;
+        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
 
         $sx_sp = $request->sx_sp;
         $loc_gia = $request->gia;
-        $spham = $this->spham->where('trang_thai', 1)->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%');
+        $spham = $this->spham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'))->where('ten_sp', 'LIKE', '%' . $request->timkiem . '%');
         switch ($sx_sp) {
             case 'a_z':
                 $spham->orderby('ten_sp')->get();
@@ -544,8 +597,7 @@ class SanPhamController extends Controller
         }
 
         $url_canonical = $request->url();
-        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
-        $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
+
         $timkiem = $spham->paginate($hienthi)->appends($request->query());
         return view('frontend.sanpham_timkiem', compact('dm', 'th', 'timkiem', 'url_canonical', 'meta_keyword', 'meta_image', 'meta_description', 'meta_title', 'dc', 'dt', 'fb', 'email'));
     }
@@ -553,7 +605,9 @@ class SanPhamController extends Controller
     public function timKiem_Header(Request $request)
     {
         if ($request->ajax()) {
-            $spham = $this->spham->where('trang_thai', 1)->where('ten_sp', 'LIKE', '%' . $request->timkiem_header . '%')->orderby('ten_sp')->get();
+            $dm =  $this->dmuc->where('trang_thai', 1)->get();
+            $th = $this->thuonghieu->where('trang_thai', 1)->get();
+            $spham = $this->spham->where('trang_thai', 1)->whereIn('thuong_hieu_id', $th->pluck('id'))->whereIn('dm_id', $dm->pluck('id'))->where('ten_sp', 'LIKE', '%' . $request->timkiem_header . '%')->orderby('ten_sp')->get();
             if ($spham->count() > 0) {
                 $kq = '';
                 $kq .= '<ul style="text-align: left">';
@@ -582,7 +636,7 @@ class SanPhamController extends Controller
         $meta_description = '';
         $meta_title = '';
 
-        $dm =  $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
+        $dm = $this->dmuc->where('trang_thai', 1)->orderby('ten_dm')->get();
         $th = $this->thuonghieu->where('trang_thai', 1)->orderby('ten_thuong_hieu')->get();
 
         $tags = $this->tag->where('ten_tag', $tag)->first();

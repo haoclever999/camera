@@ -32,133 +32,114 @@
 
 @endsection @section('content')
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div
+    class="content-wrapper content container-fluid"
+    style="padding-left: 10px; padding-right: 10px"
+>
     <!-- Main content -->
-    <div class="content">
-        <div class="container-fluid" style="padding-left: -24px">
-            <div class="row">
-                <div>
-                    <div class="col-md-8" style="float: left">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th width="1%">STT</th>
-                                    <th width="22%">Tên cấu hình</th>
-                                    <th width="44%">Giá trị</th>
-                                    <th width="23%">Ngày cập nhật</th>
-                                    <th width="10%">Hành động</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($cauhinh as $ch)
-                                <tr>
-                                    <td>{{ ++$i }}</td>
-                                    <td style="text-align: left">
-                                        {{ $ch-> ten }}
-                                    </td>
-                                    <td style="text-align: left">
-                                        {{ $ch-> gia_tri }}
-                                    </td>
-                                    <td>
-                                        {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ch->updated_at)->format('H:i:s d/m/Y') }}
-                                    </td>
-                                    <td>
-                                        <a
-                                            style="
-                                                width: 88px;
-                                                padding: 3px 10px;
-                                                margin: 3px;
-                                            "
-                                            class="btn btn-warning"
-                                            href="{{ route('cauhinh.getSua', ['id' => $ch->id]) }}"
-                                        >
-                                            Cập nhật
-                                        </a>
-                                        @if(auth()->check() &&
-                                        auth()->user()->quyen=='Quản trị')
-                                        <a
-                                            style="
-                                                width: 88px;
-                                                padding: 3px 10px;
-                                                margin: 3px;
-                                            "
-                                            class="btn btn-danger action_del"
-                                            href=""
-                                            data-url="{{ route('cauhinh.xoa', ['id' => $ch->id]) }}"
-                                        >
-                                            Xóa
-                                        </a>
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div id="khongtimthay"></div>
-                    </div>
-                    <div class="col-md-4" style="float: right">
-                        <h2 class="m-0"><b>Thêm cấu hình </b></h2>
-                        <br />
-                        <form
-                            action="{{ route('cauhinh.postThem') }}"
-                            method="post"
-                        >
-                            @csrf
-                            <div class="form-group">
-                                <label for="ten" class="form-label">
-                                    <b>Tên cấu hình</b>
-                                </label>
-                                <input
-                                    type="text"
-                                    class="form-control @error('ten') is-invalid @enderror"
-                                    id="ten"
-                                    name="ten"
-                                    value="{{ old('ten') }}"
-                                    placeholder="Nhập tên cấu hình"
-                                    required
-                                />
-                                @if ($errors->has('ten'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('ten') }}</b>
-                                </span>
-                                @endif
-                            </div>
-
-                            <div class="form-group">
-                                <label for="gia_tri" class="form-label">
-                                    <b>Giá trị của cấu hình</b>
-                                </label>
-                                <input
-                                    type="text"
-                                    class="form-control @error('gia_tri') is-invalid @enderror"
-                                    id="gia_tri"
-                                    name="gia_tri"
-                                    value="{{ old('gia_tri') }}"
-                                    placeholder="Nhập giá trị của cấu hình"
-                                    required
-                                />
-                                @if ($errors->has('gia_tri'))
-                                <span class="help-block" style="color: #ff3f3f">
-                                    <b>{{ $errors->first('gia_tri') }}</b>
-                                </span>
-                                @endif
-                            </div>
-
-                            <button type="submit" class="btn btn-primary">
-                                Thêm cấu hình
-                            </button>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-md-12 phantrang" style="margin-top: 1rem">
-                    {!! $cauhinh->links()!!}
-                </div>
-                <div style="margin-bottom: 1rem"></div>
+    <div class="row">
+        <div>
+            <div class="col-md-8" style="float: left">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th width="1%">STT</th>
+                            <th width="22%">Tên cấu hình</th>
+                            <th width="44%">Giá trị</th>
+                            <th width="23%">Ngày cập nhật</th>
+                            <th width="10%">Hành động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($cauhinh as $ch)
+                        <tr>
+                            <td>{{ +(+$i) }}</td>
+                            <td style="text-align: left">
+                                {{ $ch-> ten }}
+                            </td>
+                            <td style="text-align: left">
+                                {{ $ch-> gia_tri }}
+                            </td>
+                            <td>
+                                {{ Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $ch->updated_at)->format('H:i:s d/m/Y') }}
+                            </td>
+                            <td>
+                                <a
+                                    style="
+                                        width: 88px;
+                                        padding: 3px 10px;
+                                        margin: 3px;
+                                    "
+                                    class="btn btn-warning"
+                                    href="{{ route('cauhinh.getSua', ['id' => $ch->id]) }}"
+                                >
+                                    Cập nhật
+                                </a>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div id="khongtimthay"></div>
             </div>
-            <!-- /.row -->
+            <div class="col-md-4" style="float: right">
+                <h2 class="m-0"><b>Thêm cấu hình </b></h2>
+                <br />
+                <form action="{{ route('cauhinh.postThem') }}" method="post">
+                    @csrf
+                    <div class="form-group">
+                        <label for="ten" class="form-label">
+                            <b>Tên cấu hình</b>
+                        </label>
+                        <input
+                            type="text"
+                            class="form-control @error('ten') is-invalid @enderror"
+                            id="ten"
+                            name="ten"
+                            value="{{ old('ten') }}"
+                            placeholder="Nhập tên cấu hình"
+                            required
+                        />
+                        @if ($errors->has('ten'))
+                        <span class="help-block" style="color: #ff3f3f">
+                            <b>{{ $errors->first('ten') }}</b>
+                        </span>
+                        @endif
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gia_tri" class="form-label">
+                            <b>Giá trị của cấu hình</b>
+                        </label>
+                        <input
+                            type="text"
+                            class="form-control @error('gia_tri') is-invalid @enderror"
+                            id="gia_tri"
+                            name="gia_tri"
+                            value="{{ old('gia_tri') }}"
+                            placeholder="Nhập giá trị của cấu hình"
+                            required
+                        />
+                        @if ($errors->has('gia_tri'))
+                        <span class="help-block" style="color: #ff3f3f">
+                            <b>{{ $errors->first('gia_tri') }}</b>
+                        </span>
+                        @endif
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Thêm cấu hình
+                    </button>
+                </form>
+            </div>
         </div>
-        <!-- /.container-fluid -->
+        <div class="col-md-12 phantrang" style="margin-top: 1rem">
+            {!! $cauhinh->links()!!}
+        </div>
+        <div style="margin-bottom: 1rem"></div>
     </div>
+    <!-- /.row -->
+
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->

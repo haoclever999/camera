@@ -1,8 +1,8 @@
 $(function () {
     $(document).on("click", ".action_del", Delete);
+    $(document).on("click", ".action_res", Khoiphuc);
     $(document).on("click", ".action_huy", Huy);
     $(".tag_select").select2({
-        tags: true,
         placeholder: " - Nhập tag sản phẩm -",
         tokenSeparators: [","],
     });
@@ -37,6 +37,42 @@ function Delete(even) {
                             location.reload();
                         });
                     }
+                },
+                error: function () {},
+            });
+        }
+    });
+}
+function Khoiphuc(even) {
+    even.preventDefault();
+    let urlRequest = $(this).data("url"); //lấy đường dẫn url
+    let that = $(this);
+    Swal.fire({
+        title: "Bạn có chắc chắn muốn khôi phục?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        cancelButtonText: "Hủy",
+        confirmButtonText: "Khôi phục",
+    }).then((result) => {
+        if (result.value) {
+            $.ajax({
+                type: "GET",
+                url: urlRequest,
+                success: function (data) {
+                    if (data.code == 200) {
+                        Swal.fire(
+                            "Đã khôi phục!",
+                            "Dữ liệu đã được khôi phục.",
+                            "success"
+                        ).then(function () {
+                            location.reload();
+                        });
+                    }
+                    if (data.success === true)
+                        Swal.fire("Khôi phục thất bại!", data.message, "error");
                 },
                 error: function () {},
             });

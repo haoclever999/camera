@@ -32,7 +32,8 @@
 
 @endsection @section('content')
 <!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
+<div class="content-wrapper" 
+style="padding-left: 10px; padding-right: 10px">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
@@ -115,8 +116,20 @@
 
     <!-- Main content -->
     <div class="content">
-        <div class="container-fluid" style="padding-left: -24px">
+        <div class="container-fluid">
             <div class="row">
+                @if(auth()->check() && auth()->user()->quyen=='Quản trị')
+                @if($sp_daxoa->count()>0)
+                <div>
+                    <a
+                        href="{{ route('sanpham.daxoa') }}"
+                        class="btn btn-danger float-left m-2"
+                        id="delete"
+                    >
+                        Đã xóa
+                    </a>
+                </div>
+                @endif @endif
                 <div class="tbl-fixed">
                     <div class="col-md-12">
                         <table

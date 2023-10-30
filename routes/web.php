@@ -41,6 +41,8 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
         Route::get('cap-nhat-thuong-hieu/{id}', [ThuongHieuController::class, 'getSua'])->name('thuonghieu.getSua');
         Route::post('cap-nhat-thuong-hieu/{id}', [ThuongHieuController::class, 'postSua'])->name('thuonghieu.postSua');
         Route::get('xoa-thuong-hieu/{id}', [ThuongHieuController::class, 'xoa'])->name('thuonghieu.xoa');
+        Route::get('thuong-hieu-da-xoa', [ThuongHieuController::class, 'daxoa'])->name('thuonghieu.daxoa');
+        Route::get('khoi-phuc-thuong-hieu/{id}', [ThuongHieuController::class, 'restore'])->name('thuonghieu.restore');
         Route::get('tim-kiem', [ThuongHieuController::class, 'timkiem'])->name('thuonghieu.timkiem');
     });
 
@@ -51,6 +53,8 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
         Route::get('cap-nhat-danh-muc/{id}', [DanhMucController::class, 'getSua'])->name('danhmuc.getSua');
         Route::post('cap-nhat-danh-muc/{id}', [DanhMucController::class, 'postSua'])->name('danhmuc.postSua');
         Route::get('xoa-danh-muc/{id}', [DanhMucController::class, 'xoa'])->name('danhmuc.xoa');
+        Route::get('danh-muc-da-xoa', [DanhMucController::class, 'daxoa'])->name('danhmuc.daxoa');
+        Route::get('khoi-phuc-danh-muc/{id}', [DanhMucController::class, 'restore'])->name('danhmuc.restore');
         Route::get('tim-kiem', [DanhMucController::class, 'timkiem'])->name('danhmuc.timkiem');
     });
 
@@ -63,6 +67,8 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
         Route::get('cap-nhat-san-pham/{id}', [SanPhamController::class, 'getSua'])->name('sanpham.getSua');
         Route::post('cap-nhat-san-pham/{id}', [SanPhamController::class, 'postSua'])->name('sanpham.postSua');
         Route::get('xoa-san-pham/{id}', [SanPhamController::class, 'xoa'])->name('sanpham.xoa');
+        Route::get('san-pham-da-xoa', [SanPhamController::class, 'daxoa'])->name('sanpham.daxoa');
+        Route::get('khoi-phuc-san-pham/{id}', [SanPhamController::class, 'restore'])->name('sanpham.restore');
         Route::get('tim-kiem', [SanPhamController::class, 'timkiem'])->name('sanpham.timkiem');
         Route::post('nhap-san-pham', [SanPhamController::class, 'nhap_excel'])->name('sanpham.nhapsp');
         Route::post('nhap-hinh-anh', [SanPhamController::class, 'nhap_hinhanh'])->name('sanpham.nhap_hinhanh');
@@ -102,7 +108,6 @@ Route::prefix('admin')->middleware('CheckLogout')->group(function () {
         Route::post('them-cau-hinh', [CauHinhController::class, 'postThem'])->name('cauhinh.postThem');
         Route::get('cap-nhat-cau-hinh/{id}', [CauHinhController::class, 'getSua'])->name('cauhinh.getSua');
         Route::post('cap-nhat-cau-hinh/{id}', [CauHinhController::class, 'postSua'])->name('cauhinh.postSua');
-        Route::get('xoa-cau-hinh/{id}', [CauHinhController::class, 'xoa'])->name('cauhinh.xoa');
         Route::get('tim-kiem', [CauHinhController::class, 'timkiem'])->name('cauhinh.timkiem');
     });
 });

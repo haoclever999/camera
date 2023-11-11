@@ -32,6 +32,7 @@ Route::get('admin/dang-xuat', [AuthController::class, 'DangXuat'])->name('DangXu
 
 //admin
 Route::prefix('admin')->middleware('CheckLogout')->group(function () {
+
     Route::get('/', [AdminController::class, 'index'])->name('admin.index');
 
     // Quản lý thương hiệu

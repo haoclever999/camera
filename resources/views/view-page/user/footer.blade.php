@@ -12,25 +12,19 @@
                         Sát
                     </strong>
                 </h5>
-                <h5>Địa chỉ: {{$dc->gia_tri}}</h5>
+                <h5>Địa chỉ: {{ $dc->gia_tri }}</h5>
 
                 <h5>
                     Điện thoại:
-                    <a
-                        href="tel:{{$dt->gia_tri}}"
-                        style="text-decoration: none"
-                    >
-                        {{$dt->gia_tri}}
+                    <a href="tel:{{ $dt->gia_tri }}" style="text-decoration: none">
+                        {{ $dt->gia_tri }}
                     </a>
                 </h5>
 
                 <h5>
                     Email:
-                    <a
-                        href="mailto:{{$email->gia_tri}}"
-                        style="text-decoration: none"
-                    >
-                        {{$email->gia_tri}}
+                    <a href="mailto:{{ $email->gia_tri }}" style="text-decoration: none">
+                        {{ $email->gia_tri }}
                     </a>
                 </h5>
             </div>

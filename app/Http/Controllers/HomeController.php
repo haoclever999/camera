@@ -73,7 +73,7 @@ class HomeController extends Controller
             [
                 'ho_ten.required' => 'Hãy nhập họ tên',
                 'email.required' => 'Hãy nhập email',
-                'email.required' => 'Email không đúng dạng',
+                'email.regex' => 'Email không đúng dạng',
                 'dia_chi.required' => 'Hãy nhập địa chỉ',
                 'noi_dung.required' => 'Hãy nhập nội dung',
             ]

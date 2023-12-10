@@ -204,39 +204,6 @@ class AuthController extends Controller
         }
     }
 
-    // public function getDangNhapFacebook()
-    // {
-    //     return Socialite::driver('facebook')->redirect();
-    // }
-
-    // public function postDangNhapFacebook()
-    // {
-    //     try {
-
-    //         $user = Socialite::driver('facebook')->user();
-
-    //         $finduser = User::where('facebook_id', $user->id)->first();
-
-    //         if ($finduser) {
-
-    //             Auth::login($finduser);
-    //           
-    //             return redirect()->route('home.index');
-    //         } else {
-    //             $newUser = User::updateOrCreate(['email' => $user->email], [
-    //                 'ho_ten' => $user->name,
-    //                 'facebook_id' => $user->id,
-    //                 'password' => bcrypt($user->password),
-    //             ]);
-    //              Auth::login($newUser);
-    //             
-    //             return redirect()->route('home.index');
-    //         }
-    //     } catch (Exception $e) {
-    //         dd($e->getMessage());
-    //     }
-    // }
-
     public function getDangNhapGoogle()
     {
         return Socialite::driver('google')->redirect();

@@ -13,7 +13,7 @@ trait StorageImageTrait
         if ($request->hasFile($fieldName)) {
             $file = $request->$fieldName;
             $a = Carbon::now()->format('d-m-Y') . '/' . Carbon::now()->format('d-m-Y-H-i-s') . '-' . Str::random(30);
-            $fileNameHash = $a . '.' . $file->getClientOriginalExtension();
+            $fileNameHash = $a . '_' . $file->getClientOriginalExtension();
             $filePath = $request->file($fieldName)->storeAs('public/' . $folderName . '/' . auth()->id(), $fileNameHash);
             return Storage::url($filePath);
         }
@@ -23,14 +23,13 @@ trait StorageImageTrait
     public function StorageTraitUploadMutiple($file, $folderName)
     {
         $a = Carbon::now()->format('d-m-Y') . '/' . Carbon::now()->format('d-m-Y-H-i-s') . '-' . Str::random(30);
-        $fileNameHash = $a . '.' . $file->getClientOriginalExtension();
+        $fileNameHash = $a . '_' . $file->getClientOriginalExtension();
         $filePath = $file->storeAs('public/' . $folderName . '/' . auth()->id(), $fileNameHash);
         return Storage::url($filePath);
     }
 
     public function StorageTraitImport($file, $folderName)
     {
-
         $a = Carbon::now()->format('d-m-Y') . '/' . Carbon::now()->format('d-m-Y-H-i-s') . '-' . Str::random(30);
         $fileNameHash = $a  . strchr($file, ".");
         $filePath = Storage::putFileAs('public/' . $folderName . '/' . auth()->id(), $file, $fileNameHash);
